@@ -10,5 +10,15 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
-  }
+  },
+  server: {
+    proxy:  {
+      '/api': 'http://localhost:8000'
+    }
+  },
+  build: {
+    outDir: '../goals_project/goals/static/vue',
+    emptyOutDir: true
+  },
+  base: '/static/vue/'
 })
