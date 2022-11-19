@@ -1,6 +1,6 @@
 # goals-vue
 
-This template should help get you started developing with Vue 3 in Vite.
+Vue-Frontend for [lifetrackerbuddy.com](https://lifetrackerbuddy.com/), - an application to manage [OKRs](https://wikipedia.org/wiki/Objectives_and_Key_Results)
 
 ## Recommended IDE Setup
 
