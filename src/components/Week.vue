@@ -1,9 +1,9 @@
 <script>
-import Goal from '@/components/Goal.vue'
+import Task from '@/components/Task.vue'
 export default {
   name: 'Week',
   components: {
-    Goal
+    Task
   },
   props: {
     week: Object
@@ -22,7 +22,7 @@ export default {
     </div>
     <p class="mb-1">{{ week.quarter }} · {{ week.month }} · {{ week.day }}</p>
     <ul v-if="week.goals && week.goals.length">
-      <Goal v-for="goal in week.goals" :goal="goal" :key="goal.id"></Goal>
+      <Task v-for="goal in week.goals" :goal="goal" :key="goal.id"></Task>
     </ul>
   </li>
 </template>
