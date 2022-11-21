@@ -20,7 +20,6 @@ export default {
     <h1>Goals</h1>
     <div class="d-flex ms-auto">
       <button class="btn btn-outline-dark ms-2">New Goal</button>
-      <button class="btn btn-outline-dark ms-2">New Task</button>
     </div>
   </div>
   <ul class="list-group-flush ps-0">
