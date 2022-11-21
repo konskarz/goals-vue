@@ -19,6 +19,5 @@ export default defineConfig({
   build: {
     outDir: '../goals_project/goals/static/vue',
     emptyOutDir: true
-  },
-  base: '/static/vue/'
+  }
 })
