@@ -8,14 +8,17 @@ export default {
     }
   },
   created() {
-    store.fetchGoal(this.goalId)
+    if(!this.store.goals) store.fetchGoals()
   },
   computed: {
     goalId() {
       return parseInt(this.$route.params.id);
     },
     goal() {
-      return this.store.goal
+      return this.store.goals ? this.store.goals.find(goal => goal.id === this.goalId) : null
+    },
+    actionables() {
+      return this.store.goals.filter(goal => goal.goal_type === 'actionable')
     }
   },
   methods: {
@@ -41,7 +44,10 @@ export default {
     <div class="col-md-6">
       <label for="selectParent" class="form-label">Parent</label>
       <select class="form-select" aria-label="Select Parent" id="selectParent">
-        <option selected>{{ goal.parent ? goal.parent.name : '' }}</option>
+        <option v-for="actionable in actionables" :key="actionable.id"
+          :selected="actionable.id === goal.parent.id ? true : false">
+            {{ actionable.name }}
+        </option>
       </select>
     </div>
     <div class="col-md-6">

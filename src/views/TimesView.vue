@@ -7,13 +7,13 @@ export default {
     }
   },
   created() {
-    store.fetchTimes()
+    if(!store.times) store.fetchTimes()
   }
 }
 </script>
 <template>
   <h1 class="my-3">Times</h1>
-  <table class="table">
+  <table class="table" v-if="store.times">
     <thead>
       <tr>
         <th scope="col">Time</th>

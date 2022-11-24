@@ -8,14 +8,14 @@ export default {
     }
   },
   created() {
-    store.fetchTime(this.timeId)
+    if(!this.store.times) store.fetchTimes()
   },
   computed: {
     timeId() {
       return parseInt(this.$route.params.id);
     },
     time() {
-      return this.store.time
+      return this.store.times ? this.store.times.find(time => time.id === this.timeId) : null
     }
   },
   methods: {
