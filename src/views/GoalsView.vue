@@ -11,11 +11,16 @@ export default {
     }
   },
   created() {
-    if(!store.goals) store.fetchGoals()
+    store.fetchGoals()
   },
   computed: {
     children() {
       return store.goals.filter(goal => !goal.parent)
+    }
+  },
+  methods: {
+    newGoal() {
+      this.$router.push({ name: 'goal', params: { id: 0 } });
     }
   }
 }
@@ -24,7 +29,7 @@ export default {
   <div class="d-flex justify-content-between align-items-center my-3">
     <h1>Goals</h1>
     <div class="d-flex ms-auto">
-      <button class="btn btn-outline-dark ms-2">New Goal</button>
+      <button class="btn btn-outline-dark ms-2" @click="newGoal">New Goal</button>
     </div>
   </div>
   <ul class="list-group-flush ps-0" v-if="store.goals">

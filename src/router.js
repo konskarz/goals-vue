@@ -16,7 +16,7 @@ const routes = [
     component: () => import('@/views/GoalsView.vue')
   },
   {
-    path: '/time/:id',
+    path: '/time/:id/:goal',
     name: 'time',
     component: () => import('@/views/TimeView.vue')
   },

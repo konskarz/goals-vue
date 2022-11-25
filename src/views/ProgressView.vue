@@ -11,7 +11,7 @@ export default {
     }
   },
   created() {
-    if(!store.key_results) store.fetchProgress()
+    store.fetchProgress()
   }
 }
 </script>

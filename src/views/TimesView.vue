@@ -7,7 +7,7 @@ export default {
     }
   },
   created() {
-    if(!store.times) store.fetchTimes()
+    store.fetchTimes()
   }
 }
 </script>
@@ -26,7 +26,7 @@ export default {
         <th scope="row">
           <span class="badge bg-primary rounded-pill">
             <router-link class="nav-link"
-              :to="{ name: 'time', params: { id: time.id }}">
+              :to="{ name: 'time', params: { id: time.id, goal: time.goal }}">
               {{ time.duration }}
             </router-link>
           </span>
