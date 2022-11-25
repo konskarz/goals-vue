@@ -44,8 +44,9 @@ export default {
     <div class="col-md-6">
       <label for="selectParent" class="form-label">Parent</label>
       <select class="form-select" aria-label="Select Parent" id="selectParent">
+        <option :selected="!goal.parent"></option>
         <option v-for="actionable in actionables" :key="actionable.id"
-          :selected="actionable.id === goal.parent.id ? true : false">
+          :selected="goal.parent && actionable.id === goal.parent.id ? true : false">
             {{ actionable.name }}
         </option>
       </select>
