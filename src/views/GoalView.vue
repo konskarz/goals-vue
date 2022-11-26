@@ -17,10 +17,9 @@ export default {
   },
   created() {
     if(!store.goals) store.fetchGoals().then(() => {
-      this.actionables = store.goals.filter(goal => goal.goal_type === 'actionable')
-      if(this.goalId) this.setGoal(this.goalId)
+      if(this.goalId) this.setData(this.goalId)
     })
-    else if(this.goalId) this.setGoal(this.goalId)
+    else if(this.goalId) this.setData(this.goalId)
   },
   computed: {
     goalId() {
@@ -52,8 +51,9 @@ export default {
     }
   },
   methods: {
-    setGoal(id) {
+    setData(id) {
       this.goal = store.goals.find(goal => goal.id === id)
+      this.actionables = store.goals.filter(goal => goal.goal_type === 'actionable')
     },
     dateInput(str) {
       return str ? str.slice(0, 10) : null
