@@ -1,5 +1,5 @@
 <script>
-import { apiService } from '@/api.service.js'
+import { apiService } from '@/common/api.service.js'
 export default {
   data() {
     return {

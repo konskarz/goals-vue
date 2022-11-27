@@ -13,7 +13,7 @@ export default {
 </script>
 <template>
   <h1 class="my-3">Times</h1>
-  <table class="table">
+  <table class="table" v-if="store.times">
     <thead>
       <tr>
         <th scope="col">Time</th>
@@ -26,7 +26,7 @@ export default {
         <th scope="row">
           <span class="badge bg-primary rounded-pill">
             <router-link class="nav-link"
-              :to="{ name: 'time', params: { id: time.id }}">
+              :to="{ name: 'time', params: { id: time.id, goal: time.goal }}">
               {{ time.duration }}
             </router-link>
           </span>
