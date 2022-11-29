@@ -28,7 +28,7 @@ export default {
     </div>
   </div>
   <ul class="list-group-flush ps-0">
-    <Goal class="list-group-item py-2"
+    <Goal class="list-group-item my-2"
       v-for="goal in goals"
       :key="goal.id"
       :goal="goal">

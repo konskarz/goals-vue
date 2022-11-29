@@ -37,7 +37,7 @@ export default {
       </div>
     </div>
     <ul v-if="hasChildren" class="list-group-flush" v-show="isOpen">
-      <Goal class="list-group-item py-2"
+      <Goal class="list-group-item my-2"
         v-for="goal in goal.goal_set"
         :key="goal.id"
         :goal="goal">
