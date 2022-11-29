@@ -1,10 +1,10 @@
 <script>
-import { store } from '@/store.js'
+import { apiService } from '@/common/api.service.js'
 export default {
   name: 'Time',
   data() {
     return {
-      store,
+      endpoint: '/api/times/',
       time: {
         goal: null,
         start: null,
@@ -16,11 +16,8 @@ export default {
     }
   },
   created() {
-    if(!this.timeId) this.time.goal = this.goalId
-    else {
-      if(!store.goals) store.fetchTimes().then(() => this.setTime(this.timeId))
-      else this.setTime(this.timeId)
-    }
+    if(this.timeId) apiService(this.endpoint + this.timeId).then((data) => this.time = data)
+    else this.time.goal = this.goalId
   },
   computed: {
     timeId() {
@@ -47,9 +44,6 @@ export default {
     }
   },
   methods: {
-    setTime(id) {
-      this.time = store.times.find(time => time.id === id)
-    },
     dateInput(str) {
       return str ? str.slice(0, 10) : null
     },
@@ -58,12 +52,12 @@ export default {
     },
     saveTime() {
       this.submited = true
-      if(this.timeId) store.updateTime(this.timeId, this.time).then(() => this.toTimes())
-      else store.createTime(this.time).then(() => this.toProgress())
+      if(this.timeId) apiService(this.endpoint + this.timeId + '/', 'PUT', this.time).then(() => this.toTimes())
+      else apiService(this.endpoint, 'POST', this.time).then(() => this.toProgress())
     },
     deleteTime() {
       this.submited = true
-      store.deleteTime(this.timeId).then(() => this.toTimes())
+      apiService(this.endpoint + this.timeId + '/', 'DELETE').then(() => this.toTimes())
     },
     toTimes() {
       this.$router.push({ name: 'times' });

@@ -1,5 +1,5 @@
 <script>
-import { store } from '@/store.js'
+import { apiService } from '@/common/api.service.js'
 import Goal from '@/components/Goal.vue'
 export default {
   components: {
@@ -7,16 +7,11 @@ export default {
   },
   data() {
     return {
-      store
+      goals: null
     }
   },
   created() {
-    store.fetchGoals()
-  },
-  computed: {
-    children() {
-      return store.goals.filter(goal => !goal.parent)
-    }
+    apiService('/api/goals-tree').then((data) => this.goals = data)
   },
   methods: {
     newGoal() {
@@ -32,10 +27,11 @@ export default {
       <button class="btn btn-outline-dark ms-2" @click="newGoal">New Goal</button>
     </div>
   </div>
-  <ul class="list-group-flush ps-0" v-if="store.goals">
+  <ul class="list-group-flush ps-0">
     <Goal class="list-group-item py-2"
-      v-for="child in children"
-      :key="child.id" :goal="child" :goals="store.goals">
+      v-for="goal in goals"
+      :key="goal.id"
+      :goal="goal">
     </Goal>
   </ul>
 </template>
