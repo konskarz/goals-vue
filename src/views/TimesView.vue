@@ -1,13 +1,15 @@
 <script>
-import { apiService } from '@/common/api.service.js'
+import useSWRV from 'swrv'
 export default {
   data() {
     return {
+      endpoint: '/api/times/',
       times: null
     }
   },
   created() {
-    apiService('/api/times').then((data) => this.times = data)
+    const { data } = useSWRV(this.endpoint)
+    this.times = data
   }
 }
 </script>

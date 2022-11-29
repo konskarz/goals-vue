@@ -52,12 +52,15 @@ export default {
     },
     saveTime() {
       this.submited = true
-      if(this.timeId) apiService(this.endpoint + this.timeId + '/', 'PUT', this.time).then(() => this.toTimes())
-      else apiService(this.endpoint, 'POST', this.time).then(() => this.toProgress())
+      if(this.timeId) apiService(this.endpoint + this.timeId + '/', 'PUT', this.time)
+        .then(() => this.toTimes())
+      else apiService(this.endpoint, 'POST', this.time)
+        .then(() => this.toProgress())
     },
     deleteTime() {
       this.submited = true
-      apiService(this.endpoint + this.timeId + '/', 'DELETE').then(() => this.toTimes())
+      apiService(this.endpoint + this.timeId + '/', 'DELETE')
+        .then(() => this.toTimes())
     },
     toTimes() {
       this.$router.push({ name: 'times' });

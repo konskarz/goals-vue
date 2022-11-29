@@ -1,5 +1,5 @@
 <script>
-import { apiService } from '@/common/api.service.js'
+import useSWRV from 'swrv'
 import Goal from '@/components/Goal.vue'
 export default {
   components: {
@@ -7,11 +7,13 @@ export default {
   },
   data() {
     return {
+      endpoint: '/api/goals-tree/',
       goals: null
     }
   },
   created() {
-    apiService('/api/goals-tree').then((data) => this.goals = data)
+    const { data } = useSWRV(this.endpoint)
+    this.goals = data
   },
   methods: {
     newGoal() {
@@ -27,7 +29,7 @@ export default {
       <button class="btn btn-outline-dark ms-2" @click="newGoal">New Goal</button>
     </div>
   </div>
-  <ul class="list-group-flush ps-0">
+  <ul class="list-group-flush ps-0" v-if="goals">
     <Goal class="list-group-item my-2"
       v-for="goal in goals"
       :key="goal.id"

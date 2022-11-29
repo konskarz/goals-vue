@@ -26,14 +26,6 @@ export default {
     goalId() {
       return parseInt(this.$route.params.id);
     },
-    parent_id: {
-      get() {
-        return this.goal.parent_id ? this.goal.parent_id : null
-      },
-      set(value) {
-        this.goal.parent_id = value ? this.actionables.find((actionable) => actionable.id === value) : null
-      }
-    },
     planned: {
       get() {
         return this.dateInput(this.goal.planned)
@@ -60,12 +52,15 @@ export default {
     },
     saveGoal() {
       this.submited = true
-      if(this.goalId) apiService(this.endpoint + this.goalId + '/', 'PUT', this.goal).then(() => this.toGoals())
-      else apiService(this.endpoint, 'POST', this.goal).then(() => this.toGoals())
+      if(this.goalId) apiService(this.endpoint + this.goalId + '/', 'PUT', this.goal)
+        .then(() => this.toGoals())
+      else apiService(this.endpoint, 'POST', this.goal)
+        .then(() => this.toGoals())
     },
     deleteGoal() {
       this.submited = true
-      apiService(this.endpoint + this.goalId + '/', 'DELETE').then(() => this.toGoals())
+      apiService(this.endpoint + this.goalId + '/', 'DELETE')
+        .then(() => this.toGoals())
     },
     toGoals() {
       this.$router.push({ name: 'goals' });

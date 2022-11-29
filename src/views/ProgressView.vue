@@ -1,5 +1,5 @@
 <script>
-import { apiService } from '@/common/api.service.js'
+import useSWRV from 'swrv'
 import Week from '@/components/Week.vue'
 export default {
   components: {
@@ -7,20 +7,22 @@ export default {
   },
   data() {
     return {
-      key_results: null
+      endpoint: '/api/progress/',
+      progress: null
     }
   },
   created() {
-    apiService('/api/progress').then((data) => this.key_results = data.key_results)
+    const { data } = useSWRV(this.endpoint)
+    this.progress = data
   }
 }
 </script>
 <template>
   <h1 class="my-3">Progress</h1>
-  <ul class="list-group-flush ps-0">
+  <ul class="list-group-flush ps-0" v-if="progress">
     <Week
       class="list-group-item py-2"
-      v-for="(week, key) in key_results"
+      v-for="(week, key) in progress.key_results"
       :key="key"
       :week="week"
     ></Week>
