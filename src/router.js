@@ -16,12 +16,12 @@ const routes = [
     component: () => import('@/views/GoalsView.vue')
   },
   {
-    path: '/time/:id/:goal',
+    path: '/times/:id/:goal',
     name: 'time',
     component: () => import('@/views/TimeView.vue')
   },
   {
-    path: '/goal/:id',
+    path: '/goals/:id',
     name: 'goal',
     component: () => import('@/views/GoalView.vue')
   },

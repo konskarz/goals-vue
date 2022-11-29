@@ -1,19 +1,21 @@
 <script>
-import { store } from '@/store.js'
+import useSWRV from 'swrv'
 export default {
   data() {
     return {
-      store
+      endpoint: '/api/times/',
+      times: null
     }
   },
   created() {
-    store.fetchTimes()
+    const { data } = useSWRV(this.endpoint)
+    this.times = data
   }
 }
 </script>
 <template>
   <h1 class="my-3">Times</h1>
-  <table class="table" v-if="store.times">
+  <table class="table" v-if="times">
     <thead>
       <tr>
         <th scope="col">Time</th>
@@ -22,11 +24,13 @@ export default {
       </tr>
     </thead>
     <tbody>
-      <tr v-for="time in store.times" :key="time.id">
+      <tr v-for="time in times" :key="time.id">
         <th scope="row">
           <span class="badge bg-primary rounded-pill">
-            <router-link class="nav-link"
-              :to="{ name: 'time', params: { id: time.id, goal: time.goal }}">
+            <router-link
+              class="nav-link"
+              :to="{ name: 'time', params: { id: time.id, goal: time.goal }}"
+            >
               {{ time.duration }}
             </router-link>
           </span>

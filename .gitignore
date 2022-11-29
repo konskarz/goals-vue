@@ -1,5 +1,4 @@
-src/api
-src/store.dev.js
+api
 
 # Logs
 logs
@@ -21,9 +20,8 @@ coverage
 /cypress/screenshots/
 
 # Editor directories and files
-# .vscode/*
-# !.vscode/extensions.json
-.vscode
+.vscode/*
+!.vscode/extensions.json
 .idea
 *.suo
 *.ntvs*

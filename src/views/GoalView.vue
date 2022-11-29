@@ -1,11 +1,12 @@
 <script>
-import { store } from '@/store.js'
+import { apiService } from '@/common/api.service.js'
 export default {
   data() {
     return {
-      store,
+      endpoint: '/api/goals/',
       goal: {
         name: '',
+        parent_id: null,
         planned: null,
         done: null,
         goal_type: 'actionable',
@@ -16,22 +17,14 @@ export default {
     }
   },
   created() {
-    if(!store.goals) store.fetchGoals().then(() => {
-      if(this.goalId) this.setData(this.goalId)
+    apiService(this.endpoint).then((data) => {
+      if(this.goalId) this.goal = data.find(goal => goal.id === this.goalId)
+      this.actionables = data.filter(goal => goal.goal_type === 'actionable')
     })
-    else if(this.goalId) this.setData(this.goalId)
   },
   computed: {
     goalId() {
       return parseInt(this.$route.params.id);
-    },
-    parent: {
-      get() {
-        return this.goal.parent ? this.goal.parent.id : null
-      },
-      set(value) {
-        this.goal.parent = value ? this.actionables.find((actionable) => actionable.id === value) : null
-      }
     },
     planned: {
       get() {
@@ -51,10 +44,6 @@ export default {
     }
   },
   methods: {
-    setData(id) {
-      this.goal = store.goals.find(goal => goal.id === id)
-      this.actionables = store.goals.filter(goal => goal.goal_type === 'actionable')
-    },
     dateInput(str) {
       return str ? str.slice(0, 10) : null
     },
@@ -63,12 +52,15 @@ export default {
     },
     saveGoal() {
       this.submited = true
-      if(this.goalId) store.updateGoal(this.goalId, this.goal).then(() => this.toGoals())
-      else store.createGoal(this.goal).then(() => this.toGoals())
+      if(this.goalId) apiService(this.endpoint + this.goalId + '/', 'PUT', this.goal)
+        .then(() => this.toGoals())
+      else apiService(this.endpoint, 'POST', this.goal)
+        .then(() => this.toGoals())
     },
     deleteGoal() {
       this.submited = true
-      store.deleteGoal(this.goalId).then(() => this.toGoals())
+      apiService(this.endpoint + this.goalId + '/', 'DELETE')
+        .then(() => this.toGoals())
     },
     toGoals() {
       this.$router.push({ name: 'goals' });
@@ -95,7 +87,7 @@ export default {
     </div>
     <div class="col-md-6">
       <label for="selectParent" class="form-label">Parent</label>
-      <select class="form-select" aria-label="Select Parent" id="selectParent" v-model="parent">
+      <select class="form-select" aria-label="Select Parent" id="selectParent" v-model="goal.parent_id">
         <option value=""></option>
         <option v-for="actionable in actionables" :key="actionable.id" :value="actionable.id">
           {{ actionable.name }}
