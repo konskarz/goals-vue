@@ -1,21 +1,21 @@
 <script>
-import useSWRV from 'swrv'
-import Week from '@/components/Week.vue'
+import useSWRV from "swrv";
+import Week from "@/components/ProgressWeek.vue";
 export default {
   components: {
-    Week
+    Week,
   },
   data() {
     return {
-      endpoint: '/api/progress/',
-      progress: null
-    }
+      endpoint: "/api/progress/",
+      progress: null,
+    };
   },
   created() {
-    const { data } = useSWRV(this.endpoint)
-    this.progress = data
-  }
-}
+    const { data } = useSWRV(this.endpoint);
+    this.progress = data;
+  },
+};
 </script>
 <template>
   <h1 class="my-3">Progress</h1>

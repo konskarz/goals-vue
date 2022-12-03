@@ -1,19 +1,14 @@
 <script>
-import Task from '@/components/Task.vue'
+import Task from "@/components/ProgressWeekGoal.vue";
 export default {
-  name: 'Week',
+  name: "Week",
   components: {
-    Task
+    Task,
   },
   props: {
-    week: Object
+    week: Object,
   },
-  computed: {
-    hasGoals() {
-      return this.week.goals && this.week.goals.length
-    }
-  }
-}
+};
 </script>
 <template>
   <li>

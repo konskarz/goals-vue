@@ -1,26 +1,27 @@
 <script>
-import { apiService } from '@/common/api.service.js'
+import { apiService } from "@/common/api.service.js";
+import { dateInput, dateOutput } from "@/common/date.format.js";
 export default {
   data() {
     return {
-      endpoint: '/api/goals/',
+      endpoint: "/api/goals/",
       goal: {
-        name: '',
+        name: "",
         parent_id: null,
         planned: null,
         done: null,
-        goal_type: 'actionable',
-        description: ''
+        goal_type: "subtask",
+        description: "",
       },
       actionables: [],
-      submited: false
-    }
+      submited: false,
+    };
   },
   created() {
     apiService(this.endpoint).then((data) => {
-      if(this.goalId) this.goal = data.find(goal => goal.id === this.goalId)
-      this.actionables = data.filter(goal => goal.goal_type === 'actionable')
-    })
+      if (this.goalId) this.goal = data.find((goal) => goal.id === this.goalId);
+      this.actionables = data; // .filter((goal) => goal.goal_type === "actionable");
+    });
   },
   computed: {
     goalId() {
@@ -28,45 +29,42 @@ export default {
     },
     planned: {
       get() {
-        return this.dateInput(this.goal.planned)
+        return dateInput(this.goal.planned);
       },
       set(value) {
-        this.goal.planned = value ? this.dateOutput(value) : null
-      }
+        this.goal.planned = value ? dateOutput(value) : null;
+      },
     },
     done: {
       get() {
-        return this.dateInput(this.goal.done)
+        return dateInput(this.goal.done);
       },
       set(value) {
-        this.goal.done = value ? this.dateOutput(value) : null
-      }
-    }
+        this.goal.done = value ? dateOutput(value) : null;
+      },
+    },
   },
   methods: {
-    dateInput(str) {
-      return str ? str.slice(0, 10) : null
-    },
-    dateOutput(str) {
-      return new Date(str).toISOString()
-    },
     saveGoal() {
-      this.submited = true
-      if(this.goalId) apiService(this.endpoint + this.goalId + '/', 'PUT', this.goal)
-        .then(() => this.toGoals())
-      else apiService(this.endpoint, 'POST', this.goal)
-        .then(() => this.toGoals())
+      this.submited = true;
+      if (this.goalId)
+        apiService(this.endpoint + this.goalId + "/", "PUT", this.goal).then(
+          () => this.toGoals()
+        );
+      else
+        apiService(this.endpoint, "POST", this.goal).then(() => this.toGoals());
     },
     deleteGoal() {
-      this.submited = true
-      apiService(this.endpoint + this.goalId + '/', 'DELETE')
-        .then(() => this.toGoals())
+      this.submited = true;
+      apiService(this.endpoint + this.goalId + "/", "DELETE").then(() =>
+        this.toGoals()
+      );
     },
     toGoals() {
-      this.$router.push({ name: 'goals' });
-    }
-  }
-}
+      this.$router.push({ name: "goals" });
+    },
+  },
+};
 </script>
 <template>
   <form class="row g-3" @submit.prevent="saveGoal">
@@ -74,41 +72,83 @@ export default {
       <div class="d-flex justify-content-between align-items-center my-3">
         <h1>Goal</h1>
         <div class="d-flex ms-auto">
-          <button class="btn btn-outline-dark ms-2"
-            :disabled="submited" @click="deleteGoal" v-if="goalId">Delete</button>
-          <button class="btn btn-outline-dark ms-2" type="submit"
-            :disabled="submited" @click="saveGoal">Save</button>
+          <button
+            class="btn btn-outline-dark ms-2"
+            :disabled="submited"
+            @click="deleteGoal"
+            v-if="goalId"
+          >
+            Delete
+          </button>
+          <button
+            class="btn btn-outline-dark ms-2"
+            type="submit"
+            :disabled="submited"
+            @click="saveGoal"
+          >
+            Save
+          </button>
         </div>
       </div>
     </div>
     <div class="col-md-6">
       <label for="inputName" class="form-label">Name</label>
-      <input required type="text" class="form-control" id="inputName" v-model="goal.name">
+      <input
+        required
+        type="text"
+        class="form-control"
+        id="inputName"
+        v-model="goal.name"
+      />
     </div>
     <div class="col-md-6">
       <label for="selectParent" class="form-label">Parent</label>
-      <select class="form-select" aria-label="Select Parent" id="selectParent" v-model="goal.parent_id">
+      <select
+        class="form-select"
+        aria-label="Select Parent"
+        id="selectParent"
+        v-model="goal.parent_id"
+      >
         <option value=""></option>
-        <option v-for="actionable in actionables" :key="actionable.id" :value="actionable.id">
+        <option
+          v-for="actionable in actionables"
+          :key="actionable.id"
+          :value="actionable.id"
+        >
           {{ actionable.name }}
         </option>
       </select>
     </div>
     <div class="col-md-6">
       <label for="inputPlanned" class="form-label">Planned</label>
-      <input type="date" class="form-control" id="inputPlanned" v-model="planned">
+      <input
+        type="date"
+        class="form-control"
+        id="inputPlanned"
+        v-model="planned"
+      />
     </div>
     <div class="col-md-6">
       <label for="inputDone" class="form-label">Done</label>
-      <input type="date" class="form-control" id="inputDone" v-model="done">
+      <input type="date" class="form-control" id="inputDone" v-model="done" />
     </div>
     <div class="col-12">
       <label for="inputImage" class="form-label">Image</label>
-      <input type="file" class="form-control" id="inputImage" :value="goal.image">
+      <input
+        type="file"
+        class="form-control"
+        id="inputImage"
+        :value="goal.image"
+      />
     </div>
     <div class="col-12">
       <label for="inputDescription" class="form-label">Description</label>
-      <textarea rows="3" class="form-control" id="inputDescription" v-model="goal.description"></textarea>
+      <textarea
+        rows="3"
+        class="form-control"
+        id="inputDescription"
+        v-model="goal.description"
+      ></textarea>
     </div>
   </form>
 </template>
