@@ -1,78 +1,65 @@
-<script>
+<script setup>
+import { ref, computed, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import useSWRV from "swrv";
 import { apiService } from "@/common/api.service.js";
 import { dateInput, dateOutput } from "@/common/date.format.js";
-export default {
-  name: "Time",
-  data() {
-    return {
-      endpoint: "/api/times/",
-      time: {
-        goal: null,
-        start: null,
-        end: null,
-        duration: null,
-        description: "",
-      },
-      submited: false,
-    };
+
+const route = useRoute();
+const router = useRouter();
+const endpoint = "/api/times/";
+const time = ref({
+  goal: null,
+  start: null,
+  end: null,
+  duration: null,
+  description: "",
+});
+const submited = ref(false);
+const timeId = computed(() => {
+  return parseInt(route.params.id);
+});
+const goalId = computed(() => {
+  return parseInt(route.params.goal);
+});
+const start = computed({
+  get() {
+    return dateInput(time.value.start);
   },
-  created() {
-    if (this.timeId)
-      apiService(this.endpoint + this.timeId).then(
-        (data) => (this.time = data)
-      );
-    else this.time.goal = this.goalId;
+  set(value) {
+    time.value.start = value ? dateOutput(value) : null;
   },
-  computed: {
-    timeId() {
-      return parseInt(this.$route.params.id);
-    },
-    goalId() {
-      return parseInt(this.$route.params.goal);
-    },
-    start: {
-      get() {
-        return dateInput(this.time.start);
-      },
-      set(value) {
-        this.time.start = value ? dateOutput(value) : null;
-      },
-    },
-    end: {
-      get() {
-        return dateInput(this.time.end);
-      },
-      set(value) {
-        this.time.end = value ? dateOutput(value) : null;
-      },
-    },
+});
+const end = computed({
+  get() {
+    return dateInput(time.value.end);
   },
-  methods: {
-    saveTime() {
-      this.submited = true;
-      if (this.timeId)
-        apiService(this.endpoint + this.timeId + "/", "PUT", this.time).then(
-          () => this.toTimes()
-        );
-      else
-        apiService(this.endpoint, "POST", this.time).then(() =>
-          this.toProgress()
-        );
-    },
-    deleteTime() {
-      this.submited = true;
-      apiService(this.endpoint + this.timeId + "/", "DELETE").then(() =>
-        this.toTimes()
-      );
-    },
-    toTimes() {
-      this.$router.push({ name: "times" });
-    },
-    toProgress() {
-      this.$router.push({ name: "progress" });
-    },
+  set(value) {
+    time.value.end = value ? dateOutput(value) : null;
   },
-};
+});
+function saveTime() {
+  submited.value = true;
+  if (timeId.value)
+    apiService(endpoint + timeId.value + "/", "PUT", time.value).then(() =>
+      toTimes()
+    );
+  else apiService(endpoint, "POST", time.value).then(() => toProgress());
+}
+function deleteTime() {
+  submited.value = true;
+  apiService(endpoint + timeId.value + "/", "DELETE").then(() => toTimes());
+}
+function toTimes() {
+  router.push({ name: "times" });
+}
+function toProgress() {
+  router.push({ name: "progress" });
+}
+if (timeId.value) {
+  const { data } = useSWRV(endpoint + timeId.value);
+  watch(data, (newData) => (time.value = newData));
+} else time.value.goal = goalId.value;
 </script>
 <template>
   <form class="row g-3" @submit.prevent>
@@ -81,10 +68,10 @@ export default {
         <h1>Time</h1>
         <div class="d-flex ms-auto">
           <button
+            v-if="timeId"
             class="btn btn-outline-dark ms-2"
             :disabled="submited"
             @click="deleteTime"
-            v-if="timeId"
           >
             Delete
           </button>
@@ -101,37 +88,37 @@ export default {
     <div class="col-md-6">
       <label for="staticGoal" class="form-label">Goal</label>
       <input
+        id="staticGoal"
         type="text"
         readonly
         class="form-control-plaintext"
-        id="staticGoal"
         :value="time.goal"
       />
     </div>
     <div class="col-md-6">
       <label for="inputDuration" class="form-label">Duration</label>
       <input
-        type="number"
-        class="form-control"
         id="inputDuration"
         v-model="time.duration"
+        type="number"
+        class="form-control"
       />
     </div>
     <div class="col-md-6">
       <label for="inputStart" class="form-label">Start</label>
-      <input type="date" class="form-control" id="inputStart" v-model="start" />
+      <input id="inputStart" v-model="start" type="date" class="form-control" />
     </div>
     <div class="col-md-6">
       <label for="inputEnd" class="form-label">Done</label>
-      <input type="date" class="form-control" id="inputEnd" v-model="end" />
+      <input id="inputEnd" v-model="end" type="date" class="form-control" />
     </div>
     <div class="col-12">
       <label for="inputDescription" class="form-label">Description</label>
       <textarea
-        rows="3"
-        class="form-control"
         id="inputDescription"
         v-model="time.description"
+        rows="3"
+        class="form-control"
       ></textarea>
     </div>
   </form>

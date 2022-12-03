@@ -1,27 +1,16 @@
-<script>
+<script setup>
+import { useRouter } from "vue-router";
 import useSWRV from "swrv";
 import Goal from "@/components/GoalsGoal.vue";
-export default {
-  components: {
-    Goal,
-  },
-  data() {
-    return {
-      endpoint: "/api/goals-tree/",
-      goals: null,
-    };
-  },
-  created() {
-    const { data } = useSWRV(this.endpoint);
-    this.goals = data;
-  },
-  methods: {
-    newGoal() {
-      this.$router.push({ name: "goal", params: { id: 0 } });
-    },
-  },
-};
+
+const router = useRouter();
+const endpoint = "/api/goals-tree/";
+const { data: goals } = useSWRV(endpoint);
+function newGoal() {
+  router.push({ name: "goal", params: { id: 0 } });
+}
 </script>
+
 <template>
   <div class="d-flex justify-content-between align-items-center my-3">
     <h1>Goals</h1>
@@ -31,11 +20,11 @@ export default {
       </button>
     </div>
   </div>
-  <ul class="list-group-flush ps-0" v-if="goals">
+  <ul v-if="goals" class="list-group-flush ps-0">
     <Goal
-      class="list-group-item my-2"
       v-for="goal in goals"
       :key="goal.id"
+      class="list-group-item my-2"
       :goal="goal"
     >
     </Goal>

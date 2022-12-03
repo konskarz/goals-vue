@@ -1,15 +1,13 @@
-<script>
-import Task from "@/components/ProgressWeekGoal.vue";
-export default {
-  name: "Week",
-  components: {
-    Task,
+<script setup>
+import Goal from "./ProgressWeekGoal.vue";
+defineProps({
+  week: {
+    type: Object,
+    required: true,
   },
-  props: {
-    week: Object,
-  },
-};
+});
 </script>
+
 <template>
   <li>
     <div class="d-flex w-100 justify-content-between">
@@ -17,7 +15,7 @@ export default {
     </div>
     <p class="mb-1">{{ week.quarter }} · {{ week.month }} · {{ week.day }}</p>
     <ul v-if="week.goals && week.goals.length">
-      <Task v-for="goal in week.goals" :goal="goal" :key="goal.id"></Task>
+      <Goal v-for="goal in week.goals" :key="goal.id" :goal="goal"></Goal>
     </ul>
   </li>
 </template>

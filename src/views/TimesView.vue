@@ -1,21 +1,14 @@
-<script>
+<script setup>
 import useSWRV from "swrv";
-export default {
-  data() {
-    return {
-      endpoint: "/api/times/",
-      times: null,
-    };
-  },
-  created() {
-    const { data } = useSWRV(this.endpoint);
-    this.times = data;
-  },
-};
+import { timeToDate } from "@/common/date.format.js";
+
+const endpoint = "/api/times/";
+const { data: times } = useSWRV(endpoint);
 </script>
+
 <template>
   <h1 class="my-3">Times</h1>
-  <table class="table" v-if="times">
+  <table v-if="times" class="table">
     <thead>
       <tr>
         <th scope="col">Time</th>
@@ -35,7 +28,7 @@ export default {
             </router-link>
           </span>
         </th>
-        <td>{{ time.start ? new Date(time.start).toDateString() : "" }}</td>
+        <td>{{ timeToDate(time.start) }}</td>
         <td>{{ time.goal }}</td>
       </tr>
     </tbody>
