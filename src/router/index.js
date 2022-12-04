@@ -30,6 +30,11 @@ const routes = [
         component: () => import("@/views/GoalView.vue"),
       },
       {
+        path: "/tasks/:id",
+        name: "task",
+        component: () => import("@/views/TaskView.vue"),
+      },
+      {
         path: "/auth",
         name: "auth",
         component: () => import("@/views/AuthView.vue"),
