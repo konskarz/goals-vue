@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import apiClient from "@/stores/api.client";
+import apiClient from "stores/api.client";
 
 const router = useRouter();
 const route = useRoute();
@@ -69,75 +69,64 @@ function goBack() {
 </script>
 
 <template>
-  <form class="row g-3" @submit.prevent="savePageItem">
-    <div class="col-12">
-      <div class="d-flex justify-content-between align-items-center my-3">
-        <h1>Time</h1>
-        <div class="d-flex ms-auto">
-          <button
-            v-if="pageItemId"
-            type="button"
-            :disabled="processingData"
-            class="btn btn-outline-dark ms-2"
-            @click="deletePageItem"
-          >
-            Delete
-          </button>
-          <button
-            type="submit"
-            :disabled="processingData"
-            class="btn btn-outline-dark ms-2"
-          >
-            Save
-          </button>
-          <button
-            type="button"
-            class="btn btn-outline-dark ms-2"
-            @click="goBack"
-          >
-            Cancel
-          </button>
+  <q-page padding>
+    <q-form @submit.prevent="savePageItem">
+      <q-toolbar>
+        <q-toolbar-title>Time</q-toolbar-title>
+        <q-btn
+          v-if="pageItemId"
+          type="button"
+          flat
+          round
+          icon="delete"
+          :disable="processingData"
+          @click="deletePageItem"
+        />
+        <q-btn type="submit" flat round icon="save" :disable="processingData" />
+        <q-btn type="button" flat round icon="clear" @click="goBack" />
+      </q-toolbar>
+      <div class="q-pa-md">
+        <div class="row q-col-gutter-lg">
+          <q-input
+            v-model="pageItem.goal"
+            label="Goal"
+            stack-label
+            readonly
+            class="col-12 col-sm-6"
+          />
+          <q-input
+            v-model="pageItem.duration"
+            type="number"
+            label="Duration"
+            stack-label
+            class="col-12 col-sm-6"
+            :autofocus="!pageItemId"
+            :rules="[(val) => !!val || 'Field is required']"
+            @keyup.esc="goBack"
+          />
+          <q-input
+            v-model="start"
+            type="date"
+            label="Start"
+            stack-label
+            class="col-12 col-sm-6"
+          />
+          <q-input
+            v-model="end"
+            type="date"
+            label="End"
+            stack-label
+            class="col-12 col-sm-6"
+          />
         </div>
+        <q-input
+          v-model="pageItem.description"
+          type="textarea"
+          label="Description"
+          stack-label
+          class="q-pt-md"
+        />
       </div>
-    </div>
-    <div class="col-md-6">
-      <label for="staticGoal" class="form-label">Goal</label>
-      <input
-        id="staticGoal"
-        type="text"
-        readonly
-        :value="pageItem.goal"
-        class="form-control-plaintext"
-      />
-    </div>
-    <div class="col-md-6">
-      <label for="inputDuration" class="form-label">Duration</label>
-      <input
-        id="inputDuration"
-        v-model="pageItem.duration"
-        type="number"
-        required
-        :autofocus="!pageItemId"
-        class="form-control"
-        @keyup.esc="goBack"
-      />
-    </div>
-    <div class="col-md-6">
-      <label for="inputStart" class="form-label">Start</label>
-      <input id="inputStart" v-model="start" type="date" class="form-control" />
-    </div>
-    <div class="col-md-6">
-      <label for="inputEnd" class="form-label">Done</label>
-      <input id="inputEnd" v-model="end" type="date" class="form-control" />
-    </div>
-    <div class="col-12">
-      <label for="inputDescription" class="form-label">Description</label>
-      <textarea
-        id="inputDescription"
-        v-model="pageItem.description"
-        rows="3"
-        class="form-control"
-      ></textarea>
-    </div>
-  </form>
+    </q-form>
+  </q-page>
 </template>

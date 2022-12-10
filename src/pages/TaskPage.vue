@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import apiClient from "@/stores/api.client";
+import apiClient from "stores/api.client";
 
 const router = useRouter();
 const route = useRoute();
@@ -68,92 +68,73 @@ function goBack() {
 </script>
 
 <template>
-  <form class="row g-3" @submit.prevent="savePageItem">
-    <div class="col-12">
-      <div class="d-flex justify-content-between align-items-center my-3">
-        <h1>Task</h1>
-        <div class="d-flex ms-auto">
-          <button
-            v-if="pageItemId"
-            type="button"
-            class="btn btn-outline-dark ms-2"
-            :disabled="processingData"
-            @click="deletePageItem"
-          >
-            Delete
-          </button>
-          <button
-            type="submit"
-            :disabled="processingData"
-            class="btn btn-outline-dark ms-2"
-          >
-            Save
-          </button>
-          <button
-            type="button"
-            class="btn btn-outline-dark ms-2"
-            @click="goBack"
-          >
-            Cancel
-          </button>
+  <q-page padding>
+    <q-form @submit.prevent="savePageItem">
+      <q-toolbar>
+        <q-toolbar-title>Task</q-toolbar-title>
+        <q-btn
+          v-if="pageItemId"
+          type="button"
+          flat
+          round
+          icon="delete"
+          :disable="processingData"
+          @click="deletePageItem"
+        />
+        <q-btn type="submit" flat round icon="save" :disable="processingData" />
+        <q-btn type="button" flat round icon="clear" @click="goBack" />
+      </q-toolbar>
+      <div class="q-pa-md">
+        <q-input
+          v-model="pageItem.name"
+          label="Name"
+          stack-label
+          :autofocus="!pageItemId"
+          :rules="[(val) => !!val || 'Field is required']"
+          @keyup.esc="goBack"
+        />
+        <div class="row q-col-gutter-lg">
+          <q-select
+            v-model="pageItem.goal"
+            :options="parentItems"
+            option-value="id"
+            option-label="name"
+            emit-value
+            map-options
+            label="Parent"
+            stack-label
+            class="col-12 col-sm-6"
+          />
+          <q-input
+            v-model="planned"
+            type="date"
+            label="Planned"
+            stack-label
+            class="col-12 col-sm-6"
+          />
+          <q-input
+            v-model="pageItem.planned_total_time"
+            type="number"
+            label="Duration"
+            stack-label
+            class="col-12 col-sm-6"
+          />
+          <q-input
+            v-model="done"
+            type="date"
+            label="Done"
+            stack-label
+            class="col-12 col-sm-6"
+          />
         </div>
+        <q-input
+          v-model="pageItem.description"
+          type="textarea"
+          label="Description"
+          stack-label
+          class="q-pt-md"
+        />
       </div>
-    </div>
-    <div class="col-12">
-      <label for="inputName" class="form-label">Name</label>
-      <input
-        id="inputName"
-        v-model="pageItem.name"
-        required
-        :autofocus="!pageItemId"
-        type="text"
-        class="form-control"
-        @keyup.esc="goBack"
-      />
-    </div>
-    <div class="col-md-6">
-      <label for="selectParent" class="form-label">Parent</label>
-      <select
-        id="selectParent"
-        v-model="pageItem.goal"
-        class="form-select"
-        aria-label="Select Parent"
-      >
-        <option v-for="item in parentItems" :key="item.id" :value="item.id">
-          {{ item.name }}
-        </option>
-      </select>
-    </div>
-    <div class="col-md-6">
-      <label for="inputPlanned" class="form-label">Planned</label>
-      <input
-        id="inputPlanned"
-        v-model="planned"
-        type="date"
-        class="form-control"
-      />
-    </div>
-    <div class="col-md-6">
-      <label for="inputDuration" class="form-label">Duration</label>
-      <input
-        id="inputDuration"
-        v-model="pageItem.planned_total_time"
-        type="number"
-        class="form-control"
-      />
-    </div>
-    <div class="col-md-6">
-      <label for="inputDone" class="form-label">Done</label>
-      <input id="inputDone" v-model="done" type="date" class="form-control" />
-    </div>
-    <div class="col-12">
-      <label for="inputDescription" class="form-label">Description</label>
-      <textarea
-        id="inputDescription"
-        v-model="pageItem.description"
-        rows="3"
-        class="form-control"
-      ></textarea>
-    </div>
-  </form>
+    </q-form>
+  </q-page>
 </template>

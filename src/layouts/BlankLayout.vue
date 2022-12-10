@@ -1,5 +1,7 @@
 <template>
-  <main class="w-100 vh-100 d-flex">
-    <router-view :key="$route.path"></router-view>
-  </main>
+  <q-layout view="hHh LpR fff">
+    <q-page-container>
+      <router-view :key="$route.path" />
+    </q-page-container>
+  </q-layout>
 </template>

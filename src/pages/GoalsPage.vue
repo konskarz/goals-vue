@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from "vue";
-import apiClient from "@/stores/api.client";
-import GoalsGoal from "@/components/GoalsGoal.vue";
+import apiClient from "stores/api.client";
+import GoalsGoal from "components/GoalsGoal.vue";
 
 // https://stackoverflow.com/questions/18017869/build-tree-array-from-flat-array-in-javascript/70554215#70554215
 const arrayToTree = (array, parent = null) => {
@@ -17,22 +17,18 @@ const goals = computed(() =>
 </script>
 
 <template>
-  <div class="d-flex justify-content-between align-items-center my-3">
-    <h1>Goals</h1>
-    <div class="d-flex ms-auto">
-      <router-link
+  <q-page padding>
+    <q-toolbar>
+      <q-toolbar-title>Goals</q-toolbar-title>
+      <q-btn
+        flat
+        round
+        icon="add_task"
         :to="{ name: 'goal', params: { id: 'create' } }"
-        class="btn btn-outline-dark ms-2"
-        >New Goal
-      </router-link>
-    </div>
-  </div>
-  <ul v-if="goals" class="list-group-flush ps-0">
-    <GoalsGoal
-      v-for="goal in goals"
-      :key="goal.id"
-      :goal="goal"
-      class="list-group-item my-2"
-    />
-  </ul>
+      />
+    </q-toolbar>
+    <q-list v-if="goals">
+      <GoalsGoal v-for="goal in goals" :key="goal.id" :goal="goal" />
+    </q-list>
+  </q-page>
 </template>

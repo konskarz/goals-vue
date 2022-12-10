@@ -9,13 +9,15 @@ defineProps({
 </script>
 
 <template>
-  <li>
-    <div class="d-flex w-100 justify-content-between">
-      <h2 class="mb-1">Week {{ week.week }}</h2>
-    </div>
-    <p class="mb-1">{{ week.quarter }} · {{ week.month }} · {{ week.day }}</p>
-    <ul v-if="week.goals && week.goals.length">
-      <Goal v-for="goal in week.goals" :key="goal.id" :goal="goal"></Goal>
-    </ul>
-  </li>
+  <q-item class="q-pt-md">
+    <q-item-section>
+      <q-item-label>Week {{ week.week }}</q-item-label>
+      <q-item-label caption>
+        {{ week.quarter }} · {{ week.month }} · {{ week.day }}
+      </q-item-label>
+      <q-list v-if="week.goals && week.goals.length" dense class="q-mt-sm">
+        <Goal v-for="goal in week.goals" :key="goal.id" :goal="goal"></Goal>
+      </q-list>
+    </q-item-section>
+  </q-item>
 </template>
