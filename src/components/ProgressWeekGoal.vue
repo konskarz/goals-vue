@@ -8,12 +8,9 @@ defineProps({
 </script>
 
 <template>
-  <li>
-    <router-link
-      class="nav-link"
-      :to="{ name: 'time', params: { id: 'create', goal: goal.id } }"
-    >
-      {{ goal.name }}
-    </router-link>
-  </li>
+  <q-item :to="{ name: 'time', params: { id: 'create', goal: goal.id } }" exact>
+    <q-item-section>
+      <q-item-label>{{ goal.name }}</q-item-label>
+    </q-item-section>
+  </q-item>
 </template>

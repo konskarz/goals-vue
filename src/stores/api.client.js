@@ -1,6 +1,7 @@
 import { csrftoken } from "./csrftoken.js";
 import axios from "axios";
 import useSWRV from "swrv";
+import { Notify } from "quasar";
 
 const api = axios.create({
   headers: {
@@ -9,14 +10,23 @@ const api = axios.create({
   },
 });
 const handleSuccess = (response) => {
-  // console.log(response.data);
+  Notify.create({
+    color: "positive",
+    message: response.statusText,
+  });
   return response.data;
 };
 const handleError = (error) => {
-  console.log(error.response.data.detail || error.message);
+  Notify.create({
+    color: "negative",
+    message: error.response.data.detail || error.message,
+  });
 };
 const fetcher = (url) => {
-  return api.get(url).then(handleSuccess).catch(handleError);
+  return api
+    .get(url)
+    .then((response) => response.data)
+    .catch(handleError);
 };
 
 export default {
