@@ -1,15 +1,12 @@
 <script setup>
 import { ref, computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import useSWRV from "swrv";
-import { apiService } from "@/common/api.service.js";
-import { dateInput, dateOutput } from "@/common/date.format.js";
+import apiClient from "@/stores/api.client";
 
-const route = useRoute();
 const router = useRouter();
-const tasksEndpoint = "/api/v2/tasks/";
-const goalsEndpoint = "/api/v2/goals/";
-const task = ref({
+const route = useRoute();
+const processingData = ref(false);
+const pageItem = ref({
   name: "",
   goal: null,
   planned: null,
@@ -17,78 +14,87 @@ const task = ref({
   done: null,
   description: "",
 });
-const goals = ref([]);
-const submited = ref(false);
-const taskId = computed(() => {
-  return parseInt(route.params.id);
-});
+
+const mainEndpoint = "/api/v2/tasks/";
+const { data: parentItems } = apiClient.read("/api/v2/goals/");
+const pageItemId = computed(() => parseInt(route.params.id));
+if (pageItemId.value) {
+  const { data: mainData } = apiClient.read(mainEndpoint + pageItemId.value);
+  const setPageItem = (newData) => {
+    pageItem.value = newData;
+  };
+  if (mainData.value) {
+    setPageItem(mainData.value);
+  } else {
+    watch(mainData, setPageItem);
+  }
+}
+
 const planned = computed({
   get() {
-    return dateInput(task.value.planned);
+    return pageItem.value.planned ? pageItem.value.planned.slice(0, 10) : null;
   },
   set(value) {
-    task.value.planned = value ? dateOutput(value) : null;
+    pageItem.value.planned = value ? new Date(value).toISOString() : null;
   },
 });
 const done = computed({
   get() {
-    return dateInput(task.value.done);
+    return pageItem.value.done ? pageItem.value.done.slice(0, 10) : null;
   },
   set(value) {
-    task.value.done = value ? dateOutput(value) : null;
+    pageItem.value.done = value ? new Date(value).toISOString() : null;
   },
 });
-function saveTask() {
-  if (!task.value.name || !task.value.goal) return;
-  submited.value = true;
-  if (taskId.value)
-    apiService(tasksEndpoint + taskId.value + "/", "PUT", task.value).then(() =>
-      goBack()
-    );
-  else apiService(tasksEndpoint, "POST", task.value).then(() => goBack());
+
+function deletePageItem() {
+  processingData.value = true;
+  apiClient.delete(mainEndpoint + pageItemId.value + "/").then(() => goBack());
 }
-function deleteTask() {
-  submited.value = true;
-  apiService(tasksEndpoint + taskId.value + "/", "DELETE").then(() => goBack());
+function savePageItem() {
+  if (!pageItem.value.name) return;
+  processingData.value = true;
+  if (pageItemId.value) {
+    apiClient
+      .update(mainEndpoint + pageItemId.value + "/", pageItem.value)
+      .then(() => goBack());
+  } else {
+    apiClient.create(mainEndpoint, pageItem.value).then(() => goBack());
+  }
 }
 function goBack() {
   router.back();
 }
-if (taskId.value) {
-  const { data: taskData } = useSWRV(tasksEndpoint + taskId.value);
-  watch(taskData, (newTask) => (task.value = newTask));
-}
-const { data: goalsData } = useSWRV(goalsEndpoint);
-watch(goalsData, (newGoals) => (goals.value = newGoals)); // .filter((goal) => goal.goal_type === "actionable");
 </script>
+
 <template>
-  <form class="row g-3" @submit.prevent="saveTask">
+  <form class="row g-3" @submit.prevent="savePageItem">
     <div class="col-12">
       <div class="d-flex justify-content-between align-items-center my-3">
         <h1>Task</h1>
         <div class="d-flex ms-auto">
           <button
+            v-if="pageItemId"
+            type="button"
             class="btn btn-outline-dark ms-2"
-            :disabled="submited"
-            @click="goBack"
-          >
-            Cancel
-          </button>
-          <button
-            v-if="taskId"
-            class="btn btn-outline-dark ms-2"
-            :disabled="submited"
-            @click="deleteTask"
+            :disabled="processingData"
+            @click="deletePageItem"
           >
             Delete
           </button>
           <button
-            class="btn btn-outline-dark ms-2"
             type="submit"
-            :disabled="submited"
-            @click="saveTask"
+            :disabled="processingData"
+            class="btn btn-outline-dark ms-2"
           >
             Save
+          </button>
+          <button
+            type="button"
+            class="btn btn-outline-dark ms-2"
+            @click="goBack"
+          >
+            Cancel
           </button>
         </div>
       </div>
@@ -97,22 +103,23 @@ watch(goalsData, (newGoals) => (goals.value = newGoals)); // .filter((goal) => g
       <label for="inputName" class="form-label">Name</label>
       <input
         id="inputName"
-        v-model="task.name"
+        v-model="pageItem.name"
         required
+        :autofocus="!pageItemId"
         type="text"
         class="form-control"
+        @keyup.esc="goBack"
       />
     </div>
     <div class="col-md-6">
       <label for="selectParent" class="form-label">Parent</label>
       <select
         id="selectParent"
-        v-model="task.goal"
-        required
+        v-model="pageItem.goal"
         class="form-select"
         aria-label="Select Parent"
       >
-        <option v-for="item in goals" :key="item.id" :value="item.id">
+        <option v-for="item in parentItems" :key="item.id" :value="item.id">
           {{ item.name }}
         </option>
       </select>
@@ -130,7 +137,7 @@ watch(goalsData, (newGoals) => (goals.value = newGoals)); // .filter((goal) => g
       <label for="inputDuration" class="form-label">Duration</label>
       <input
         id="inputDuration"
-        v-model="task.planned_total_time"
+        v-model="pageItem.planned_total_time"
         type="number"
         class="form-control"
       />
@@ -143,7 +150,7 @@ watch(goalsData, (newGoals) => (goals.value = newGoals)); // .filter((goal) => g
       <label for="inputDescription" class="form-label">Description</label>
       <textarea
         id="inputDescription"
-        v-model="task.description"
+        v-model="pageItem.description"
         rows="3"
         class="form-control"
       ></textarea>

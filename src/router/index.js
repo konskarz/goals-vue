@@ -7,37 +7,43 @@ const routes = [
       {
         path: "",
         name: "progress",
-        component: () => import("@/views/ProgressView.vue"),
+        component: () => import("@/pages/ProgressPage.vue"),
       },
       {
         path: "/times",
         name: "times",
-        component: () => import("@/views/TimesView.vue"),
+        component: () => import("@/pages/TimesPage.vue"),
       },
       {
         path: "/goals",
         name: "goals",
-        component: () => import("@/views/GoalsView.vue"),
+        component: () => import("@/pages/GoalsPage.vue"),
       },
       {
         path: "/times/:id/:goal",
         name: "time",
-        component: () => import("@/views/TimeView.vue"),
+        component: () => import("@/pages/TimePage.vue"),
       },
       {
         path: "/goals/:id",
         name: "goal",
-        component: () => import("@/views/GoalView.vue"),
+        component: () => import("@/pages/GoalPage.vue"),
       },
       {
         path: "/tasks/:id",
         name: "task",
-        component: () => import("@/views/TaskView.vue"),
+        component: () => import("@/pages/TaskPage.vue"),
       },
+    ],
+  },
+  {
+    path: "/",
+    component: () => import("@/layouts/BlankLayout.vue"),
+    children: [
       {
         path: "/auth",
         name: "auth",
-        component: () => import("@/views/AuthView.vue"),
+        component: () => import("@/pages/AuthPage.vue"),
       },
     ],
   },

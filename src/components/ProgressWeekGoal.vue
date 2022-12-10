@@ -11,7 +11,7 @@ defineProps({
   <li>
     <router-link
       class="nav-link"
-      :to="{ name: 'time', params: { id: 0, goal: goal.id } }"
+      :to="{ name: 'time', params: { id: 'create', goal: goal.id } }"
     >
       {{ goal.name }}
     </router-link>
