@@ -1,6 +1,6 @@
 <script setup>
 defineProps({
-  goal: {
+  task: {
     type: Object,
     required: true,
   },
@@ -8,9 +8,9 @@ defineProps({
 </script>
 
 <template>
-  <q-item :to="{ name: 'time', params: { id: 'create', goal: goal.id } }" exact>
+  <q-item :to="{ name: 'time', params: { id: 'create', task: task.id } }" exact>
     <q-item-section>
-      <q-item-label>{{ goal.name }}</q-item-label>
+      <q-item-label>{{ task.name }}</q-item-label>
     </q-item-section>
   </q-item>
 </template>

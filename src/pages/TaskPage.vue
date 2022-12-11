@@ -106,16 +106,16 @@ function goBack() {
             class="col-12 col-sm-6"
           />
           <q-input
-            v-model="planned"
-            type="date"
-            label="Planned"
+            v-model="pageItem.planned_total_time"
+            type="number"
+            label="Duration"
             stack-label
             class="col-12 col-sm-6"
           />
           <q-input
-            v-model="pageItem.planned_total_time"
-            type="number"
-            label="Duration"
+            v-model="planned"
+            type="date"
+            label="Planned"
             stack-label
             class="col-12 col-sm-6"
           />

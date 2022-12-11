@@ -1,5 +1,5 @@
 <script setup>
-import Goal from "./ProgressWeekGoal.vue";
+import Task from "./PlanWeekTask.vue";
 defineProps({
   week: {
     type: Object,
@@ -15,8 +15,8 @@ defineProps({
       <q-item-label caption>
         {{ week.quarter }} · {{ week.month }} · {{ week.day }}
       </q-item-label>
-      <q-list v-if="week.goals && week.goals.length" dense class="q-mt-sm">
-        <Goal v-for="goal in week.goals" :key="goal.id" :goal="goal"></Goal>
+      <q-list v-if="week.tasks && week.tasks.length" dense class="q-mt-sm">
+        <Task v-for="task in week.tasks" :key="task.id" :task="task"></Task>
       </q-list>
     </q-item-section>
   </q-item>

@@ -7,14 +7,14 @@ const router = useRouter();
 const route = useRoute();
 const processingData = ref(false);
 const pageItem = ref({
-  goal: null,
+  task: null,
   start: null,
   end: null,
   duration: null,
   description: "",
 });
 
-const mainEndpoint = "/api/times/";
+const mainEndpoint = "/api/v2/times/";
 const pageItemId = computed(() => parseInt(route.params.id));
 if (pageItemId.value) {
   const { data: mainData } = apiClient.read(mainEndpoint + pageItemId.value);
@@ -27,7 +27,7 @@ if (pageItemId.value) {
     watch(mainData, setPageItem);
   }
 } else {
-  pageItem.value.goal = parseInt(route.params.goal);
+  pageItem.value.task = parseInt(route.params.task);
   pageItem.value.start = new Date().toISOString();
 }
 
@@ -88,8 +88,8 @@ function goBack() {
       <div class="q-pa-md">
         <div class="row q-col-gutter-lg">
           <q-input
-            v-model="pageItem.goal"
-            label="Goal"
+            v-model="pageItem.task"
+            label="Task"
             stack-label
             readonly
             class="col-12 col-sm-6"
