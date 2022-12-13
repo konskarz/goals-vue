@@ -17,8 +17,13 @@ const { data: plan } = apiClient.read(mainEndpoint);
         :to="{ name: 'task', params: { id: 'create' } }"
       />
     </q-toolbar>
-    <q-list v-if="plan" separator>
-      <Week v-for="(week, key) in plan.key_results" :key="key" :week="week" />
-    </q-list>
+    <q-timeline v-if="plan" layout="dense" class="q-px-md">
+      <Week
+        v-for="(week, key, index) in plan.key_results"
+        :key="key"
+        :color="index ? 'primary' : 'orange'"
+        :week="week"
+      />
+    </q-timeline>
   </q-page>
 </template>
