@@ -57,7 +57,7 @@ function savePageItem() {
   processingData.value = true;
   if (pageItemId.value) {
     apiClient
-      .update(mainEndpoint + pageItemId.value + "/", pageItem.value)
+      .replace(mainEndpoint + pageItemId.value + "/", pageItem.value)
       .then(() => goBack());
   } else {
     apiClient.create(mainEndpoint, pageItem.value).then(() => goBack());
