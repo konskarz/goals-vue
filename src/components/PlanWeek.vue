@@ -6,6 +6,10 @@ const prop = defineProps({
     type: Object,
     required: true,
   },
+  slots: {
+    type: Array,
+    required: true,
+  },
 });
 const title = computed(() => "Week " + prop.week.week);
 const subtitle = computed(() =>
@@ -16,7 +20,12 @@ const subtitle = computed(() =>
 <template>
   <q-timeline-entry :title="title" :subtitle="subtitle">
     <q-list v-if="week.tasks && week.tasks.length" dense>
-      <Task v-for="task in week.tasks" :key="task.id" :task="task"></Task>
+      <Task
+        v-for="task in week.tasks"
+        :key="task.id"
+        :task="task"
+        :slots="slots"
+      ></Task>
     </q-list>
   </q-timeline-entry>
 </template>

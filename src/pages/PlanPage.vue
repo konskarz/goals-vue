@@ -23,6 +23,7 @@ const { data: plan } = apiClient.read(mainEndpoint);
         :key="key"
         :color="index ? 'primary' : 'orange'"
         :week="week"
+        :slots="plan.slots"
       />
     </q-timeline>
   </q-page>
