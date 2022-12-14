@@ -3,9 +3,6 @@ import apiClient from "stores/api.client";
 
 const mainEndpoint = "/api/v2/tasks/";
 const { data: tasks } = apiClient.read(mainEndpoint);
-function timeToDate(str) {
-  return str ? new Date(str).toDateString() : "";
-}
 </script>
 
 <template>

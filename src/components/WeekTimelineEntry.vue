@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from "vue";
-import Task from "./PlanWeekTask.vue";
-const prop = defineProps({
+import TaskListItem from "./TaskListItem.vue";
+const props = defineProps({
   week: {
     type: Object,
     required: true,
@@ -11,21 +11,21 @@ const prop = defineProps({
     required: true,
   },
 });
-const title = computed(() => "Week " + prop.week.week);
+const title = computed(() => "Week " + props.week.week);
 const subtitle = computed(() =>
-  [prop.week.quarter, prop.week.month, prop.week.day].join(" · ")
+  [props.week.quarter, props.week.month, props.week.day].join(" · ")
 );
 </script>
 
 <template>
   <q-timeline-entry :title="title" :subtitle="subtitle">
     <q-list v-if="week.tasks && week.tasks.length" dense>
-      <Task
+      <TaskListItem
         v-for="task in week.tasks"
         :key="task.id"
         :task="task"
         :slots="slots"
-      ></Task>
+      />
     </q-list>
   </q-timeline-entry>
 </template>

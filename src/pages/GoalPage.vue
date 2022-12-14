@@ -2,6 +2,8 @@
 import { ref, computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import apiClient from "stores/api.client";
+import ParentSelect from "components/ParentSelect.vue";
+import DateInput from "components/DateInput.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -14,39 +16,23 @@ const pageItem = ref({
 });
 
 const mainEndpoint = "/api/v2/goals/";
-const { data: mainData } = apiClient.read(mainEndpoint);
 const pageItemId = computed(() => parseInt(route.params.id));
-const parentItems = computed(() => {
-  const data = mainData.value;
-  if (data) data.unshift({ name: "None", id: null });
-  return data;
-});
 if (pageItemId.value) {
+  const { data: mainData } = apiClient.read(mainEndpoint + pageItemId.value);
   const setPageItem = (newData) => {
-    pageItem.value = newData.find((item) => item.id === pageItemId.value);
+    pageItem.value = newData;
   };
   if (mainData.value) {
     setPageItem(mainData.value);
-  } else {
-    watch(mainData, setPageItem);
   }
+  watch(mainData, setPageItem);
 }
-
-const planned = computed({
-  get() {
-    return pageItem.value.planned ? pageItem.value.planned.slice(0, 10) : null;
-  },
-  set(value) {
-    pageItem.value.planned = value ? new Date(value).toISOString() : null;
-  },
-});
 
 function deletePageItem() {
   processingData.value = true;
   apiClient.delete(mainEndpoint + pageItemId.value + "/").then(() => goBack());
 }
 function savePageItem() {
-  if (!pageItem.value.name) return;
   processingData.value = true;
   if (pageItemId.value) {
     apiClient
@@ -75,7 +61,13 @@ function goBack() {
           :disable="processingData"
           @click="deletePageItem"
         />
-        <q-btn type="submit" flat round icon="save" :disable="processingData" />
+        <q-btn
+          type="submit"
+          flat
+          round
+          icon="save"
+          :disable="!pageItem.name || processingData"
+        />
         <q-btn type="button" flat round icon="clear" @click="goBack" />
       </q-toolbar>
       <div class="q-pa-md">
@@ -88,22 +80,15 @@ function goBack() {
           @keyup.esc="goBack"
         />
         <div class="row q-col-gutter-lg">
-          <q-select
+          <ParentSelect
             v-model="pageItem.parent"
-            :options="parentItems"
-            option-value="id"
-            option-label="name"
-            emit-value
-            map-options
             label="Parent"
-            stack-label
+            :option-disable-id="pageItemId"
             class="col-12 col-sm-6"
           />
-          <q-input
-            v-model="planned"
-            type="date"
+          <DateInput
+            v-model="pageItem.planned"
             label="Planned"
-            stack-label
             class="col-12 col-sm-6"
           />
         </div>

@@ -2,13 +2,14 @@
 import { ref, computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import apiClient from "stores/api.client";
+import DateInput from "components/DateInput.vue";
 
 const router = useRouter();
 const route = useRoute();
 const processingData = ref(false);
 const pageItem = ref({
-  task: null,
-  start: null,
+  task: parseInt(route.params.task),
+  start: new Date().toISOString(),
   end: null,
   duration: null,
   description: "",
@@ -23,37 +24,15 @@ if (pageItemId.value) {
   };
   if (mainData.value) {
     setPageItem(mainData.value);
-  } else {
-    watch(mainData, setPageItem);
   }
-} else {
-  pageItem.value.task = parseInt(route.params.task);
-  pageItem.value.start = new Date().toISOString();
+  watch(mainData, setPageItem);
 }
-
-const start = computed({
-  get() {
-    return pageItem.value.start ? pageItem.value.start.slice(0, 10) : null;
-  },
-  set(value) {
-    pageItem.value.start = value ? new Date(value).toISOString() : null;
-  },
-});
-const end = computed({
-  get() {
-    return pageItem.value.end ? pageItem.value.end.slice(0, 10) : null;
-  },
-  set(value) {
-    pageItem.value.end = value ? new Date(value).toISOString() : null;
-  },
-});
 
 function deletePageItem() {
   processingData.value = true;
   apiClient.delete(mainEndpoint + pageItemId.value + "/").then(() => goBack());
 }
 function savePageItem() {
-  if (!pageItem.value.duration) return;
   processingData.value = true;
   if (pageItemId.value) {
     apiClient
@@ -82,7 +61,13 @@ function goBack() {
           :disable="processingData"
           @click="deletePageItem"
         />
-        <q-btn type="submit" flat round icon="save" :disable="processingData" />
+        <q-btn
+          type="submit"
+          flat
+          round
+          icon="save"
+          :disable="!pageItem.duration || processingData"
+        />
         <q-btn type="button" flat round icon="clear" @click="goBack" />
       </q-toolbar>
       <div class="q-pa-md">
@@ -104,18 +89,14 @@ function goBack() {
             :rules="[(val) => !!val || 'Field is required']"
             @keyup.esc="goBack"
           />
-          <q-input
-            v-model="start"
-            type="date"
+          <DateInput
+            v-model="pageItem.start"
             label="Start"
-            stack-label
             class="col-12 col-sm-6"
           />
-          <q-input
-            v-model="end"
-            type="date"
+          <DateInput
+            v-model="pageItem.end"
             label="End"
-            stack-label
             class="col-12 col-sm-6"
           />
         </div>

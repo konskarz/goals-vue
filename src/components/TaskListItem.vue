@@ -1,6 +1,6 @@
 <script setup>
 import apiClient from "stores/api.client";
-const prop = defineProps({
+const props = defineProps({
   task: {
     type: Object,
     required: true,
@@ -12,7 +12,7 @@ const prop = defineProps({
 });
 function createTime(value) {
   apiClient.create("/api/v2/times/", {
-    task: prop.task.id,
+    task: props.task.id,
     start: new Date().toISOString(),
     end: null,
     duration: value,
@@ -20,7 +20,7 @@ function createTime(value) {
   });
 }
 function setDone() {
-  apiClient.update("/api/v2/tasks/" + prop.task.id + "/", {
+  apiClient.update("/api/v2/tasks/" + props.task.id + "/", {
     done: new Date().toISOString(),
   });
 }
