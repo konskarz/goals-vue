@@ -1,111 +1,79 @@
 <script setup>
-import { ref, computed, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import apiClient from "stores/api.client";
+import { useRoute } from "vue-router";
+import { usePersistent } from "stores/persistent";
 import ParentSelect from "components/ParentSelect.vue";
 import DateInput from "components/DateInput.vue";
 
-const router = useRouter();
 const route = useRoute();
-const processingData = ref(false);
-const pageItem = ref({
-  name: "",
-  goal: null,
-  planned: null,
-  planned_total_time: null,
-  done: null,
-  description: "",
-});
-const mainEndpoint = "/api/v2/tasks/";
-const pageItemId = computed(() => parseInt(route.params.id));
-if (pageItemId.value) {
-  const { data: mainData } = apiClient.read(mainEndpoint + pageItemId.value);
-  const setPageItem = (newData) => {
-    pageItem.value = newData;
-  };
-  if (mainData.value) {
-    setPageItem(mainData.value);
-  }
-  watch(mainData, setPageItem);
-}
-
-function deletePageItem() {
-  processingData.value = true;
-  apiClient.delete(mainEndpoint + pageItemId.value + "/").then(() => goBack());
-}
-function savePageItem() {
-  processingData.value = true;
-  if (pageItemId.value) {
-    apiClient
-      .replace(mainEndpoint + pageItemId.value + "/", pageItem.value)
-      .then(() => goBack());
-  } else {
-    apiClient.create(mainEndpoint, pageItem.value).then(() => goBack());
-  }
-}
-function goBack() {
-  router.back();
-}
+const itemId = parseInt(route.params.id);
+const { item, persist, remove, save, back } = usePersistent(
+  {
+    name: "",
+    goal: null,
+    planned: null,
+    planned_total_time: null,
+    done: null,
+    description: "",
+  },
+  "/api/v2/tasks/",
+  itemId
+);
 </script>
 
 <template>
   <q-page padding>
-    <q-form @submit.prevent="savePageItem">
+    <q-form @submit.prevent="save">
       <q-toolbar>
         <q-toolbar-title>Task</q-toolbar-title>
         <q-btn
-          v-if="pageItemId"
+          v-if="itemId"
           type="button"
           flat
           round
           icon="delete"
-          :disable="processingData"
-          @click="deletePageItem"
+          :disable="persist"
+          @click="remove"
         />
         <q-btn
           type="submit"
           flat
           round
           icon="save"
-          :disable="!pageItem.name || processingData"
+          :disable="!item.name || persist"
         />
-        <q-btn type="button" flat round icon="clear" @click="goBack" />
+        <q-btn type="button" flat round icon="clear" @click="back" />
       </q-toolbar>
       <div class="q-pa-md">
         <q-input
-          v-model="pageItem.name"
+          v-model="item.name"
           label="Name"
           stack-label
-          :autofocus="!pageItemId"
+          :autofocus="!itemId"
           :rules="[(val) => !!val || 'Field is required']"
-          @keyup.esc="goBack"
+          @keyup.esc="back"
         />
         <div class="row q-col-gutter-lg">
           <ParentSelect
-            v-model="pageItem.goal"
+            v-model="item.goal"
             label="Goal"
             class="col-12 col-sm-6"
           />
           <q-input
-            v-model="pageItem.planned_total_time"
+            v-model="item.planned_total_time"
             type="number"
             label="Duration"
             stack-label
             class="col-12 col-sm-6"
           />
           <DateInput
-            v-model="pageItem.planned"
+            v-model="item.planned"
             label="Planned"
             class="col-12 col-sm-6"
           />
-          <DateInput
-            v-model="pageItem.done"
-            label="Done"
-            class="col-12 col-sm-6"
-          />
+          <DateInput v-model="item.done" label="Done" class="col-12 col-sm-6" />
         </div>
         <q-input
-          v-model="pageItem.description"
+          v-model="item.description"
           type="textarea"
           label="Description"
           stack-label

@@ -2,7 +2,7 @@
 import apiClient from "stores/api.client";
 import WeekTimelineEntry from "src/components/WeekTimelineEntry.vue";
 
-const mainEndpoint = "/api/v2/plan";
+const mainEndpoint = "/api/v2/plan/";
 const { data: plan } = apiClient.read(mainEndpoint);
 </script>
 
