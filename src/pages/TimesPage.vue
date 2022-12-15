@@ -1,8 +1,7 @@
 <script setup>
 import apiClient from "stores/api.client";
 
-const mainEndpoint = "/api/v2/times/";
-const { data: times } = apiClient.read(mainEndpoint);
+const { data: times } = apiClient.read("/api/v2/times/");
 function timeToDate(str) {
   return str ? new Date(str).toDateString() : "";
 }

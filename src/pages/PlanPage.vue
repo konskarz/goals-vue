@@ -1,9 +1,8 @@
 <script setup>
 import apiClient from "stores/api.client";
-import WeekTimelineEntry from "src/components/WeekTimelineEntry.vue";
+import WeekTimelineEntry from "components/WeekTimelineEntry.vue";
 
-const mainEndpoint = "/api/v2/plan/";
-const { data: plan } = apiClient.read(mainEndpoint);
+const { data: plan } = apiClient.read("/api/v2/plan/");
 </script>
 
 <template>

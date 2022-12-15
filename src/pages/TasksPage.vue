@@ -1,8 +1,7 @@
 <script setup>
 import apiClient from "stores/api.client";
 
-const mainEndpoint = "/api/v2/tasks/";
-const { data: tasks } = apiClient.read(mainEndpoint);
+const { data: tasks } = apiClient.read("/api/v2/tasks/");
 </script>
 
 <template>

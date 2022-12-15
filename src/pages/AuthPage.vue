@@ -4,15 +4,14 @@ import { useRouter } from "vue-router";
 import apiClient from "stores/api.client";
 
 const router = useRouter();
-const pageItem = ref({
+const user = ref({
   email: "",
   password: "",
 });
-const mainEndpoint = "/api-auth/login";
 function signIn() {
-  apiClient.create(mainEndpoint, pageItem.value).then((data) => {
+  apiClient.create("/api-auth/login", user.value).then((data) => {
     localStorage.setItem("authToken", data.auth_token);
-    localStorage.setItem("username", pageItem.value.email);
+    localStorage.setItem("username", user.value.email);
     router.push("/");
   });
 }
@@ -24,12 +23,12 @@ function signIn() {
       <q-card-section>
         <h1 class="text-h6">Please sign in</h1>
         <q-form @submit.prevent="signIn">
-          <q-input v-model="pageItem.email" type="email" label="Email">
+          <q-input v-model="user.email" type="email" label="Email">
             <template #prepend>
               <q-icon name="mail_outline" />
             </template>
           </q-input>
-          <q-input v-model="pageItem.password" type="password" label="Password">
+          <q-input v-model="user.password" type="password" label="Password">
             <template #prepend>
               <q-icon name="lock_outline" />
             </template>
