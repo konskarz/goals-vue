@@ -9,6 +9,7 @@ const props = defineProps({
   },
 });
 const emit = defineEmits(["mutate"]);
+const expanded = ref(false);
 const label = computed(() =>
   [
     props.task.name,
@@ -16,7 +17,6 @@ const label = computed(() =>
     "Progress: " + props.task.total_time_min + " min.",
   ].join(" · ")
 );
-const expanded = ref(false);
 </script>
 
 <template>

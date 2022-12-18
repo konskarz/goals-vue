@@ -2,6 +2,17 @@
 import { ref, computed } from "vue";
 import apiClient from "stores/api.client";
 
+const props = defineProps({
+  id: {
+    type: Number,
+    required: true,
+  },
+  done: {
+    type: Boolean,
+    required: true,
+  },
+});
+const emit = defineEmits(["mutate", "submited"]);
 const options = [
   { value: "15", label: "15 min" },
   { value: "30", label: "30 min" },
@@ -16,17 +27,6 @@ const options = [
   { value: "360", label: "6 h" },
   { value: "480", label: "8 h" },
 ];
-const props = defineProps({
-  id: {
-    type: Number,
-    required: true,
-  },
-  done: {
-    type: Boolean,
-    required: true,
-  },
-});
-const emit = defineEmits(["mutate", "submited"]);
 const time = ref(null);
 const done = ref(props.done);
 const disable = computed(() => {
@@ -42,9 +42,7 @@ function submit() {
         duration: time.value,
         description: "",
       })
-      .then(() => {
-        emit("mutate");
-      });
+      .then(() => emit("mutate"));
     time.value = null;
   }
   if (done.value !== props.done) {
@@ -52,9 +50,7 @@ function submit() {
       .update("/api/v2/tasks/" + props.id + "/", {
         done: done.value ? new Date().toISOString() : null,
       })
-      .then(() => {
-        emit("mutate");
-      });
+      .then(() => emit("mutate"));
     done.value === props.done;
   }
   emit("submited");
@@ -62,22 +58,22 @@ function submit() {
 </script>
 
 <template>
-  <form class="q-pa-sm row q-col-gutter-sm" @submit.prevent="submit">
-    <div class="col-12 col-sm-10 row q-col-gutter-sm">
+  <form class="q-pa-sm row" @submit.prevent="submit">
+    <div class="col-12 col-sm-10 row">
       <q-radio
-        v-for="(slot, index) in options"
+        v-for="(option, index) in options"
         :key="index"
         v-model="time"
-        :val="slot.value"
-        :label="slot.label"
-        class="col-6 col-sm-3 col-lg-2 col-xl-1"
+        :val="option.value"
+        :label="option.label"
+        class="col-6 col-sm-3 col-lg-2 col-xl"
       />
     </div>
-    <div class="col-12 col-sm-2 row q-col-gutter-sm">
-      <div class="col-6 col-sm-12 col-xl-6">
+    <div class="col-12 col-sm-2 row">
+      <div class="col-6 col-sm-12 col-xl">
         <q-checkbox v-model="done" label="Done" />
       </div>
-      <div class="col-6 col-sm-12 col-xl-6">
+      <div class="col-6 col-sm-12 col-xl">
         <q-btn type="submit" label="Submit" no-caps :disable="disable" />
       </div>
     </div>

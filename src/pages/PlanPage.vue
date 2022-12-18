@@ -5,12 +5,9 @@ import WeekTimelineEntry from "components/WeekTimelineEntry.vue";
 
 const { data: plan, mutate } = apiClient.read("/api/v2/plan/");
 const current = computed(() => {
-  if (plan.value && plan.value.key_results) {
-    const results = plan.value.key_results;
-    return Object.keys(results).find((key) => {
-      return !results[key].in_the_past;
-    });
-  } else return null;
+  return Object.keys(plan.value.key_results).find((key) => {
+    return !plan.value.key_results[key].in_the_past;
+  });
 });
 </script>
 
@@ -29,7 +26,7 @@ const current = computed(() => {
       <WeekTimelineEntry
         v-for="(week, key) in plan.key_results"
         :key="key"
-        :color="key === current ? 'orange' : 'primary'"
+        :color="key === current ? 'orange' : ''"
         :week="week"
         @mutate="mutate"
       />
