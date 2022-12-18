@@ -1,21 +1,25 @@
 <script setup>
 import { ref } from "vue";
-
 const menuList = [
   {
     to: "/",
     icon: "pending_actions",
-    label: "Progress",
-  },
-  {
-    to: "/times",
-    icon: "schedule",
-    label: "Times",
+    label: "Plan",
   },
   {
     to: "/goals",
     icon: "task_alt",
     label: "Goals",
+  },
+  {
+    to: "/tasks",
+    icon: "done",
+    label: "Tasks",
+  },
+  {
+    to: "/times",
+    icon: "schedule",
+    label: "Times",
   },
 ];
 const leftDrawerOpen = ref(false);

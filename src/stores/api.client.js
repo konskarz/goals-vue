@@ -36,8 +36,11 @@ export default {
   read(url) {
     return useSWRV(url, fetcher);
   },
-  update(url, data) {
+  replace(url, data) {
     return api.put(url, data).then(handleSuccess).catch(handleError);
+  },
+  update(url, data) {
+    return api.patch(url, data).then(handleSuccess).catch(handleError);
   },
   delete(url) {
     return api.delete(url).then(handleSuccess).catch(handleError);

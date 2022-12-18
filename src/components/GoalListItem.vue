@@ -1,12 +1,12 @@
 <script setup>
-const prop = defineProps({
+const props = defineProps({
   goal: {
     type: Object,
     required: true,
   },
 });
-const route = { name: "goal", params: { id: prop.goal.id } };
-const hasChildren = prop.goal.children && prop.goal.children.length;
+const route = { name: "goal", params: { id: props.goal.id } };
+const hasChildren = props.goal.children && props.goal.children.length;
 </script>
 
 <template>
@@ -21,7 +21,13 @@ const hasChildren = prop.goal.children && prop.goal.children.length;
     expanded-icon="keyboard_arrow_down"
     expand-separator
   >
-    <GoalsGoal v-for="child in goal.children" :key="child.id" :goal="child" />
+    <q-list>
+      <GoalListItem
+        v-for="child in goal.children"
+        :key="child.id"
+        :goal="child"
+      />
+    </q-list>
   </q-expansion-item>
   <q-item v-else :to="route">
     <q-item-section>

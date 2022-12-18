@@ -1,114 +1,70 @@
 <script setup>
-import { ref, computed, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import apiClient from "stores/api.client";
+import { useRoute } from "vue-router";
+import { usePersistent } from "stores/persistent";
+import ParentSelect from "components/ParentSelect.vue";
+import DateInput from "components/DateInput.vue";
 
-const router = useRouter();
 const route = useRoute();
-const processingData = ref(false);
-const pageItem = ref({
-  name: "",
-  parent: null,
-  planned: null,
-  description: "",
-});
-
-const mainEndpoint = "/api/v2/goals/";
-const { data: mainData } = apiClient.read(mainEndpoint);
-const pageItemId = computed(() => parseInt(route.params.id));
-const parentItems = computed(() => {
-  const data = mainData.value;
-  if (data) data.unshift({ name: "None", id: null });
-  return data;
-});
-if (pageItemId.value) {
-  const setPageItem = (newData) => {
-    pageItem.value = newData.find((item) => item.id === pageItemId.value);
-  };
-  if (mainData.value) {
-    setPageItem(mainData.value);
-  } else {
-    watch(mainData, setPageItem);
-  }
-}
-
-const planned = computed({
-  get() {
-    return pageItem.value.planned ? pageItem.value.planned.slice(0, 10) : null;
+const itemId = parseInt(route.params.id);
+const { item, persist, remove, save, back } = usePersistent(
+  {
+    name: "",
+    parent: null,
+    planned: null,
+    description: "",
   },
-  set(value) {
-    pageItem.value.planned = value ? new Date(value).toISOString() : null;
-  },
-});
-
-function deletePageItem() {
-  processingData.value = true;
-  apiClient.delete(mainEndpoint + pageItemId.value + "/").then(() => goBack());
-}
-function savePageItem() {
-  if (!pageItem.value.name) return;
-  processingData.value = true;
-  if (pageItemId.value) {
-    apiClient
-      .update(mainEndpoint + pageItemId.value + "/", pageItem.value)
-      .then(() => goBack());
-  } else {
-    apiClient.create(mainEndpoint, pageItem.value).then(() => goBack());
-  }
-}
-function goBack() {
-  router.back();
-}
+  "/api/v2/goals/",
+  itemId
+);
 </script>
 
 <template>
   <q-page padding>
-    <q-form @submit.prevent="savePageItem">
+    <q-form @submit.prevent="save">
       <q-toolbar>
         <q-toolbar-title>Goal</q-toolbar-title>
         <q-btn
-          v-if="pageItemId"
+          v-if="itemId"
           type="button"
           flat
           round
           icon="delete"
-          :disable="processingData"
-          @click="deletePageItem"
+          :disable="persist"
+          @click="remove"
         />
-        <q-btn type="submit" flat round icon="save" :disable="processingData" />
-        <q-btn type="button" flat round icon="clear" @click="goBack" />
+        <q-btn
+          type="submit"
+          flat
+          round
+          icon="save"
+          :disable="!item.name || persist"
+        />
+        <q-btn type="button" flat round icon="clear" @click="back" />
       </q-toolbar>
       <div class="q-pa-md">
         <q-input
-          v-model="pageItem.name"
+          v-model="item.name"
           label="Name"
           stack-label
-          :autofocus="!pageItemId"
+          :autofocus="!itemId"
           :rules="[(val) => !!val || 'Field is required']"
-          @keyup.esc="goBack"
+          @keyup.esc="back"
         />
         <div class="row q-col-gutter-lg">
-          <q-select
-            v-model="pageItem.parent"
-            :options="parentItems"
-            option-value="id"
-            option-label="name"
-            emit-value
-            map-options
+          <ParentSelect
+            v-model="item.parent"
             label="Parent"
-            stack-label
+            :option-disable-id="itemId"
             class="col-12 col-sm-6"
           />
-          <q-input
-            v-model="planned"
-            type="date"
+          <DateInput
+            v-model="item.planned"
             label="Planned"
-            stack-label
             class="col-12 col-sm-6"
           />
         </div>
         <q-input
-          v-model="pageItem.description"
+          v-model="item.description"
           type="textarea"
           label="Description"
           stack-label
