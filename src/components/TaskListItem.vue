@@ -1,52 +1,37 @@
 <script setup>
-import apiClient from "stores/api.client";
+import { ref } from "vue";
+import TimeDoneForm from "./TimeDoneForm.vue";
 
 const props = defineProps({
   task: {
     type: Object,
     required: true,
   },
-  slots: {
-    type: Array,
-    required: true,
-  },
 });
-function createTime(value) {
-  apiClient.create("/api/v2/times/", {
-    task: props.task.id,
-    start: new Date().toISOString(),
-    end: null,
-    duration: value,
-    description: "",
-  });
-}
-function setDone() {
-  apiClient.update("/api/v2/tasks/" + props.task.id + "/", {
-    done: new Date().toISOString(),
-  });
-}
+const emit = defineEmits(["mutate"]);
+const label = [
+  props.task.name,
+  "Planned: " + props.task.planned_total_time + " min.",
+  "Progress: " + props.task.total_time_min + " min.",
+].join(" · ");
+const expanded = ref(false);
 </script>
 
 <template>
-  <q-item clickable>
-    <q-item-section>
-      <q-item-label>{{ task.name }}</q-item-label>
-      <q-menu auto-close>
-        <template v-for="(group, groupIdx) in slots" :key="groupIdx">
-          <q-btn-group spread flat>
-            <q-btn
-              v-for="(slot, slotIdx) in group"
-              :key="slotIdx"
-              :label="'+ ' + slot[1]"
-              no-caps
-              class="text-no-wrap"
-              @click="createTime(slot[0])"
-            />
-          </q-btn-group>
-        </template>
-        <q-separator />
-        <q-btn flat no-caps label="Done" class="full-width" @click="setDone" />
-      </q-menu>
-    </q-item-section>
-  </q-item>
+  <q-expansion-item
+    v-model="expanded"
+    :to="{ name: 'task', params: { id: task.id } }"
+    :label="label"
+    :header-class="task.done ? 'text-grey' : ''"
+    group="tasks"
+    expand-icon-toggle
+  >
+    <TimeDoneForm
+      :id="task.id"
+      :done="Boolean(task.done)"
+      @mutate="$emit('mutate')"
+      @submited="expanded = false"
+    />
+    <q-separator class="q-ma-sm" />
+  </q-expansion-item>
 </template>

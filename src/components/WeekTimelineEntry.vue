@@ -6,11 +6,8 @@ const props = defineProps({
     type: Object,
     required: true,
   },
-  slots: {
-    type: Array,
-    required: true,
-  },
 });
+const emit = defineEmits(["mutate"]);
 const title = "Week " + props.week.week;
 const subtitle = [props.week.quarter, props.week.month, props.week.day].join(
   " · "
@@ -24,7 +21,7 @@ const subtitle = [props.week.quarter, props.week.month, props.week.day].join(
         v-for="task in week.tasks"
         :key="task.id"
         :task="task"
-        :slots="slots"
+        @mutate="$emit('mutate')"
       />
     </q-list>
   </q-timeline-entry>
