@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import TimeDoneForm from "./TimeDoneForm.vue";
 
 const props = defineProps({
@@ -9,11 +9,13 @@ const props = defineProps({
   },
 });
 const emit = defineEmits(["mutate"]);
-const label = [
-  props.task.name,
-  "Planned: " + props.task.planned_total_time + " min.",
-  "Progress: " + props.task.total_time_min + " min.",
-].join(" · ");
+const label = computed(() =>
+  [
+    props.task.name,
+    "Planned: " + props.task.planned_total_time + " min.",
+    "Progress: " + props.task.total_time_min + " min.",
+  ].join(" · ")
+);
 const expanded = ref(false);
 </script>
 
