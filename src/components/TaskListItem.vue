@@ -1,7 +1,7 @@
 <script setup>
-import { ref, computed } from "vue";
-import TimeDoneForm from "./TimeDoneForm.vue";
+import { ref, computed, defineAsyncComponent } from "vue";
 
+const TimeDoneForm = defineAsyncComponent(() => import("./TimeDoneForm.vue"));
 const props = defineProps({
   task: {
     type: Object,
@@ -29,6 +29,7 @@ const label = computed(() =>
     expand-icon-toggle
   >
     <TimeDoneForm
+      v-if="expanded"
       :id="task.id"
       :done="Boolean(task.done)"
       @mutate="$emit('mutate')"
