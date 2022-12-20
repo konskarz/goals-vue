@@ -8,14 +8,16 @@ const props = defineProps({
   },
 });
 const emit = defineEmits(["mutate"]);
-const title = "Week " + props.week.week;
-const subtitle = [props.week.quarter, props.week.month, props.week.day].join(
-  " · "
-);
+const subtitle = [
+  "Week " + props.week.week,
+  props.week.quarter,
+  // props.week.month,
+  props.week.day,
+].join(" · ");
 </script>
 
 <template>
-  <q-timeline-entry :title="title" :subtitle="subtitle">
+  <q-timeline-entry :subtitle="subtitle">
     <q-list v-if="week.tasks && week.tasks.length">
       <TaskListItem
         v-for="task in week.tasks"

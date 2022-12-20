@@ -2,7 +2,7 @@
 import apiClient from "stores/api.client";
 
 const { data: tasks } = apiClient.read("/api/v2/tasks/");
-function timeToDate(str) {
+function isoToDate(str) {
   return str ? new Date(str).toDateString() : "";
 }
 </script>
@@ -24,7 +24,7 @@ function timeToDate(str) {
         :to="{ name: 'task', params: { id: task.id } }"
       >
         <q-item-section class="col-5">
-          {{ timeToDate(task.planned) }}
+          {{ isoToDate(task.planned) }}
         </q-item-section>
         <q-item-section>{{ task.name }}</q-item-section>
         <q-item-section side>{{ task.goal }}</q-item-section>

@@ -1,4 +1,6 @@
 <script setup>
+import { computed } from "vue";
+
 const props = defineProps({
   goal: {
     type: Object,
@@ -7,6 +9,9 @@ const props = defineProps({
 });
 const route = { name: "goal", params: { id: props.goal.id } };
 const hasChildren = props.goal.children && props.goal.children.length;
+const caption = computed(() =>
+  props.goal.planned ? new Date(props.goal.planned).toDateString() : null
+);
 </script>
 
 <template>
@@ -14,6 +19,7 @@ const hasChildren = props.goal.children && props.goal.children.length;
     v-if="hasChildren"
     :to="route"
     :label="goal.name"
+    :caption="caption"
     :content-inset-level="0.5"
     default-opened
     expand-icon-toggle

@@ -10,12 +10,10 @@ const props = defineProps({
 });
 const emit = defineEmits(["mutate"]);
 const expanded = ref(false);
-const label = computed(() =>
-  [
-    props.task.name,
-    "Planned: " + props.task.planned_total_time + " min.",
-    "Progress: " + props.task.total_time_min + " min.",
-  ].join(" · ")
+const caption = computed(() =>
+  [props.task.total_time_min, "of", props.task.planned_total_time, "min."].join(
+    " "
+  )
 );
 </script>
 
@@ -23,7 +21,8 @@ const label = computed(() =>
   <q-expansion-item
     v-model="expanded"
     :to="{ name: 'task', params: { id: task.id } }"
-    :label="label"
+    :label="props.task.name"
+    :caption="caption"
     :header-class="task.done ? 'text-grey' : ''"
     group="tasks"
     expand-icon-toggle
