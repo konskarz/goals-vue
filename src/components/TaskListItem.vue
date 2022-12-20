@@ -1,7 +1,7 @@
 <script setup>
-import { ref, computed, defineAsyncComponent } from "vue";
+import { ref, computed } from "vue";
+import TimeDoneForm from "./TimeDoneForm.vue";
 
-const TimeDoneForm = defineAsyncComponent(() => import("./TimeDoneForm.vue"));
 const props = defineProps({
   task: {
     type: Object,
@@ -21,14 +21,13 @@ const caption = computed(() =>
   <q-expansion-item
     v-model="expanded"
     :to="{ name: 'task', params: { id: task.id } }"
-    :label="props.task.name"
+    :label="task.name"
     :caption="caption"
     :header-class="task.done ? 'text-grey' : ''"
     group="tasks"
     expand-icon-toggle
   >
     <TimeDoneForm
-      v-if="expanded"
       :id="task.id"
       :done="Boolean(task.done)"
       @mutate="$emit('mutate')"
