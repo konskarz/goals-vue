@@ -1,10 +1,8 @@
 <script setup>
+import { date } from "quasar";
 import apiClient from "stores/api.client";
 
 const { data: tasks } = apiClient.read("/api/v2/tasks/");
-function isoToDate(str) {
-  return str ? new Date(str).toDateString() : "";
-}
 </script>
 
 <template>
@@ -24,7 +22,7 @@ function isoToDate(str) {
         :to="{ name: 'task', params: { id: task.id } }"
       >
         <q-item-section class="col-5">
-          {{ isoToDate(task.planned) }}
+          {{ date.formatDate(task.planned, "ddd MMM DD YYYY") }}
         </q-item-section>
         <q-item-section>{{ task.name }}</q-item-section>
         <q-item-section side>{{ task.goal }}</q-item-section>

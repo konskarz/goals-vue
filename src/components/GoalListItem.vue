@@ -1,4 +1,5 @@
 <script setup>
+import { date } from "quasar";
 import { computed } from "vue";
 
 const props = defineProps({
@@ -10,7 +11,9 @@ const props = defineProps({
 const route = { name: "goal", params: { id: props.goal.id } };
 const hasChildren = props.goal.children && props.goal.children.length;
 const caption = computed(() =>
-  props.goal.planned ? new Date(props.goal.planned).toDateString() : null
+  props.goal.planned
+    ? date.formatDate(props.goal.planned, "ddd MMM DD YYYY")
+    : null
 );
 </script>
 
