@@ -1,7 +1,12 @@
 import axios from "axios";
 import useSWRV from "swrv";
+import LocalStorageCache from "swrv/dist/cache/adapters/localStorage";
 import { Notify } from "quasar";
 
+const SWRV_CONFIG = {
+  cache: new LocalStorageCache("swrv"),
+  shouldRetryOnError: false,
+};
 const AUTH_TOKEN_KEY = "Access-Token";
 const AUTH_TOKEN_VALUE = localStorage.getItem(AUTH_TOKEN_KEY);
 const api = axios.create({
@@ -37,7 +42,7 @@ export default {
     return api.post(url, data).then(handleSuccess).catch(handleError);
   },
   read(url) {
-    return useSWRV(url, fetcher);
+    return useSWRV(url, fetcher, SWRV_CONFIG);
   },
   replace(url, data) {
     return api.put(url, data).then(handleSuccess).catch(handleError);

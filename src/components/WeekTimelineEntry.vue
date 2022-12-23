@@ -1,4 +1,5 @@
 <script setup>
+import "drag-drop-touch";
 import { date } from "quasar";
 import apiClient from "stores/api.client";
 import TaskListItem from "./TaskListItem.vue";
@@ -56,6 +57,7 @@ function onDrop(e, week) {
         draggable="true"
         @mutate="$emit('mutate')"
         @dragstart="onDragStart($event, task)"
+        @touchmove:native="(e) => {}"
       />
     </q-list>
   </q-timeline-entry>
