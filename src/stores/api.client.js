@@ -1,14 +1,17 @@
-import { csrftoken } from "./csrftoken.js";
 import axios from "axios";
 import useSWRV from "swrv";
 import { Notify } from "quasar";
 
+const AUTH_TOKEN_KEY = "Access-Token";
+const AUTH_TOKEN_VALUE = localStorage.getItem(AUTH_TOKEN_KEY);
 const api = axios.create({
   headers: {
     "content-type": "application/json",
-    "X-CSRFTOKEN": csrftoken,
   },
 });
+if (AUTH_TOKEN_VALUE) {
+  api.defaults.headers.common["Authorization"] = `Token ${AUTH_TOKEN_VALUE}`;
+}
 const handleSuccess = (response) => {
   Notify.create({
     color: "positive",
@@ -44,5 +47,13 @@ export default {
   },
   delete(url) {
     return api.delete(url).then(handleSuccess).catch(handleError);
+  },
+  setAuthToken(token) {
+    api.defaults.headers.common["Authorization"] = `Token ${token}`;
+    localStorage.setItem(AUTH_TOKEN_KEY, token);
+  },
+  clearAuthToken() {
+    api.defaults.headers.common["Authorization"] = "";
+    localStorage.removeItem(AUTH_TOKEN_KEY);
   },
 };

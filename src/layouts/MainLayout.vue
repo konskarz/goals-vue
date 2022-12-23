@@ -1,5 +1,10 @@
 <script setup>
 import { ref } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import apiClient from "stores/api.client";
+
+const router = useRouter();
+const route = useRoute();
 const menuList = [
   {
     to: "/",
@@ -26,6 +31,10 @@ const leftDrawerOpen = ref(false);
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
+function logout() {
+  apiClient.clearAuthToken();
+  router.push({ name: "login", query: { next: route.fullPath } });
+}
 </script>
 
 <template>
@@ -34,7 +43,7 @@ function toggleLeftDrawer() {
       <q-toolbar>
         <q-btn flat round icon="menu" @click="toggleLeftDrawer" />
         <q-toolbar-title>LifeTrackerBuddy</q-toolbar-title>
-        <q-btn flat round icon="logout" href="/api-auth/logout" />
+        <q-btn flat round icon="logout" @click="logout" />
       </q-toolbar>
     </q-header>
     <q-drawer v-model="leftDrawerOpen" show-if-above>
