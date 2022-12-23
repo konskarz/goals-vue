@@ -26,11 +26,11 @@ function onDragStart(e, task) {
   e.dataTransfer.setData("text", JSON.stringify(data));
   e.dataTransfer.dropEffect = "move";
 }
-function onDrop(e) {
+function onDrop(e, week) {
   e.preventDefault();
   const data = JSON.parse(e.dataTransfer.getData("text"));
-  if (data.week === props.week.week) return;
-  const newDate = date.addToDate(new Date(props.week.day), {
+  if (data.week === week.week) return;
+  const newDate = date.addToDate(new Date(week.day), {
     days: data.day - 1,
   });
   apiClient
@@ -42,13 +42,13 @@ function onDrop(e) {
 </script>
 
 <template>
-  <q-timeline-entry :subtitle="subtitle">
-    <q-list
-      class="drop-target"
-      @dragover.prevent
-      @dragenter.prevent
-      @drop="onDrop"
-    >
+  <q-timeline-entry
+    :subtitle="subtitle"
+    @dragover.prevent
+    @dragenter.prevent
+    @drop="onDrop($event, week)"
+  >
+    <q-list>
       <TaskListItem
         v-for="task in week.tasks"
         :key="task.id"
@@ -60,9 +60,3 @@ function onDrop(e) {
     </q-list>
   </q-timeline-entry>
 </template>
-
-<style scoped>
-.drop-target {
-  min-height: 25px;
-}
-</style>
