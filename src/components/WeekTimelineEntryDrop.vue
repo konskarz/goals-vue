@@ -28,7 +28,6 @@ function onDragStart(e, task) {
   e.dataTransfer.dropEffect = "move";
 }
 function onDrop(e, week) {
-  e.preventDefault();
   const data = JSON.parse(e.dataTransfer.getData("text"));
   if (data.week === week.week) return;
   const newDate = date.addToDate(new Date(week.day), {
@@ -47,7 +46,7 @@ function onDrop(e, week) {
     :subtitle="subtitle"
     @dragover.prevent
     @dragenter.prevent
-    @drop="onDrop($event, week)"
+    @drop.prevent="onDrop($event, week)"
   >
     <q-list v-if="week.tasks && week.tasks.length">
       <TaskListItem

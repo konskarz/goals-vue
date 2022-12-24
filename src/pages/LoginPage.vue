@@ -11,12 +11,24 @@ const user = ref({
 });
 const disabled = ref(false);
 function login() {
-  disabled.value = true;
   if (!user.value.username || !user.value.password) return;
+  disabled.value = true;
   apiClient.create("/api-token-auth/", user.value).then((data) => {
-    apiClient.setAuthToken(data.token);
-    router.push(route.query.next);
+    if (data && data.token) {
+      apiClient.setAuthToken(data.token);
+      router.push(route.query.next);
+    } else {
+      disabled.value = false;
+    }
   });
+}
+function required(val) {
+  return !!val || "Field is required";
+}
+function isEmail(val) {
+  const emailPattern =
+    /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
+  return emailPattern.test(val) || "Please enter a valid email";
 }
 </script>
 
@@ -32,12 +44,22 @@ function login() {
       </q-toolbar>
       <q-form @submit.prevent="login">
         <q-card-section>
-          <q-input v-model="user.username" type="email" label="Email">
+          <q-input
+            v-model="user.username"
+            type="email"
+            label="Email"
+            :rules="[required, isEmail]"
+          >
             <template #prepend>
               <q-icon name="mail_outline" />
             </template>
           </q-input>
-          <q-input v-model="user.password" type="password" label="Password">
+          <q-input
+            v-model="user.password"
+            type="password"
+            label="Password"
+            :rules="[required]"
+          >
             <template #prepend>
               <q-icon name="lock_outline" />
             </template>
