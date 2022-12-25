@@ -1,3 +1,4 @@
+import { csrftoken } from "./csrftoken.js";
 import axios from "axios";
 import useSWRV from "swrv";
 import LocalStorageCache from "swrv/dist/cache/adapters/localStorage";
@@ -12,6 +13,7 @@ const AUTH_TOKEN_VALUE = localStorage.getItem(AUTH_TOKEN_KEY);
 const api = axios.create({
   headers: {
     "content-type": "application/json",
+    "X-CSRFTOKEN": csrftoken,
   },
 });
 if (AUTH_TOKEN_VALUE) {
