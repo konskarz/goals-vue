@@ -11,26 +11,27 @@ const props = defineProps({
   },
 });
 const emit = defineEmits(["mutate"]);
+const monday = new Date(props.week.day);
+const formated = date.formatDate(monday, "w-YYYY-Q-MMM D").split("-");
 const subtitle = [
-  "Week " + props.week.week,
-  props.week.quarter,
-  // props.week.month,
-  props.week.day,
+  "Week " + formated[0],
+  formated[1] + " / Q" + formated[2],
+  formated[3],
 ].join(" · ");
 
 function onDragStart(e, task) {
   const data = {
     id: task.id,
     day: date.getDayOfWeek(task.planned),
-    week: props.week.week,
+    week: formated[0],
   };
   e.dataTransfer.setData("text", JSON.stringify(data));
   e.dataTransfer.dropEffect = "move";
 }
-function onDrop(e, week) {
+function onDrop(e) {
   const data = JSON.parse(e.dataTransfer.getData("text"));
-  if (data.week === week.week) return;
-  const newDate = date.addToDate(new Date(week.day), {
+  if (data.week === formated[0]) return;
+  const newDate = date.addToDate(monday, {
     days: data.day - 1,
   });
   apiClient
@@ -46,7 +47,7 @@ function onDrop(e, week) {
     :subtitle="subtitle"
     @dragover.prevent
     @dragenter.prevent
-    @drop.prevent="onDrop($event, week)"
+    @drop.prevent="onDrop($event)"
   >
     <q-list v-if="week.tasks && week.tasks.length">
       <TaskListItem
