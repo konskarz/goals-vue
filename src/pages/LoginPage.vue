@@ -38,7 +38,7 @@ function isEmail(val) {
     <q-card v-else style="width: 20rem">
       <q-toolbar class="bg-primary text-white">
         <q-avatar size="xs" square>
-          <img src="/assets/favicon.ico" />
+          <img src="icons/favicon.ico" />
         </q-avatar>
         <q-toolbar-title>LifeTrackerBuddy</q-toolbar-title>
       </q-toolbar>
