@@ -1,8 +1,8 @@
 {
-  "name": "quasar-project",
+  "name": "goals-vue",
   "version": "0.0.1",
-  "description": "A Quasar Project",
-  "productName": "Quasar App",
+  "description": "Vue-Frontend for an application to manage OKRs",
+  "productName": "LifeTrackerBuddy",
   "author": "Konstantin Karzanov <k.karzanov@gmail.com>",
   "private": true,
   "scripts": {
