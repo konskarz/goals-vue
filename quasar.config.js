@@ -68,6 +68,7 @@ module.exports = configure(function (/* ctx */) {
       // ignorePublicFolder: true,
       // minify: false,
       // polyfillModulePreload: true,
+      // distDir
       distDir: "../goals_project/goals/static/vue",
 
       // extendViteConf (viteConf) {},
@@ -91,9 +92,7 @@ module.exports = configure(function (/* ctx */) {
     devServer: {
       // https: true
       open: false, // opens browser window automatically
-      proxy: {
-        "/api": "http://localhost:8000",
-      },
+      proxy: { "/api": "http://localhost:8000" },
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
