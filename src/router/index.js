@@ -33,6 +33,16 @@ export default route(function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> publicPath
     history: createHistory(process.env.VUE_ROUTER_BASE),
   });
+  Router.beforeEach((to, from, next) => {
+    if (
+      to.matched.some((record) => record.meta.requiresAuth) &&
+      !localStorage.getItem("Access-Token")
+    ) {
+      next({ name: "login", query: { next: to.fullPath } });
+    } else {
+      next();
+    }
+  });
 
   return Router;
 });

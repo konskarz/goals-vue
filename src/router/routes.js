@@ -2,11 +2,12 @@ const routes = [
   {
     path: "/",
     component: () => import("layouts/MainLayout.vue"),
+    meta: { requiresAuth: true },
     children: [
       {
         path: "",
         name: "plan",
-        component: () => import("pages/PlanPage.vue"),
+        component: () => import("pages/IndexPage.vue"),
       },
       {
         path: "/goals",
@@ -41,17 +42,10 @@ const routes = [
     ],
   },
   {
-    path: "/",
-    component: () => import("layouts/BlankLayout.vue"),
-    children: [
-      {
-        path: "/auth",
-        name: "auth",
-        component: () => import("pages/AuthPage.vue"),
-      },
-    ],
+    path: "/login",
+    name: "login",
+    component: () => import("pages/LoginPage.vue"),
   },
-
   // Always leave this as last one,
   // but you can also remove it
   {
