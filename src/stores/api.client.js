@@ -11,6 +11,7 @@ const SWRV_CONFIG = {
 const AUTH_TOKEN_KEY = "Access-Token";
 const AUTH_TOKEN_VALUE = localStorage.getItem(AUTH_TOKEN_KEY);
 const api = axios.create({
+  baseURL: "https://lifetrackerbuddy.com",
   headers: {
     "content-type": "application/json",
     "X-CSRFTOKEN": csrftoken,

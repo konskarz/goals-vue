@@ -44,14 +44,9 @@ function isEmail(val) {
       </q-toolbar>
       <q-form @submit.prevent="login">
         <q-card-section>
-          <q-input
-            v-model="user.username"
-            type="email"
-            label="Email"
-            :rules="[required, isEmail]"
-          >
+          <q-input v-model="user.username" label="Username" :rules="[required]">
             <template #prepend>
-              <q-icon name="mail_outline" />
+              <q-icon name="person_outline" />
             </template>
           </q-input>
           <q-input
