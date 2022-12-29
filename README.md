@@ -2,9 +2,11 @@
 
 Vue-Frontend for [lifetrackerbuddy.com](https://lifetrackerbuddy.com/), - an application to manage [OKRs](https://wikipedia.org/wiki/Objectives_and_Key_Results)
 
-## Customize configuration
+## Download for Production
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+```
+git clone -b gh-pages https://github.com/konskarz/goals-vue.git vue
+```
 
 ## Project Setup
 
@@ -29,6 +31,10 @@ npm run build
 ```sh
 npm run lint
 ```
+
+## Customize configuration
+
+See [Vite Configuration Reference](https://vitejs.dev/config/).
 
 ## Views
 

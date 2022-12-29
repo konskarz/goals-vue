@@ -18,14 +18,16 @@ const caption = computed(() =>
 </script>
 
 <template>
+  <!-- 
+    :to="{ name: 'task', params: { id: task.id } }"
+    expand-icon-toggle
+   -->
   <q-expansion-item
     v-model="expanded"
-    :to="{ name: 'task', params: { id: task.id } }"
     :label="task.name"
     :caption="caption"
     :header-class="task.done ? 'text-grey' : ''"
     group="tasks"
-    expand-icon-toggle
   >
     <TimeDoneForm
       :id="task.id"
