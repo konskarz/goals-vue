@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import apiClient from "stores/api.client";
+import apiClient from "../stores/api.client";
 
 const router = useRouter();
 const route = useRoute();

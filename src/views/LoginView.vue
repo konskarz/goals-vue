@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import apiClient from "stores/api.client";
+import apiClient from "../stores/api.client";
 
 const router = useRouter();
 const route = useRoute();
@@ -25,11 +25,11 @@ function login() {
 function required(val) {
   return !!val || "Field is required";
 }
-function isEmail(val) {
+/* function isEmail(val) {
   const emailPattern =
     /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
   return emailPattern.test(val) || "Please enter a valid email";
-}
+} */
 </script>
 
 <template>

@@ -7,7 +7,7 @@ const props = defineProps({
     required: true,
   },
 });
-const emit = defineEmits(["mutate"]);
+// const emit = defineEmits(["mutate"]);
 const subtitle = [
   "Week " + props.week.week,
   props.week.quarter,

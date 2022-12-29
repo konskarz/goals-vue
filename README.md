@@ -2,6 +2,10 @@
 
 Vue-Frontend for [lifetrackerbuddy.com](https://lifetrackerbuddy.com/), - an application to manage [OKRs](https://wikipedia.org/wiki/Objectives_and_Key_Results)
 
+## Customize configuration
+
+See [Vite Configuration Reference](https://vitejs.dev/config/).
+
 ## Project Setup
 
 ```sh
@@ -20,9 +24,11 @@ npm run dev
 npm run build
 ```
 
-### Customize the configuration
+### Lint with [ESLint](https://eslint.org/)
 
-See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
+```sh
+npm run lint
+```
 
 ## Views
 

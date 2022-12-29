@@ -1,6 +1,6 @@
 <script setup>
 import { date } from "quasar";
-import apiClient from "stores/api.client";
+import apiClient from "../stores/api.client";
 
 const { data: tasks } = apiClient.read("/api/v2/tasks/");
 </script>

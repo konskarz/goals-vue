@@ -8,7 +8,7 @@ const props = defineProps({
     required: true,
   },
 });
-const emit = defineEmits(["mutate"]);
+// const emit = defineEmits(["mutate"]);
 const expanded = ref(false);
 const caption = computed(() =>
   [props.task.total_time_min, "of", props.task.planned_total_time, "min."].join(

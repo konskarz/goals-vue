@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from "vue";
-import apiClient from "stores/api.client";
-import WeekTimelineEntry from "components/WeekTimelineEntryDrop.vue";
+import apiClient from "../stores/api.client";
+import WeekTimelineEntry from "../components/WeekTimelineEntryDrop.vue";
 
 const { data: plan, mutate } = apiClient.read("/api/v2/plan/");
 const current = computed(() => {

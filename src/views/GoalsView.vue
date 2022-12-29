@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from "vue";
-import apiClient from "stores/api.client";
-import GoalListItem from "components/GoalListItem.vue";
+import apiClient from "../stores/api.client";
+import GoalListItem from "../components/GoalListItem.vue";
 
 // https://stackoverflow.com/questions/18017869/build-tree-array-from-flat-array-in-javascript/70554215#70554215
 const arrayToTree = (array, parent = null) =>
