@@ -17,6 +17,7 @@ export default defineConfig({
       // useCredentials: true,
       registerType: "autoUpdate",
       devOptions: { enabled: true },
+      injectRegister: "inline",
       workbox: { globPatterns: ["**/*.{js,css,html,ico,png,svg}"] },
       includeAssets: [
         "icons/favicon.ico",
