@@ -18,7 +18,7 @@ export default defineConfig({
       registerType: "autoUpdate",
       devOptions: { enabled: true },
       injectRegister: "inline",
-      workbox: { globPatterns: ["**/*.{js,css,html,ico,png,svg}"] },
+      workbox: { globPatterns: ["**/*.{js,css,html,ico,png,svg,woff,woff2}"] },
       includeAssets: [
         "icons/favicon.ico",
         "icons/apple-icon-120x120.png",
