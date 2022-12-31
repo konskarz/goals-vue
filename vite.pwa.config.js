@@ -5,12 +5,7 @@ export default {
   injectRegister: "inline",
   workbox: {
     globPatterns: ["**/*.{js,css,html,ico,png,svg,woff,woff2}"],
-    navigateFallbackDenylist: [
-      /^\/admin/,
-      /^\/api/,
-      /^\/openapi/,
-      /^\/swagger-ui/,
-    ],
+    navigateFallbackAllowlist: [/^index.html$/],
   },
   includeAssets: [
     "icons/favicon.ico",
