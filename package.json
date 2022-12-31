@@ -1,7 +1,7 @@
 {
   "name": "goals-vue",
   "version": "0.0.0",
-  "description": "Vue-Frontend for an application to manage OKRs",
+  "description": "Vue-Frontend for LifeTrackerBuddy.com, - an advanced task manager with main focus on the goal, goal achievement and its current progress",
   "productName": "LifeTrackerBuddy",
   "author": "Konstantin Karzanov <k.karzanov@gmail.com>",
   "private": true,
