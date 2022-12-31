@@ -1,6 +1,12 @@
 # goals-vue
 
-Vue-Frontend for [lifetrackerbuddy.com](https://lifetrackerbuddy.com/), - an application to manage [OKRs](https://wikipedia.org/wiki/Objectives_and_Key_Results)
+Vue-Frontend for [lifetrackerbuddy.com](https://lifetrackerbuddy.com/), - an advanced task manager with main focus on the goal, goal achievement and its current progress
+
+## Download for Production
+
+```
+git clone -b gh-pages https://github.com/konskarz/goals-vue.git vue
+```
 
 ## Project Setup
 
@@ -20,9 +26,15 @@ npm run dev
 npm run build
 ```
 
-### Customize the configuration
+### Lint with [ESLint](https://eslint.org/)
 
-See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
+```sh
+npm run lint
+```
+
+## Customize configuration
+
+See [Vite Configuration Reference](https://vitejs.dev/config/).
 
 ## Views
 

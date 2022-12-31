@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from "vue";
-import apiClient from "stores/api.client";
+import apiClient from "../stores/api.client";
 
 const props = defineProps({
   id: {

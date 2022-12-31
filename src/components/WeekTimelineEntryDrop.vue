@@ -1,7 +1,7 @@
 <script setup>
 import "drag-drop-touch";
 import { date } from "quasar";
-import apiClient from "stores/api.client";
+import apiClient from "../stores/api.client";
 import TaskListItem from "./TaskListItem.vue";
 
 const props = defineProps({

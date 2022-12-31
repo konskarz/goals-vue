@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from "vue";
-import apiClient from "stores/api.client";
-import WeekTimelineEntry from "components/WeekTimelineEntryDrop.vue";
+import apiClient from "../stores/api.client";
+import WeekTimelineEntry from "../components/WeekTimelineEntryDrop.vue";
 
 const { data: plan, mutate } = apiClient.read("/api/v2/plan/");
 const current = computed(() => {
@@ -23,13 +23,14 @@ const current = computed(() => {
       />
     </q-toolbar>
     <q-timeline v-if="plan" layout="dense" class="q-px-md">
-      <WeekTimelineEntry
-        v-for="(week, key) in plan.key_results"
-        :key="key"
-        :color="key === current ? 'orange' : ''"
-        :week="week"
-        @mutate="mutate"
-      />
+      <template v-for="(week, key) in plan.key_results" :key="key">
+        <WeekTimelineEntry
+          v-if="week.day"
+          :color="key === current ? 'orange' : ''"
+          :week="week"
+          @mutate="mutate"
+        />
+      </template>
     </q-timeline>
   </q-page>
 </template>

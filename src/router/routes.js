@@ -1,56 +1,56 @@
 const routes = [
   {
     path: "/",
-    component: () => import("layouts/MainLayout.vue"),
+    component: () => import("../views/MainLayout.vue"),
     meta: { requiresAuth: true },
     children: [
       {
         path: "",
         name: "plan",
-        component: () => import("pages/IndexPage.vue"),
+        component: () => import("../views/HomeView.vue"),
       },
       {
         path: "/goals",
         name: "goals",
-        component: () => import("pages/GoalsPage.vue"),
+        component: () => import("../views/GoalsView.vue"),
       },
       {
         path: "/tasks",
         name: "tasks",
-        component: () => import("pages/TasksPage.vue"),
+        component: () => import("../views/TasksView.vue"),
       },
       {
         path: "/times",
         name: "times",
-        component: () => import("pages/TimesPage.vue"),
+        component: () => import("../views/TimesView.vue"),
       },
       {
         path: "/tasks/:id",
         name: "task",
-        component: () => import("pages/TaskPage.vue"),
+        component: () => import("../views/TaskView.vue"),
       },
       {
         path: "/goals/:id",
         name: "goal",
-        component: () => import("pages/GoalPage.vue"),
+        component: () => import("../views/GoalView.vue"),
       },
       {
         path: "/times/:id/:task",
         name: "time",
-        component: () => import("pages/TimePage.vue"),
+        component: () => import("../views/TimeView.vue"),
       },
     ],
   },
   {
     path: "/login",
     name: "login",
-    component: () => import("pages/LoginPage.vue"),
+    component: () => import("../views/LoginView.vue"),
   },
   // Always leave this as last one,
   // but you can also remove it
   {
     path: "/:catchAll(.*)*",
-    component: () => import("pages/ErrorNotFound.vue"),
+    component: () => import("../views/ErrorNotFound.vue"),
   },
 ];
 
