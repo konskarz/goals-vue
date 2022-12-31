@@ -3,7 +3,15 @@ export default {
   // devOptions: { enabled: true },
   registerType: "autoUpdate",
   injectRegister: "inline",
-  workbox: { globPatterns: ["**/*.{js,css,html,ico,png,svg,woff,woff2}"] },
+  workbox: {
+    globPatterns: ["**/*.{js,css,html,ico,png,svg,woff,woff2}"],
+    navigateFallbackDenylist: [
+      /^\/admin/,
+      /^\/api/,
+      /^\/openapi/,
+      /^\/swagger-ui/,
+    ],
+  },
   includeAssets: [
     "icons/favicon.ico",
     "icons/apple-icon-120x120.png",
