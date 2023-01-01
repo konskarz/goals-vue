@@ -2,7 +2,7 @@
 
 Vue-Frontend for [lifetrackerbuddy.com](https://lifetrackerbuddy.com/), - an advanced task manager with main focus on the goal, goal achievement and its current progress
 
-## Download for Production
+## Production
 
 ```
 git clone -b gh-pages https://github.com/konskarz/goals-vue.git vue
@@ -38,17 +38,16 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 
 ## Views
 
-### Index
+### Plan
 
 Description: [Timeline](https://quasar.dev/vue-components/timeline) of Weeks/Tasks with 'New [Task](#task)' Button\
 API: `/api/v2/plan/` - GET
 
-- `day`: Date of Monday - format: `Week 50 · 2022 / Q4 · Dez. 12`
-- `tasks`: List of Tasks\
-  [Expansion Item](https://quasar.dev/vue-components/expansion-item): expand icon toggle form with predefined time values for 'New [Time](#time)' and set to done option in [Task](#task)
-  - `name`: Name - Link to [Task](#task)
-  - `planned_total_time`: Planned
-  - `total_time_min`: Progress
+- subtitle: `day` - format: `Week 50 · 2022 / Q4 · Dez. 12`
+- [List](https://quasar.dev/vue-components/list-and-list-items): `tasks`
+  [Expansion Item](https://quasar.dev/vue-components/expansion-item): on click toggle form with predefined time values for 'New [Time](#time)' and set to done option in [Task](#task)
+  - label: `name`
+  - caption: `total_time_min` of `planned_total_time`
 
 ### Goals
 
@@ -56,14 +55,15 @@ Description: Tree of Goals with 'New [Goal](#goal)' Button\
 API: `/api/v2/goals/` - GET, POST\
 [List Item](https://quasar.dev/vue-components/list-and-list-items)/[Expansion Item](https://quasar.dev/vue-components/expansion-item) - Link to [Goal](#goal)
 
-- `name`: Name
-- `planned`: Planned
+- label: `name`
+- caption: `planned`
 
 ### Tasks
 
 Description: List of Tasks\
 API: `/api/v2/tasks/` - GET, POST\
-[List Item](https://quasar.dev/vue-components/list-and-list-items) - Link to [Task](#task)
+[List Item](https://quasar.dev/vue-components/list-and-list-items) - Link to [Task](#task)\
+[Sections](https://quasar.dev/vue-components/list-and-list-items#qitemsection-api):
 
 - `planned`: Planned
 - `name`: Name
@@ -73,7 +73,8 @@ API: `/api/v2/tasks/` - GET, POST\
 
 Description: List of Times\
 API: `/api/v2/times/` - GET, POST\
-[List Item](https://quasar.dev/vue-components/list-and-list-items) - Link to [Time](#time)
+[List Item](https://quasar.dev/vue-components/list-and-list-items) - Link to [Time](#time)\
+[Sections](https://quasar.dev/vue-components/list-and-list-items#qitemsection-api):
 
 - `start`: Start
 - `duration`: Duration
@@ -104,7 +105,7 @@ API: `/api/v2/tasks/:id/` - GET, PUT, PATCH, DELETE
 ### Time
 
 Description: Form with Delete/Save/Cancel Buttons\
-API: `/api/times/:id/` - GET, PUT, PATCH, DELETE
+API: `/api/v2/times/:id/` - GET, PUT, PATCH, DELETE
 
 - `task`: Task - readonly
 - `duration`: Duration
