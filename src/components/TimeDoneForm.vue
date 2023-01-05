@@ -74,7 +74,13 @@ function submit() {
         <q-checkbox v-model="done" label="Done" />
       </div>
       <div class="col-6 col-sm-12 col-xl">
-        <q-btn type="submit" label="Submit" no-caps :disable="disable" />
+        <q-btn
+          type="submit"
+          label="Submit"
+          no-caps
+          :disable="disable"
+          @click="submit"
+        />
       </div>
     </div>
   </form>
