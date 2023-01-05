@@ -54,9 +54,7 @@ function onDrop(e) {
         v-for="task in week.tasks"
         :key="task.id"
         :task="task"
-        draggable="true"
-        @dragstart="onDragStart($event, task)"
-        @touchmove:native="(e) => {}"
+        @dragstart="onDragStart"
         @mutate="$emit('mutate')"
       />
     </q-list>

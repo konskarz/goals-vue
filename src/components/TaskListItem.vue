@@ -8,7 +8,7 @@ const props = defineProps({
     required: true,
   },
 });
-// const emit = defineEmits(["mutate"]);
+// const emit = defineEmits(["mutate", "dragstart"]);
 const expanded = ref(false);
 const caption = computed(() =>
   [props.task.total_time_min, "of", props.task.planned_total_time, "min."].join(
@@ -24,11 +24,24 @@ const caption = computed(() =>
    -->
   <q-expansion-item
     v-model="expanded"
-    :label="task.name"
-    :caption="caption"
     :header-class="task.done ? 'text-grey' : ''"
     group="tasks"
   >
+    <template #header>
+      <q-item-section
+        thumbnail
+        style="cursor: grab"
+        draggable="true"
+        @dragstart="$emit('dragstart', $event, task)"
+        @touchmove:native="(e) => {}"
+      >
+        <q-icon name="drag_indicator" />
+      </q-item-section>
+      <q-item-section>
+        <q-item-label>{{ task.name }}</q-item-label>
+        <q-item-label caption>{{ caption }}</q-item-label>
+      </q-item-section>
+    </template>
     <TimeDoneForm
       :id="task.id"
       :done="Boolean(task.done)"
