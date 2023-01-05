@@ -8,7 +8,7 @@ const props = defineProps({
     required: true,
   },
 });
-// const emit = defineEmits(["mutate", "dragstart"]);
+// const emit = defineEmits(["mutate", "ondragstart"]);
 const expanded = ref(false);
 const caption = computed(() =>
   [props.task.total_time_min, "of", props.task.planned_total_time, "min."].join(
@@ -32,7 +32,7 @@ const caption = computed(() =>
         thumbnail
         style="cursor: grab"
         draggable="true"
-        @dragstart="$emit('dragstart', $event, task)"
+        @dragstart="$emit('ondragstart', $event, task)"
         @touchmove:native="(e) => {}"
       >
         <q-icon name="drag_indicator" />

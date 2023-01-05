@@ -54,7 +54,7 @@ function onDrop(e) {
         v-for="task in week.tasks"
         :key="task.id"
         :task="task"
-        @dragstart="onDragStart"
+        @ondragstart="onDragStart"
         @mutate="$emit('mutate')"
       />
     </q-list>
