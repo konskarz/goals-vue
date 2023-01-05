@@ -1,0 +1,1 @@
+import{j as u,h as o}from"./index-f9c8494a.js";const s={name:String};function m(n={}){return(t,e,r)=>{t[e](o("input",{class:"hidden"+(r||""),...n.value}))}}function c(n){return u(()=>n.name||n.for)}export{m as a,c as b,s as u};
