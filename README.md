@@ -8,16 +8,6 @@ Vue-Frontend for [lifetrackerbuddy.com](https://lifetrackerbuddy.com/), - an adv
 git clone -b gh-pages https://github.com/konskarz/goals-vue.git vue
 ```
 
-## API Test
-
-index.html
-
-```
-<script>
-  goals = { api: "http://127.0.0.1:8000/api/v2" };
-</script>
-```
-
 ## Project Setup
 
 ```sh

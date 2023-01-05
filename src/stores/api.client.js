@@ -4,14 +4,15 @@ import useSWRV from "swrv";
 import LocalStorageCache from "swrv/dist/cache/adapters/localStorage";
 import { Notify } from "quasar";
 
-const BASE_URL =
-  window && window.goals && window.goals.api
-    ? window.goals.api
-    : "https://lifetrackerbuddy.com/api/v2";
 const SWRV_CONFIG = {
   cache: new LocalStorageCache("swrv"),
   shouldRetryOnError: false,
 };
+const HOST = window.location.host;
+const BASE_URL =
+  HOST === "lifetrackerbuddy.com" || HOST === "127.0.0.1:8000"
+    ? "/api/v2"
+    : "https://lifetrackerbuddy.com/api/v2";
 const AUTH_TOKEN_KEY = "Access-Token";
 const AUTH_TOKEN_VALUE = localStorage.getItem(AUTH_TOKEN_KEY);
 const api = axios.create({
