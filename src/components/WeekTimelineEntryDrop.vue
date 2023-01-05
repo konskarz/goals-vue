@@ -35,7 +35,7 @@ function onDrop(e) {
     days: data.day - 1,
   });
   apiClient
-    .update("/api/v2/tasks/" + data.id + "/", {
+    .update("/tasks/" + data.id + "/", {
       planned: newDate.toISOString(),
     })
     .then(() => emit("mutate"));

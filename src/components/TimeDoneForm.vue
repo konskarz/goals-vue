@@ -35,7 +35,7 @@ const disable = computed(() => {
 function submit() {
   if (time.value) {
     apiClient
-      .create("/api/v2/times/", {
+      .create("/times/", {
         task: props.id,
         start: new Date().toISOString(),
         end: null,
@@ -47,7 +47,7 @@ function submit() {
   }
   if (done.value !== props.done) {
     apiClient
-      .update("/api/v2/tasks/" + props.id + "/", {
+      .update("/tasks/" + props.id + "/", {
         done: done.value ? new Date().toISOString() : null,
       })
       .then(() => emit("mutate"));

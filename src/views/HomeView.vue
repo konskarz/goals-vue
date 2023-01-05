@@ -3,7 +3,7 @@ import { computed } from "vue";
 import apiClient from "../stores/api.client";
 import WeekTimelineEntry from "../components/WeekTimelineEntryDrop.vue";
 
-const { data: plan, mutate } = apiClient.read("/api/v2/plan/");
+const { data: plan, mutate } = apiClient.read("/plan/");
 const current = computed(() => {
   return Object.keys(plan.value.key_results).find((key) => {
     return !plan.value.key_results[key].in_the_past;

@@ -8,6 +8,16 @@ Vue-Frontend for [lifetrackerbuddy.com](https://lifetrackerbuddy.com/), - an adv
 git clone -b gh-pages https://github.com/konskarz/goals-vue.git vue
 ```
 
+## API Test
+
+index.html
+
+```
+<script>
+  goals = { api: "http://127.0.0.1:8000/api/v2" };
+</script>
+```
+
 ## Project Setup
 
 ```sh
@@ -116,6 +126,6 @@ API: `/api/v2/times/:id/` - GET, PUT, PATCH, DELETE
 ### Login
 
 Description: Form with Login Button\
-API: `/api-token-auth/` - POST: `{"username": "email@example.com", "password": "xyz123"}`\
+API: `/api/v2/auth/` - POST: `{"username": "email@example.com", "password": "xyz123"}`\
 Response: `{"token": "4991c0de3492b6e5b8cf1fcf46087cb1089c589a"}`\
 Use: `headers["Authorization"] = "Token 4991c0de3492b6e5b8cf1fcf46087cb1089c589a"`

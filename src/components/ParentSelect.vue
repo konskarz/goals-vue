@@ -25,7 +25,7 @@ const model = computed({
     emit("update:modelValue", value);
   },
 });
-const { data: options } = apiClient.read("/api/v2/goals/");
+const { data: options } = apiClient.read("/goals/");
 function optionDisable(option) {
   return option.id === props.optionDisableId;
 }

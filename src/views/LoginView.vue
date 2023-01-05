@@ -13,7 +13,7 @@ const disabled = ref(false);
 function login() {
   if (!user.value.username || !user.value.password) return;
   disabled.value = true;
-  apiClient.create("/api-token-auth/", user.value).then((data) => {
+  apiClient.create("/auth/", user.value).then((data) => {
     if (data && data.token) {
       apiClient.setAuthToken(data.token);
       router.push(route.query.next);

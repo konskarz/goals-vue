@@ -2,7 +2,7 @@
 import { date } from "quasar";
 import apiClient from "../stores/api.client";
 
-const { data: tasks } = apiClient.read("/api/v2/tasks/");
+const { data: tasks } = apiClient.read("/tasks/");
 </script>
 
 <template>
