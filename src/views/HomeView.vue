@@ -1,14 +1,10 @@
 <script setup>
-import { computed } from "vue";
+import { date } from "quasar";
 import apiClient from "../stores/api.client";
 import WeekTimelineEntry from "../components/WeekTimelineEntryDrop.vue";
 
+const current = date.formatDate(new Date(), "YYYY-w");
 const { data: plan, mutate } = apiClient.read("/plan/");
-const current = computed(() => {
-  return Object.keys(plan.value).find((key) => {
-    return !plan.value[key].in_the_past;
-  });
-});
 </script>
 
 <template>
