@@ -12,6 +12,10 @@ const { item, persist, remove, save, back } = usePersistent(
     goal: null,
     planned: null,
     planned_total_time: null,
+    target: 1,
+    performance: 0,
+    group_id: null,
+    recurring_until: null,
     done: null,
     description: "",
   },
@@ -71,6 +75,18 @@ const { item, persist, remove, save, back } = usePersistent(
             class="col-12 col-sm-6"
           />
           <DateInput v-model="item.done" label="Done" class="col-12 col-sm-6" />
+          <q-input
+            v-model="item.target"
+            type="number"
+            label="Target"
+            stack-label
+            class="col-12 col-sm-6"
+          />
+          <DateInput
+            v-model="item.recurring_until"
+            label="Until"
+            class="col-12 col-sm-6"
+          />
         </div>
         <q-input
           v-model="item.description"

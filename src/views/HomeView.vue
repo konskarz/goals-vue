@@ -5,8 +5,8 @@ import WeekTimelineEntry from "../components/WeekTimelineEntryDrop.vue";
 
 const { data: plan, mutate } = apiClient.read("/plan/");
 const current = computed(() => {
-  return Object.keys(plan.value.key_results).find((key) => {
-    return !plan.value.key_results[key].in_the_past;
+  return Object.keys(plan.value).find((key) => {
+    return !plan.value[key].in_the_past;
   });
 });
 </script>
@@ -23,7 +23,7 @@ const current = computed(() => {
       />
     </q-toolbar>
     <q-timeline v-if="plan" layout="dense" class="q-px-md">
-      <template v-for="(week, key) in plan.key_results" :key="key">
+      <template v-for="(week, key) in plan" :key="key">
         <WeekTimelineEntry
           v-if="week.day"
           :color="key === current ? 'orange' : ''"
