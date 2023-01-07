@@ -12,10 +12,9 @@ const { item, persist, remove, save, back } = usePersistent(
     goal: null,
     planned: null,
     planned_total_time: null,
-    // target: 1,
-    // performance: 0,
-    // group_id: null,
-    // recurring_until: null,
+    target: 1,
+    performance: 0,
+    recurring_until: null,
     done: null,
     description: "",
   },
@@ -48,18 +47,43 @@ const { item, persist, remove, save, back } = usePersistent(
         <q-btn type="button" flat round icon="clear" @click="back" />
       </q-toolbar>
       <div class="q-pa-md">
-        <q-input
-          v-model="item.name"
-          label="Name"
-          stack-label
-          :autofocus="!itemId"
-          :rules="[(val) => !!val || 'Field is required']"
-          @keyup.esc="back"
-        />
         <div class="row q-col-gutter-lg">
+          <q-input
+            v-model="item.name"
+            label="Name"
+            stack-label
+            :autofocus="!itemId"
+            :rules="[(val) => !!val || 'Field is required']"
+            class="col-12 col-sm-6"
+            @keyup.esc="back"
+          />
           <ParentSelect
             v-model="item.goal"
             label="Goal"
+            class="col-12 col-sm-6"
+          />
+          <DateInput
+            v-model="item.planned"
+            label="Planned"
+            class="col-12 col-sm-6"
+          />
+          <DateInput
+            v-model="item.recurring_until"
+            label="Recurring"
+            class="col-12 col-sm-6"
+          />
+          <q-input
+            v-model="item.target"
+            type="number"
+            label="Target"
+            stack-label
+            class="col-12 col-sm-6"
+          />
+          <q-input
+            v-model="item.performance"
+            type="number"
+            label="Performance"
+            stack-label
             class="col-12 col-sm-6"
           />
           <q-input
@@ -69,24 +93,7 @@ const { item, persist, remove, save, back } = usePersistent(
             stack-label
             class="col-12 col-sm-6"
           />
-          <DateInput
-            v-model="item.planned"
-            label="Planned"
-            class="col-12 col-sm-6"
-          />
           <DateInput v-model="item.done" label="Done" class="col-12 col-sm-6" />
-          <!-- <q-input
-            v-model="item.target"
-            type="number"
-            label="Target"
-            stack-label
-            class="col-12 col-sm-6"
-          />
-          <DateInput
-            v-model="item.recurring_until"
-            label="Until"
-            class="col-12 col-sm-6"
-          /> -->
         </div>
         <q-input
           v-model="item.description"
