@@ -1,7 +1,7 @@
 <script setup>
 import { date } from "quasar";
 import apiClient from "../stores/api.client";
-import WeekTimelineEntry from "../components/WeekTimelineEntryDrop.vue";
+import WeekTimelineEntry from "../components/WeekTimelineEntry.vue";
 
 const current = date.formatDate(new Date(), "YYYY-w");
 const { data: plan, mutate } = apiClient.read("/plan/");

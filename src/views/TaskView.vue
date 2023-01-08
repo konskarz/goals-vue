@@ -12,9 +12,9 @@ const { item, persist, remove, save, back } = usePersistent(
     goal: null,
     planned: null,
     planned_total_time: null,
-    target: 1,
-    performance: 0,
-    recurring_until: null,
+    // target: 1,
+    // performance: 0,
+    // recurring_until: null,
     done: null,
     description: "",
   },
@@ -47,27 +47,21 @@ const { item, persist, remove, save, back } = usePersistent(
         <q-btn type="button" flat round icon="clear" @click="back" />
       </q-toolbar>
       <div class="q-pa-md">
+        <q-input
+          v-model="item.name"
+          label="Name"
+          stack-label
+          :autofocus="!itemId"
+          :rules="[(val) => !!val || 'Field is required']"
+          @keyup.esc="back"
+        />
         <div class="row q-col-gutter-lg">
-          <q-input
-            v-model="item.name"
-            label="Name"
-            stack-label
-            :autofocus="!itemId"
-            :rules="[(val) => !!val || 'Field is required']"
-            class="col-12 col-sm-6"
-            @keyup.esc="back"
-          />
           <ParentSelect
             v-model="item.goal"
             label="Goal"
             class="col-12 col-sm-6"
           />
-          <DateInput
-            v-model="item.planned"
-            label="Planned"
-            class="col-12 col-sm-6"
-          />
-          <DateInput
+          <!-- <DateInput
             v-model="item.recurring_until"
             label="Recurring"
             class="col-12 col-sm-6"
@@ -85,12 +79,17 @@ const { item, persist, remove, save, back } = usePersistent(
             label="Performance"
             stack-label
             class="col-12 col-sm-6"
-          />
+          /> -->
           <q-input
             v-model="item.planned_total_time"
             type="number"
             label="Duration"
             stack-label
+            class="col-12 col-sm-6"
+          />
+          <DateInput
+            v-model="item.planned"
+            label="Planned"
             class="col-12 col-sm-6"
           />
           <DateInput v-model="item.done" label="Done" class="col-12 col-sm-6" />
