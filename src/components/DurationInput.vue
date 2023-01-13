@@ -26,8 +26,9 @@ const model = computed({
   <q-input
     v-model.number="model"
     type="number"
-    :label="label"
+    min="0"
     step="15"
+    :label="label"
     stack-label
   >
     <template #append>

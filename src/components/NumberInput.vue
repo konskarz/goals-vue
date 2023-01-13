@@ -23,7 +23,13 @@ const model = computed({
 </script>
 
 <template>
-  <q-input v-model.number="model" type="number" :label="label" stack-label>
+  <q-input
+    v-model.number="model"
+    type="number"
+    min="0"
+    :label="label"
+    stack-label
+  >
     <template #append>
       <q-btn
         round
