@@ -12,7 +12,7 @@ const HOST = window.location.host;
 const BASE_URL =
   HOST === "lifetrackerbuddy.com" ||
   HOST === "127.0.0.1:8000" ||
-  HOST === "localhost:8000"
+  HOST === "localhost:8088"
     ? "/api/v2"
     : "https://lifetrackerbuddy.com/api/v2";
 const AUTH_TOKEN_KEY = "Access-Token";

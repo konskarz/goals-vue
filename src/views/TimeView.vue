@@ -2,6 +2,7 @@
 import { useRoute } from "vue-router";
 import { usePersistent } from "../stores/persistent";
 import DateInput from "../components/DateInput.vue";
+import DurationInput from "../components/DurationInput.vue";
 
 const route = useRoute();
 const itemId = parseInt(route.params.id);
@@ -50,11 +51,9 @@ const { item, persist, remove, save, back } = usePersistent(
             readonly
             class="col-12 col-sm-6"
           />
-          <q-input
+          <DurationInput
             v-model="item.duration"
-            type="number"
             label="Duration"
-            stack-label
             class="col-12 col-sm-6"
             :autofocus="!itemId"
             :rules="[(val) => !!val || 'Field is required']"

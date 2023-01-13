@@ -1,32 +1,82 @@
 <script setup>
 import { useRoute } from "vue-router";
+import { useQuasar } from "quasar";
 import { usePersistent } from "../stores/persistent";
 import ParentSelect from "../components/ParentSelect.vue";
 import DateInput from "../components/DateInput.vue";
+import NumberInput from "../components/NumberInput.vue";
+import DurationInput from "../components/DurationInput.vue";
 
 const route = useRoute();
+const $q = useQuasar();
 const itemId = parseInt(route.params.id);
-const { item, persist, remove, save, back } = usePersistent(
+const group = "recurring/";
+const { item, path, persist, remove, save, back } = usePersistent(
   {
     name: "",
     goal: null,
     planned: null,
+    recurring_until: null,
+    target: 1,
+    performance: 0,
     planned_total_time: null,
-    // target: 1,
-    // performance: 0,
-    // recurring_until: null,
     done: null,
     description: "",
   },
   "/tasks/",
   itemId
 );
+function removeOptions() {
+  if (item.value.group_id) {
+    $q.dialog({
+      title: "Delete recurring task",
+      cancel: true,
+      ok: "Delete",
+      options: {
+        type: "radio",
+        model: "this",
+        items: [
+          { label: "This task", value: "this" },
+          { label: "All tasks", value: "all" },
+        ],
+      },
+    }).onOk((data) => {
+      if (data === "all") path.value = group + item.value.group_id + "/";
+      remove();
+    });
+  } else {
+    remove();
+  }
+}
+function saveOptions() {
+  if (item.value.group_id) {
+    $q.dialog({
+      title: "Save recurring task",
+      cancel: true,
+      ok: "Save",
+      options: {
+        type: "radio",
+        model: "this",
+        items: [
+          { label: "This task", value: "this" },
+          { label: "All tasks", value: "all" },
+        ],
+      },
+    }).onOk((data) => {
+      if (data === "all") path.value = group + item.value.group_id + "/";
+      save();
+    });
+  } else {
+    save();
+  }
+}
 </script>
 
 <template>
   <q-page padding>
-    <q-form @submit.prevent="save">
+    <q-form @submit.prevent="saveOptions">
       <q-toolbar>
+        <q-avatar v-if="item.group_id" icon="event_repeat" />
         <q-toolbar-title>Task</q-toolbar-title>
         <q-btn
           v-if="itemId"
@@ -35,7 +85,7 @@ const { item, persist, remove, save, back } = usePersistent(
           round
           icon="delete"
           :disable="persist"
-          @click="remove"
+          @click="removeOptions"
         />
         <q-btn
           type="submit"
@@ -61,35 +111,31 @@ const { item, persist, remove, save, back } = usePersistent(
             label="Goal"
             class="col-12 col-sm-6"
           />
-          <!-- <DateInput
+          <DateInput
+            v-model="item.planned"
+            label="Planned"
+            class="col-12 col-sm-6"
+          />
+          <DateInput
+            v-if="!itemId"
             v-model="item.recurring_until"
             label="Recurring"
             class="col-12 col-sm-6"
           />
-          <q-input
+          <NumberInput
             v-model="item.target"
-            type="number"
             label="Target"
-            stack-label
             class="col-12 col-sm-6"
           />
-          <q-input
+          <NumberInput
+            v-if="itemId"
             v-model="item.performance"
-            type="number"
             label="Performance"
-            stack-label
-            class="col-12 col-sm-6"
-          /> -->
-          <q-input
-            v-model="item.planned_total_time"
-            type="number"
-            label="Duration"
-            stack-label
             class="col-12 col-sm-6"
           />
-          <DateInput
-            v-model="item.planned"
-            label="Planned"
+          <DurationInput
+            v-model="item.planned_total_time"
+            label="Duration"
             class="col-12 col-sm-6"
           />
           <DateInput v-model="item.done" label="Done" class="col-12 col-sm-6" />
