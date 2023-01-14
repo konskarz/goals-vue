@@ -1,6 +1,8 @@
 <script setup>
-import { ref, computed } from "vue";
-import TimeDoneForm from "./TimeDoneForm.vue";
+import { computed } from "vue";
+import { useQuasar } from "quasar";
+import ProgressDialog from "./ProgressDialog.vue";
+import apiClient from "../stores/api.client";
 
 const props = defineProps({
   task: {
@@ -8,46 +10,55 @@ const props = defineProps({
     required: true,
   },
 });
-// const emit = defineEmits(["mutate", "ondragstart"]);
-const expanded = ref(false);
+const emit = defineEmits(["mutate", "ondragstart"]);
+const $q = useQuasar();
 const caption = computed(() =>
-  [props.task.total_time_min, "of", props.task.planned_total_time, "min."].join(
-    " "
-  )
+  [props.task.performance, "of", props.task.target].join(" ")
 );
+function showProgressDialog() {
+  $q.dialog({
+    component: ProgressDialog,
+    componentProps: { task: props.task },
+  }).onOk((data) => {
+    if (data.performance !== props.task.performance) {
+      apiClient
+        .update("/tasks/" + props.task.id + "/", {
+          performance: data.performance,
+        })
+        .then(() => emit("mutate"));
+    }
+    if (data.duration) {
+      apiClient
+        .create("/times/", {
+          task: props.task.id,
+          start: new Date().toISOString(),
+          end: null,
+          duration: data.duration,
+          description: "",
+        })
+        .then(() => emit("mutate"));
+    }
+  });
+}
 </script>
 
 <template>
-  <!-- 
-    :to="{ name: 'task', params: { id: task.id } }"
-    expand-icon-toggle
-   -->
-  <q-expansion-item
-    v-model="expanded"
-    :header-class="task.done ? 'text-grey' : ''"
-    group="tasks"
-  >
-    <template #header>
-      <q-item-section
-        thumbnail
-        style="cursor: grab"
-        draggable="true"
-        @dragstart="$emit('ondragstart', $event, task)"
-        @touchmove:native="(e) => {}"
-      >
-        <q-icon name="drag_indicator" />
-      </q-item-section>
-      <q-item-section>
-        <q-item-label>{{ task.name }}</q-item-label>
-        <q-item-label caption>{{ caption }}</q-item-label>
-      </q-item-section>
-    </template>
-    <TimeDoneForm
-      :id="task.id"
-      :done="Boolean(task.done)"
-      @mutate="$emit('mutate')"
-      @submited="expanded = false"
-    />
-    <q-separator class="q-ma-sm" />
-  </q-expansion-item>
+  <q-item clickable>
+    <q-item-section
+      thumbnail
+      style="cursor: grab"
+      draggable="true"
+      @dragstart="$emit('ondragstart', $event, task)"
+      @touchmove:native="(e) => {}"
+    >
+      <q-icon name="drag_indicator" />
+    </q-item-section>
+    <q-item-section v-if="task.group_id" thumbnail>
+      <q-icon name="event_repeat" />
+    </q-item-section>
+    <q-item-section @click="showProgressDialog">
+      <q-item-label>{{ task.name }}</q-item-label>
+      <q-item-label caption>{{ caption }}</q-item-label>
+    </q-item-section>
+  </q-item>
 </template>

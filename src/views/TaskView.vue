@@ -119,7 +119,7 @@ function saveOptions() {
           <DateInput
             v-if="!itemId"
             v-model="item.recurring_until"
-            label="Recurring"
+            label="Recurring until"
             class="col-12 col-sm-6"
           />
           <NumberInput
@@ -135,7 +135,7 @@ function saveOptions() {
           />
           <DurationInput
             v-model="item.planned_total_time"
-            label="Duration"
+            label="Planned total time"
             class="col-12 col-sm-6"
           />
           <DateInput v-model="item.done" label="Done" class="col-12 col-sm-6" />
