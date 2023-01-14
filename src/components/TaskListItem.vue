@@ -43,7 +43,7 @@ function showProgressDialog() {
 </script>
 
 <template>
-  <q-item clickable>
+  <q-item clickable :class="task.done ? 'text-grey' : ''">
     <q-item-section
       thumbnail
       style="cursor: grab"
