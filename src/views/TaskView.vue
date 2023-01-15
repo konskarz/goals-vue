@@ -26,20 +26,21 @@ const { item, path, persist, remove, save, back } = usePersistent(
   "/tasks/",
   itemId
 );
+const options = {
+  type: "radio",
+  model: "this",
+  items: [
+    { label: "This task", value: "this" },
+    { label: "All tasks", value: "all" },
+  ],
+};
 function removeOptions() {
   if (item.value.group_id) {
     $q.dialog({
       title: "Delete recurring task",
       cancel: true,
       ok: "Delete",
-      options: {
-        type: "radio",
-        model: "this",
-        items: [
-          { label: "This task", value: "this" },
-          { label: "All tasks", value: "all" },
-        ],
-      },
+      options: options,
     }).onOk((data) => {
       if (data === "all") path.value = group + item.value.group_id + "/";
       remove();
@@ -54,14 +55,7 @@ function saveOptions() {
       title: "Save recurring task",
       cancel: true,
       ok: "Save",
-      options: {
-        type: "radio",
-        model: "this",
-        items: [
-          { label: "This task", value: "this" },
-          { label: "All tasks", value: "all" },
-        ],
-      },
+      options: options,
     }).onOk((data) => {
       if (data === "all") path.value = group + item.value.group_id + "/";
       save();

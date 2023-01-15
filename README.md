@@ -45,9 +45,9 @@ API: `/api/v2/plan/` - GET
 
 - subtitle: `day` - format: `Week 50 · 2022 / Q4 · Dez. 12`
 - [List](https://quasar.dev/vue-components/list-and-list-items): `tasks`
-  [Expansion Item](https://quasar.dev/vue-components/expansion-item): on click toggle form with predefined time values for 'New [Time](#time)' and set to done option in [Task](#task)
+  [List Item](https://quasar.dev/vue-components/list-and-list-items) - on click [Dialog](https://quasar.dev/quasar-plugins/dialog) with `performance` ([Task](#task)), `duration` ([Time](#time)) fields and link to [Task](#task)
   - label: `name`
-  - caption: `total_time_min` of `planned_total_time`
+  - caption: `performance` of `target`
 
 ### Goals
 
@@ -63,55 +63,32 @@ API: `/api/v2/goals/` - GET, POST\
 Description: List of Tasks\
 API: `/api/v2/tasks/` - GET, POST\
 [List Item](https://quasar.dev/vue-components/list-and-list-items) - Link to [Task](#task)\
-[Sections](https://quasar.dev/vue-components/list-and-list-items#qitemsection-api):
-
-- `planned`: Planned
-- `name`: Name
-- `goal`: Goal
+[Sections](https://quasar.dev/vue-components/list-and-list-items#qitemsection-api): `planned`, `name`, `goal`
 
 ### Times
 
 Description: List of Times\
 API: `/api/v2/times/` - GET, POST\
 [List Item](https://quasar.dev/vue-components/list-and-list-items) - Link to [Time](#time)\
-[Sections](https://quasar.dev/vue-components/list-and-list-items#qitemsection-api):
-
-- `start`: Start
-- `duration`: Duration
-- `task`: Task
+[Sections](https://quasar.dev/vue-components/list-and-list-items#qitemsection-api): `start`, `duration`, `task`
 
 ### Goal
 
 Description: Form with Delete/Save/Cancel Buttons\
-API: `/api/v2/goals/:id/` - GET, PUT, PATCH, DELETE
-
-- `name`: Name
-- `parent`: Parent
-- `planned`: Planned
-- `description`: Description
+API: `/api/v2/goals/:id/` - GET, PUT, PATCH, DELETE\
+Fields: `name`, `parent`, `planned`, `description`
 
 ### Task
 
 Description: Form with Delete/Save/Cancel Buttons\
-API: `/api/v2/tasks/:id/` - GET, PUT, PATCH, DELETE
-
-- `name`: Name
-- `goal`: Goal
-- `planned_total_time`: Duration
-- `planned`: Planned
-- `done`: Done
-- `description`: Description
+API: `/api/v2/tasks/:id/` - GET, PUT, PATCH, DELETE\
+Fields: `name`, `goal`, `planned`, `recurring_until` (on create), `target`, `performance` (on edit), `planned_total_time`, `done`, `description`
 
 ### Time
 
 Description: Form with Delete/Save/Cancel Buttons\
-API: `/api/v2/times/:id/` - GET, PUT, PATCH, DELETE
-
-- `task`: Task - readonly
-- `duration`: Duration
-- `start`: Start
-- `end`: End
-- `description`: Description
+API: `/api/v2/times/:id/` - GET, PUT, PATCH, DELETE\
+Fields: `task` (readonly), `duration`, `start`, `end`, `description`
 
 ### Login
 
