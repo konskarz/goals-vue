@@ -122,7 +122,6 @@ function saveOptions() {
             class="col-12 col-sm-6"
           />
           <NumberInput
-            v-if="itemId"
             v-model="item.performance"
             label="Performance"
             class="col-12 col-sm-6"
@@ -132,7 +131,12 @@ function saveOptions() {
             label="Planned total time"
             class="col-12 col-sm-6"
           />
-          <DateInput v-model="item.done" label="Done" class="col-12 col-sm-6" />
+          <DateInput
+            v-if="itemId"
+            v-model="item.done"
+            label="Done"
+            class="col-12 col-sm-6"
+          />
         </div>
         <q-input
           v-model="item.description"
