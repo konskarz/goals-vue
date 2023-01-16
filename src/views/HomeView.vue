@@ -1,14 +1,10 @@
 <script setup>
-import { computed } from "vue";
+import { date } from "quasar";
 import apiClient from "../stores/api.client";
-import WeekTimelineEntry from "../components/WeekTimelineEntryDrop.vue";
+import WeekTimelineEntry from "../components/WeekTimelineEntry.vue";
 
-const { data: plan, mutate } = apiClient.read("/api/v2/plan/");
-const current = computed(() => {
-  return Object.keys(plan.value.key_results).find((key) => {
-    return !plan.value.key_results[key].in_the_past;
-  });
-});
+const current = date.formatDate(new Date(), "YYYY-w");
+const { data: plan, mutate } = apiClient.read("/plan/");
 </script>
 
 <template>
@@ -23,7 +19,7 @@ const current = computed(() => {
       />
     </q-toolbar>
     <q-timeline v-if="plan" layout="dense" class="q-px-md">
-      <template v-for="(week, key) in plan.key_results" :key="key">
+      <template v-for="(week, key) in plan" :key="key">
         <WeekTimelineEntry
           v-if="week.day"
           :color="key === current ? 'orange' : ''"

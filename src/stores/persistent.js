@@ -4,6 +4,7 @@ import apiClient from "./api.client";
 
 export function usePersistent(schema, url, id) {
   const item = ref(schema);
+  const path = ref(id + "/");
   const persist = ref(false);
   const router = useRouter();
   let original = null;
@@ -21,7 +22,7 @@ export function usePersistent(schema, url, id) {
   function remove() {
     if (id) {
       persist.value = true;
-      apiClient.delete(url + id + "/").then(() => back());
+      apiClient.delete(url + path.value).then(() => back());
     }
   }
   function update() {
@@ -31,7 +32,7 @@ export function usePersistent(schema, url, id) {
       return changed;
     }, {});
     if (Object.keys(changed).length) {
-      apiClient.update(url + id + "/", changed).then(() => back());
+      apiClient.update(url + path.value, changed).then(() => back());
     } else {
       back();
     }
@@ -45,5 +46,5 @@ export function usePersistent(schema, url, id) {
     router.back();
   }
 
-  return { item, persist, remove, save, back };
+  return { item, path, persist, remove, save, back };
 }

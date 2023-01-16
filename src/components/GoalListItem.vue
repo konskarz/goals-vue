@@ -41,6 +41,7 @@ const caption = computed(() =>
   <q-item v-else :to="route">
     <q-item-section>
       <q-item-label>{{ goal.name }}</q-item-label>
+      <q-item-label caption>{{ caption }}</q-item-label>
     </q-item-section>
   </q-item>
 </template>

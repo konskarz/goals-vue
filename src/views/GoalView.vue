@@ -13,7 +13,7 @@ const { item, persist, remove, save, back } = usePersistent(
     planned: null,
     description: "",
   },
-  "/api/v2/goals/",
+  "/goals/",
   itemId
 );
 </script>

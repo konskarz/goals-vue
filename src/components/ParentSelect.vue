@@ -25,7 +25,7 @@ const model = computed({
     emit("update:modelValue", value);
   },
 });
-const { data: options } = apiClient.read("/api/v2/goals/");
+const { data: options } = apiClient.read("/goals/");
 function optionDisable(option) {
   return option.id === props.optionDisableId;
 }
@@ -42,6 +42,13 @@ function optionDisable(option) {
     map-options
     :label="label"
     stack-label
-    clearable
-  />
+  >
+    <template #append>
+      <q-icon
+        name="close"
+        class="cursor-pointer"
+        @click.stop.prevent="model = null"
+      />
+    </template>
+  </q-select>
 </template>

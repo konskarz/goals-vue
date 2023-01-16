@@ -8,7 +8,7 @@ const arrayToTree = (array, parent = null) =>
   array
     .filter((item) => item.parent === parent)
     .map((child) => ({ ...child, children: arrayToTree(array, child.id) }));
-const { data } = apiClient.read("/api/v2/goals/");
+const { data } = apiClient.read("/goals/");
 const goals = computed(() => (data.value ? arrayToTree(data.value) : null));
 </script>
 
