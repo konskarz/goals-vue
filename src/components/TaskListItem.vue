@@ -12,6 +12,10 @@ const props = defineProps({
 });
 const emit = defineEmits(["mutate", "ondragstart"]);
 const $q = useQuasar();
+const showProgress = computed(() => props.task.target > 1);
+const progress = computed(() =>
+  showProgress.value ? props.task.performance / props.task.target : 0
+);
 const caption = computed(() =>
   [props.task.performance, "of", props.task.target].join(" ")
 );
@@ -58,7 +62,10 @@ function showProgressDialog() {
     </q-item-section>
     <q-item-section @click="showProgressDialog">
       <q-item-label>{{ task.name }}</q-item-label>
-      <q-item-label caption>{{ caption }}</q-item-label>
+      <q-item-label v-if="showProgress" caption>{{ caption }}</q-item-label>
+      <q-item-label v-if="showProgress">
+        <q-linear-progress :value="progress" />
+      </q-item-label>
     </q-item-section>
   </q-item>
 </template>

@@ -47,7 +47,8 @@ API: `/api/v2/plan/` - GET
 - [List](https://quasar.dev/vue-components/list-and-list-items): `tasks`
   [List Item](https://quasar.dev/vue-components/list-and-list-items) - on click [Dialog](https://quasar.dev/quasar-plugins/dialog) with `performance` ([Task](#task)), `duration` ([Time](#time)) fields and link to [Task](#task)
   - label: `name`
-  - caption: `performance` of `target`
+  - if `target > 1` caption: `performance` of `target`
+  - if `target > 1` label: [linear-progress](https://quasar.dev/vue-components/linear-progress) `performance / target`
 
 ### Goals
 
