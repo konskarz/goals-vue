@@ -42,13 +42,7 @@ function optionDisable(option) {
     map-options
     :label="label"
     stack-label
-  >
-    <template #append>
-      <q-icon
-        name="close"
-        class="cursor-pointer"
-        @click.stop.prevent="model = null"
-      />
-    </template>
-  </q-select>
+    clearable
+    clear-icon="close"
+  />
 </template>
