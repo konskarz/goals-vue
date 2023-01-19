@@ -1,16 +1,38 @@
 <script setup>
+import { ref, computed, watch, onMounted } from "vue";
 import { date } from "quasar";
 import apiClient from "../stores/api.client";
+import GoalSelect from "../components/GoalSelect.vue";
 import WeekTimelineEntry from "../components/WeekTimelineEntry.vue";
 
+const GOAL_FILTER_KEY = "Goal-Filter";
 const current = date.formatDate(new Date(), "YYYY-w");
-const { data: plan, mutate } = apiClient.read("/plan/");
+const goal = ref(null);
+const url = computed(() =>
+  goal.value ? "/plan/?goal=" + goal.value : "/plan/"
+);
+const { data: plan, mutate } = apiClient.read(url);
+onMounted(() => {
+  const stored = localStorage.getItem(GOAL_FILTER_KEY);
+  if (stored) goal.value = parseInt(stored);
+});
+watch(goal, (data) => {
+  if (data) localStorage.setItem(GOAL_FILTER_KEY, data);
+  else localStorage.removeItem(GOAL_FILTER_KEY);
+});
 </script>
 
 <template>
   <q-page padding>
     <q-toolbar>
       <q-toolbar-title>Plan</q-toolbar-title>
+      <GoalSelect
+        v-model="goal"
+        label="For Goal"
+        dense
+        borderless
+        class="col-6 col-sm-3 col-lg-2"
+      />
       <q-btn
         :to="{ name: 'task', params: { id: 'create' } }"
         icon="assignment_add"

@@ -3,10 +3,6 @@ import { computed } from "vue";
 import apiClient from "../stores/api.client";
 
 const props = defineProps({
-  label: {
-    type: String,
-    required: true,
-  },
   modelValue: {
     type: Number,
     default: null,
@@ -40,9 +36,8 @@ function optionDisable(option) {
     :option-disable="optionDisable"
     emit-value
     map-options
-    :label="label"
-    stack-label
     clearable
     clear-icon="close"
+    dropdown-icon="keyboard_arrow_down"
   />
 </template>

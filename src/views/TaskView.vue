@@ -2,7 +2,7 @@
 import { useRoute } from "vue-router";
 import { useQuasar } from "quasar";
 import { usePersistent } from "../stores/persistent";
-import ParentSelect from "../components/ParentSelect.vue";
+import GoalSelect from "../components/GoalSelect.vue";
 import DateInput from "../components/DateInput.vue";
 import NumberInput from "../components/NumberInput.vue";
 import DurationInput from "../components/DurationInput.vue";
@@ -100,9 +100,10 @@ function saveOptions() {
           @keyup.esc="back"
         />
         <div class="row q-col-gutter-lg">
-          <ParentSelect
+          <GoalSelect
             v-model="item.goal"
             label="Goal"
+            stack-label
             class="col-12 col-sm-6"
           />
           <DateInput
