@@ -17,8 +17,8 @@ const hint = computed(() => {
   let txt = "of " + props.task.target;
   const ph = props.task.performance_history;
   if (ph && ph.length) {
-    const log = ph[ph.length - 1];
-    txt += " last updated " + date.formatDate(log.updated, "DD.MM.YYYY HH:mm");
+    txt +=
+      " last updated " + date.formatDate(ph[0].updated, "DD.MM.YYYY HH:mm");
   }
   return txt;
 });
