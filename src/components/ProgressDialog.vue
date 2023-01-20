@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from "vue";
-import { useDialogPluginComponent } from "quasar";
+import { useDialogPluginComponent, date } from "quasar";
 import NumberInput from "../components/NumberInput.vue";
 import DurationInput from "../components/DurationInput.vue";
 
@@ -13,6 +13,15 @@ const props = defineProps({
 defineEmits([...useDialogPluginComponent.emits]);
 const performance = ref(props.task.performance);
 const duration = ref(null);
+const hint = computed(() => {
+  let txt = "of " + props.task.target;
+  const ph = props.task.performance_history;
+  if (ph && ph.length) {
+    const log = ph[ph.length - 1];
+    txt += " last updated " + date.formatDate(log.updated, "DD.MM.YYYY HH:mm");
+  }
+  return txt;
+});
 const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } =
   useDialogPluginComponent();
 const disable = computed(() => {
@@ -30,11 +39,7 @@ function onOKClick() {
         <div class="text-h6">Progress</div>
       </q-card-section>
       <q-card-section>
-        <NumberInput
-          v-model="performance"
-          label="Performance"
-          :hint="'of ' + task.target"
-        />
+        <NumberInput v-model="performance" label="Performance" :hint="hint" />
       </q-card-section>
       <q-card-section>
         <DurationInput v-model="duration" label="Time spent" />

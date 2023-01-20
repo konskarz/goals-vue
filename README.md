@@ -83,7 +83,7 @@ Fields: `name`, `parent`, `planned`, `description`
 
 Description: Form with Delete/Save/Cancel Buttons\
 API: `/api/v2/tasks/:id/` - GET, PUT, PATCH, DELETE\
-Fields: `name`, `goal`, `planned`, `recurring_until` (on create), `target`, `performance`, `planned_total_time`, `done` (on edit), `description`
+Fields: `name`, `goal`, `planned`, `recurring_until` (on create), `target`, `performance`, `planned_total_time`, `done` (on edit), `description`, `performance_history` (readonly)
 
 ### Time
 

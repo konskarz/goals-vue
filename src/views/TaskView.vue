@@ -1,6 +1,7 @@
 <script setup>
+import { computed } from "vue";
 import { useRoute } from "vue-router";
-import { useQuasar } from "quasar";
+import { useQuasar, date } from "quasar";
 import { usePersistent } from "../stores/persistent";
 import GoalSelect from "../components/GoalSelect.vue";
 import DateInput from "../components/DateInput.vue";
@@ -22,10 +23,21 @@ const { item, path, persist, remove, save, back } = usePersistent(
     planned_total_time: null,
     done: null,
     description: "",
+    performance_history: [],
   },
   "/tasks/",
   itemId
 );
+const performanceHistory = computed(() => {
+  const ph = item.value.performance_history;
+  if (!ph || !ph.length) return null;
+  const getTxt = (log) =>
+    date.formatDate(log.updated, "DD.MM.YYYY HH:mm") + " to " + log.value;
+  let txt = getTxt(ph[0]);
+  if (ph.length === 1) return txt;
+  for (let i = 1; i < ph.length; i++) txt += ", " + getTxt(ph[i]);
+  return txt;
+});
 const options = {
   type: "radio",
   model: "this",
@@ -144,6 +156,15 @@ function saveOptions() {
           type="textarea"
           label="Description"
           stack-label
+          class="q-pt-md"
+        />
+        <q-input
+          v-if="performanceHistory"
+          v-model="performanceHistory"
+          type="textarea"
+          label="Performance updates"
+          stack-label
+          readonly
           class="q-pt-md"
         />
       </div>
