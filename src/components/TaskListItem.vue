@@ -64,7 +64,7 @@ function showProgressDialog() {
       <q-item-label>{{ task.name }}</q-item-label>
       <q-item-label v-if="showProgress" caption>{{ caption }}</q-item-label>
       <q-item-label v-if="showProgress">
-        <q-linear-progress :value="progress" />
+        <q-linear-progress :value="progress" color="positive" />
       </q-item-label>
     </q-item-section>
   </q-item>

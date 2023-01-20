@@ -40,8 +40,8 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 
 ### Plan
 
-Description: [Timeline](https://quasar.dev/vue-components/timeline) of Weeks/Tasks with 'New [Task](#task)' Button\
-API: `/api/v2/plan/` - GET
+Description: [Timeline](https://quasar.dev/vue-components/timeline) of Weeks/Tasks with 'Filter by [Goal](#goal)' Select and 'New [Task](#task)' Button\
+API: `/api/v2/plan/`, `/api/v2/plan/?goal=:id` - GET
 
 - subtitle: `day` - format: `Week 50 · 2022 / Q4 · Dez. 12`
 - [List](https://quasar.dev/vue-components/list-and-list-items): `tasks`
