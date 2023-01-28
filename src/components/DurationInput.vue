@@ -32,22 +32,10 @@ const model = computed({
     stack-label
   >
     <template #append>
-      <q-btn
-        round
-        dense
-        flat
-        label="-60"
-        @click="if (model >= 60) model -= 60;"
-      />
-      <q-btn
-        round
-        dense
-        flat
-        label="-15"
-        @click="if (model >= 15) model -= 15;"
-      />
-      <q-btn round dense flat label="+15" @click="model += 15" />
-      <q-btn round dense flat label="+60" @click="model += 60" />
+      <q-btn round label="-60" @click="if (model >= 60) model -= 60;" />
+      <q-btn round label="-15" @click="if (model >= 15) model -= 15;" />
+      <q-btn round label="+15" @click="model += 15" />
+      <q-btn round label="+60" @click="model += 60" />
     </template>
   </q-input>
 </template>

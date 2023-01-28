@@ -12,7 +12,7 @@ const props = defineProps({
 });
 const emit = defineEmits(["mutate", "ondragstart"]);
 const $q = useQuasar();
-const showProgress = computed(() => props.task.target > 1);
+const showProgress = computed(() => props.task.target > 1 && !props.task.done);
 const progress = computed(() =>
   showProgress.value ? props.task.performance / props.task.target : 0
 );
@@ -47,8 +47,12 @@ function showProgressDialog() {
 </script>
 
 <template>
-  <q-item clickable :class="task.done ? 'text-grey' : ''">
+  <q-item clickable :active="Boolean(task.done)" active-class="text-positive">
+    <q-item-section v-if="task.done" thumbnail>
+      <q-icon name="done" color="positive" />
+    </q-item-section>
     <q-item-section
+      v-else
       thumbnail
       style="cursor: grab"
       draggable="true"
@@ -57,7 +61,7 @@ function showProgressDialog() {
     >
       <q-icon name="drag_indicator" />
     </q-item-section>
-    <q-item-section v-if="task.group_id" thumbnail>
+    <q-item-section v-if="task.group_id && !task.done" thumbnail>
       <q-icon name="event_repeat" />
     </q-item-section>
     <q-item-section @click="showProgressDialog">
