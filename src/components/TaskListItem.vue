@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from "vue";
 import { useQuasar } from "quasar";
+import confetti from "canvas-confetti";
 import ProgressDialog from "./ProgressDialog.vue";
 import apiClient from "../stores/api.client";
 
@@ -25,6 +26,7 @@ function showProgressDialog() {
     componentProps: { task: props.task },
   }).onOk((data) => {
     if (data.performance !== props.task.performance) {
+      if (data.performance >= props.task.target) confetti();
       apiClient
         .update("/tasks/" + props.task.id + "/", {
           performance: data.performance,
