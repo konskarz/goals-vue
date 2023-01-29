@@ -43,7 +43,33 @@ function logout() {
       <q-toolbar>
         <q-btn flat round icon="menu" @click="toggleLeftDrawer" />
         <q-toolbar-title>LifeTrackerBuddy</q-toolbar-title>
-        <q-btn flat round icon="logout" @click="logout" />
+        <q-btn flat round icon="add">
+          <q-menu auto-close>
+            <q-list>
+              <q-item :to="{ name: 'goal', params: { id: 'new' } }">
+                <q-item-section>
+                  <q-item-label>New goal</q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item :to="{ name: 'task', params: { id: 'new' } }">
+                <q-item-section>
+                  <q-item-label>New task</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
+        </q-btn>
+        <q-btn flat round icon="person_outline">
+          <q-menu>
+            <q-list>
+              <q-item v-close-popup clickable @click="logout">
+                <q-item-section>
+                  <q-item-label>Logout</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
+        </q-btn>
       </q-toolbar>
     </q-header>
     <q-drawer v-model="leftDrawerOpen" show-if-above>

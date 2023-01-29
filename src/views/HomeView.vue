@@ -33,12 +33,6 @@ watch(goal, (data) => {
         borderless
         class="col-6 col-sm-3 col-lg-2"
       />
-      <q-btn
-        :to="{ name: 'task', params: { id: 'create' } }"
-        icon="assignment_add"
-        flat
-        round
-      />
     </q-toolbar>
     <q-timeline v-if="plan" layout="dense" class="q-px-md">
       <template v-for="(week, key) in plan" :key="key">

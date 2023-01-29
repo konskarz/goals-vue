@@ -16,12 +16,6 @@ const goals = computed(() => (data.value ? arrayToTree(data.value) : null));
   <q-page padding>
     <q-toolbar>
       <q-toolbar-title>Goals</q-toolbar-title>
-      <q-btn
-        flat
-        round
-        icon="add_task"
-        :to="{ name: 'goal', params: { id: 'create' } }"
-      />
     </q-toolbar>
     <q-list v-if="goals">
       <GoalListItem v-for="goal in goals" :key="goal.id" :goal="goal" />
