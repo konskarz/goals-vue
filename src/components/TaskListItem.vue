@@ -86,6 +86,9 @@ function showProgressDialog() {
     <q-item-section v-if="task.done" thumbnail>
       <q-icon name="done" color="positive" />
     </q-item-section>
+    <q-item-section v-else-if="task.group_id" thumbnail>
+      <q-icon name="event_repeat" />
+    </q-item-section>
     <q-item-section
       v-else
       thumbnail
@@ -95,9 +98,6 @@ function showProgressDialog() {
       @touchmove:native="(e) => {}"
     >
       <q-icon name="drag_indicator" />
-    </q-item-section>
-    <q-item-section v-if="task.group_id && !task.done" thumbnail>
-      <q-icon name="event_repeat" />
     </q-item-section>
     <q-item-section @click="showProgressDialog">
       <q-item-label>{{ task.name }}</q-item-label>
