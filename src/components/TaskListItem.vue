@@ -21,7 +21,7 @@ const caption = computed(() =>
   [props.task.performance, "of", props.task.target].join(" ")
 );
 function fireworks() {
-  var duration = 15 * 1000;
+  var duration = 3 * 1000;
   var animationEnd = Date.now() + duration;
   var defaults = {
     startVelocity: 30,
@@ -38,7 +38,7 @@ function fireworks() {
     if (timeLeft <= 0) {
       return clearInterval(interval);
     }
-    var particleCount = 50 * (timeLeft / duration);
+    var particleCount = 100 * (timeLeft / duration);
     confetti(
       Object.assign({}, defaults, {
         particleCount,
