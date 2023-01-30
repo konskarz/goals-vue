@@ -6,9 +6,29 @@ import GoalSelect from "../components/GoalSelect.vue";
 import WeekTimelineEntry from "../components/WeekTimelineEntry.vue";
 
 const GOAL_FILTER_KEY = "Goal-Filter";
-const current = date.formatDate(new Date(), "YYYY-w");
+const currentDate = new Date();
+const currentMonday = date.subtractFromDate(currentDate, {
+  days: date.getDayOfWeek(currentDate) - 1,
+});
+const currentWeek = date.formatDate(currentDate, "YYYY-w");
 const goal = ref(null);
-const { data: tasks, mutate } = apiClient.read("/tasks/");
+const filter = ref({
+  done: true,
+  recurring: true,
+});
+const { data, mutate } = apiClient.read("/tasks/");
+const tasks = computed(() =>
+  data.value.filter((task) => {
+    const passed = new Date(task.planned).getDay() < currentMonday.getDay();
+    if (passed && filter.value.done && task.done) {
+      return false;
+    } else if (passed && filter.value.recurring && task.group_id) {
+      return false;
+    } else if (goal.value && goal.value !== task.goal) {
+      return false;
+    } else return true;
+  })
+);
 const calendar = computed(() => {
   const length = tasks.value.length;
   const sorted = length
@@ -16,7 +36,7 @@ const calendar = computed(() => {
         (a, b) => Date.parse(a.planned) - Date.parse(b.planned)
       )
     : null;
-  const start = length ? new Date(sorted[0].planned) : new Date();
+  const start = length ? new Date(sorted[0].planned) : currentDate;
   const last = length
     ? new Date(sorted[sorted.length - 1].planned)
     : date.addToDate(start, { days: 7 });
@@ -68,7 +88,7 @@ watch(goal, (data) => {
       <template v-for="(week, key) in calendar" :key="key">
         <WeekTimelineEntry
           v-if="week.day"
-          :color="key === current ? 'orange' : ''"
+          :color="key === currentWeek ? 'orange' : ''"
           :week="week"
           @mutate="mutate"
         />
