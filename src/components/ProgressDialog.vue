@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from "vue";
-import { useDialogPluginComponent, date } from "quasar";
+import { useDialogPluginComponent } from "quasar";
 import NumberInput from "../components/NumberInput.vue";
 import DurationInput from "../components/DurationInput.vue";
 
@@ -13,15 +13,7 @@ const props = defineProps({
 defineEmits([...useDialogPluginComponent.emits]);
 const performance = ref(props.task.performance);
 const duration = ref(null);
-const hint = computed(() => {
-  let txt = "of " + props.task.target;
-  const ph = props.task.performance_history;
-  if (ph && ph.length) {
-    txt +=
-      " · last updated " + date.formatDate(ph[0].updated, "DD.MM.YYYY HH:mm");
-  }
-  return txt;
-});
+const hint = computed(() => "of " + props.task.target);
 const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } =
   useDialogPluginComponent();
 const disable = computed(() => {

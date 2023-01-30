@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from "vue";
-import { useQuasar } from "quasar";
+import { useQuasar, date } from "quasar";
 import confetti from "canvas-confetti";
 import ProgressDialog from "./ProgressDialog.vue";
 import apiClient from "../stores/api.client";
@@ -17,9 +17,14 @@ const showProgress = computed(() => props.task.target > 1 && !props.task.done);
 const progress = computed(() =>
   showProgress.value ? props.task.performance / props.task.target : 0
 );
-const caption = computed(() =>
-  [props.task.performance, "of", props.task.target].join(" ")
-);
+const caption = computed(() => {
+  let txt = [props.task.performance, "of", props.task.target].join(" ");
+  const ph = props.task.performance_history;
+  if (ph && ph.length) {
+    txt += " · changed " + date.formatDate(ph[0].updated, "DD.MM.YYYY HH:mm");
+  }
+  return txt;
+});
 function fireworks() {
   var duration = 3 * 1000;
   var animationEnd = Date.now() + duration;

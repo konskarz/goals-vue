@@ -12,10 +12,11 @@ const props = defineProps({
 });
 const emit = defineEmits(["mutate"]);
 const monday = new Date(props.week.day);
-const formated = date.formatDate(monday, "w-YYYY-Q-MMM D").split("-");
+const formated = date.formatDate(monday, "w-Q-YYYY-MMM D").split("-");
 const subtitle = [
   "Week " + formated[0],
-  formated[1] + " / Q" + formated[2],
+  "Q" + formated[1],
+  formated[2],
   formated[3],
 ].join(" · ");
 
