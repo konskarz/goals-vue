@@ -6,7 +6,7 @@ import GoalSelect from "../components/GoalSelect.vue";
 import WeekTimelineEntry from "../components/WeekTimelineEntry.vue";
 
 const GOAL_FILTER_KEY = "Goal-Filter";
-const currentDate = new Date();
+const currentDate = date.startOfDate(new Date(), "day");
 const currentMonday = date.subtractFromDate(currentDate, {
   days: date.getDayOfWeek(currentDate) - 1,
 });
@@ -19,7 +19,7 @@ const filter = ref({
 const { data, mutate } = apiClient.read("/tasks/");
 const tasks = computed(() =>
   data.value.filter((task) => {
-    const passed = new Date(task.planned).getDay() < currentMonday.getDay();
+    const passed = new Date(task.planned.slice(0, 10)) < currentMonday;
     if (passed && filter.value.done && task.done) {
       return false;
     } else if (passed && filter.value.recurring && task.group_id) {
@@ -36,9 +36,9 @@ const calendar = computed(() => {
         (a, b) => Date.parse(a.planned) - Date.parse(b.planned)
       )
     : null;
-  const start = length ? new Date(sorted[0].planned) : currentDate;
+  const start = length ? new Date(sorted[0].planned.slice(0, 10)) : currentDate;
   const last = length
-    ? new Date(sorted[sorted.length - 1].planned)
+    ? new Date(sorted[sorted.length - 1].planned.slice(0, 10))
     : date.addToDate(start, { days: 7 });
   const end = date.addToDate(last, { days: 7 });
   let startMonday = date.subtractFromDate(start, {
