@@ -13,7 +13,7 @@ export default defineConfig({
   // server: { proxy: { "/api": "http://localhost:8000" } },
   plugins: [
     vue({ template: { transformAssetUrls } }),
-    quasar({ sassVariables: "./src/quasar-variables.sass" }),
+    quasar(),
     VitePWA(VitePWAConfig),
   ],
   resolve: {
