@@ -6,11 +6,14 @@ import GoalSelect from "../components/GoalSelect.vue";
 import WeekTimelineEntry from "../components/WeekTimelineEntry.vue";
 
 const TASKS_FILTER_KEY = "Tasks-Filter";
+const getMonday = (srcDate) =>
+  date.subtractFromDate(srcDate, {
+    days: date.getDayOfWeek(srcDate) - 1,
+  });
+const getWeek = (srcDate) => date.formatDate(srcDate, "YYYY-w");
 const currentDate = date.startOfDate(new Date(), "day");
-const currentMonday = date.subtractFromDate(currentDate, {
-  days: date.getDayOfWeek(currentDate) - 1,
-});
-const currentWeek = date.formatDate(currentDate, "YYYY-w");
+const currentMonday = getMonday(currentDate);
+const currentWeek = getWeek(currentDate);
 const filter = ref({
   done: true,
   recurring: true,
@@ -18,49 +21,43 @@ const filter = ref({
 });
 const { data, mutate } = apiClient.read("/tasks/");
 const tasks = computed(() =>
-  data.value.filter((task) => {
-    const passed = new Date(task.planned.slice(0, 10)) < currentMonday;
-    if (passed && filter.value.done && task.done) {
-      return false;
-    } else if (passed && filter.value.recurring && task.group_id) {
-      return false;
-    } else if (filter.value.goal && filter.value.goal !== task.goal) {
-      return false;
-    } else return true;
-  })
+  data.value
+    .filter((task) => {
+      const passed = new Date(task.planned.slice(0, 10)) < currentMonday;
+      if (passed && filter.value.done && task.done) {
+        return false;
+      } else if (passed && filter.value.recurring && task.group_id) {
+        return false;
+      } else if (filter.value.goal && filter.value.goal !== task.goal) {
+        return false;
+      } else return true;
+    })
+    .sort((a, b) => Date.parse(a.planned) - Date.parse(b.planned))
 );
 const calendar = computed(() => {
-  const length = tasks.value.length;
-  const sorted = length
-    ? [...tasks.value].sort(
-        (a, b) => Date.parse(a.planned) - Date.parse(b.planned)
-      )
-    : null;
-  const start = length ? new Date(sorted[0].planned.slice(0, 10)) : currentDate;
-  const last = length
-    ? new Date(sorted[sorted.length - 1].planned.slice(0, 10))
-    : date.addToDate(start, { days: 7 });
-  const end = date.addToDate(last, { days: 7 });
-  let startMonday = date.subtractFromDate(start, {
-    days: date.getDayOfWeek(start) - 1,
-  });
-  const endMonday = date.subtractFromDate(end, {
-    days: date.getDayOfWeek(end) - 1,
-  });
-  let calendar = {};
-  while (startMonday <= endMonday) {
-    calendar[date.formatDate(startMonday, "YYYY-w")] = {
-      day: date.formatDate(startMonday, "YYYY-MM-DD"),
-      tasks: [],
-    };
-    startMonday = date.addToDate(startMonday, { days: 7 });
-  }
-  if (length) {
-    sorted.forEach((task) => {
-      calendar[date.formatDate(task.planned, "YYYY-w")].tasks.push(task);
+  const build = (weeks, startMonday, endMonday) => {
+    while (startMonday <= endMonday) {
+      weeks[getWeek(startMonday)] = {
+        day: date.formatDate(startMonday, "YYYY-MM-DD"),
+        tasks: [],
+      };
+      startMonday = date.addToDate(startMonday, { days: 7 });
+    }
+    return weeks;
+  };
+  if (tasks.value.length) {
+    const start = new Date(tasks.value[0].planned.slice(0, 10));
+    const end = date.addToDate(
+      new Date(tasks.value[tasks.value.length - 1].planned.slice(0, 10)),
+      { days: 7 }
+    );
+    const weeks = build({}, getMonday(start), getMonday(end));
+    tasks.value.forEach((task) => {
+      weeks[getWeek(task.planned)].tasks.push(task);
     });
+    return weeks;
   }
-  return calendar;
+  return build({}, currentMonday, date.addToDate(currentMonday, { days: 14 }));
 });
 onMounted(() => {
   const data = localStorage.getItem(TASKS_FILTER_KEY);
