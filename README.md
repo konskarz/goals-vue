@@ -40,18 +40,19 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 
 ### Plan
 
-Description: [Timeline](https://quasar.dev/vue-components/timeline) of Weeks/Tasks with 'New [Task](#task)' Button\
-API: `/api/v2/plan/` - GET
+Description: [Timeline](https://quasar.dev/vue-components/timeline) of Weeks/Tasks with 'Filter by [Goal](#goal)' Select\
+API: `/api/v2/plan/`, `/api/v2/plan/?goal=:id` - GET
 
 - subtitle: `day` - format: `Week 50 · 2022 / Q4 · Dez. 12`
 - [List](https://quasar.dev/vue-components/list-and-list-items): `tasks`
   [List Item](https://quasar.dev/vue-components/list-and-list-items) - on click [Dialog](https://quasar.dev/quasar-plugins/dialog) with `performance` ([Task](#task)), `duration` ([Time](#time)) fields and link to [Task](#task)
   - label: `name`
-  - caption: `performance` of `target`
+  - if `target > 1` caption: `performance` of `target`
+  - if `target > 1` label: [linear-progress](https://quasar.dev/vue-components/linear-progress) `performance / target`
 
 ### Goals
 
-Description: Tree of Goals with 'New [Goal](#goal)' Button\
+Description: Tree of Goals\
 API: `/api/v2/goals/` - GET, POST\
 [List Item](https://quasar.dev/vue-components/list-and-list-items)/[Expansion Item](https://quasar.dev/vue-components/expansion-item) - Link to [Goal](#goal)
 
@@ -82,7 +83,7 @@ Fields: `name`, `parent`, `planned`, `description`
 
 Description: Form with Delete/Save/Cancel Buttons\
 API: `/api/v2/tasks/:id/` - GET, PUT, PATCH, DELETE\
-Fields: `name`, `goal`, `planned`, `recurring_until` (on create), `target`, `performance`, `planned_total_time`, `done` (on edit), `description`
+Fields: `name`, `goal`, `planned`, `recurring_until` (on create), `target`, `performance`, `planned_total_time`, `done` (on edit), `description`, `performance_history` (readonly)
 
 ### Time
 

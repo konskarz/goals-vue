@@ -1,7 +1,7 @@
 <script setup>
 import { useRoute } from "vue-router";
 import { usePersistent } from "../stores/persistent";
-import ParentSelect from "../components/ParentSelect.vue";
+import GoalSelect from "../components/GoalSelect.vue";
 import DateInput from "../components/DateInput.vue";
 
 const route = useRoute();
@@ -51,9 +51,10 @@ const { item, persist, remove, save, back } = usePersistent(
           @keyup.esc="back"
         />
         <div class="row q-col-gutter-lg">
-          <ParentSelect
+          <GoalSelect
             v-model="item.parent"
             label="Parent"
+            stack-label
             :option-disable-id="itemId"
             class="col-12 col-sm-6"
           />
