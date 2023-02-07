@@ -1,10 +1,15 @@
 <script setup>
+import { computed } from "vue";
 import { useRoute } from "vue-router";
+import { useTimeStore } from "../stores/TimeStore";
+import { useTaskStore } from "../stores/TaskStore";
 import { usePersistent } from "../stores/persistent";
 import DateInput from "../components/DateInput.vue";
 import DurationInput from "../components/DurationInput.vue";
 
 const route = useRoute();
+const store = useTimeStore();
+const taskStore = useTaskStore();
 const itemId = parseInt(route.params.id);
 const { item, persist, remove, save, back } = usePersistent(
   {
@@ -15,8 +20,10 @@ const { item, persist, remove, save, back } = usePersistent(
     description: "",
   },
   "/times/",
+  store,
   itemId
 );
+const taskName = computed(() => taskStore.getItem(item.value.task).name);
 </script>
 
 <template>
@@ -45,7 +52,7 @@ const { item, persist, remove, save, back } = usePersistent(
       <div class="q-pa-md">
         <div class="row q-col-gutter-lg">
           <q-input
-            v-model="item.task"
+            v-model="taskName"
             label="Task"
             stack-label
             readonly

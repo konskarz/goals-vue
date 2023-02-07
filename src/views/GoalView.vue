@@ -1,10 +1,12 @@
 <script setup>
 import { useRoute } from "vue-router";
+import { useGoalStore } from "../stores/GoalStore";
 import { usePersistent } from "../stores/persistent";
 import GoalSelect from "../components/GoalSelect.vue";
 import DateInput from "../components/DateInput.vue";
 
 const route = useRoute();
+const store = useGoalStore();
 const itemId = parseInt(route.params.id);
 const { item, persist, remove, save, back } = usePersistent(
   {
@@ -14,6 +16,7 @@ const { item, persist, remove, save, back } = usePersistent(
     description: "",
   },
   "/goals/",
+  store,
   itemId
 );
 </script>

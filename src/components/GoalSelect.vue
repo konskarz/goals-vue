@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from "vue";
-import apiClient from "../stores/api.client";
+import { useGoalStore } from "../stores/GoalStore";
 
 const props = defineProps({
   modelValue: {
@@ -21,7 +21,7 @@ const model = computed({
     emit("update:modelValue", value);
   },
 });
-const { data: options } = apiClient.read("/goals/");
+const store = useGoalStore();
 function optionDisable(option) {
   return option.id === props.optionDisableId;
 }
@@ -30,7 +30,7 @@ function optionDisable(option) {
 <template>
   <q-select
     v-model="model"
-    :options="options"
+    :options="store.data"
     option-value="id"
     option-label="name"
     :option-disable="optionDisable"

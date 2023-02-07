@@ -2,6 +2,7 @@
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { useQuasar, date } from "quasar";
+import { useTaskStore } from "../stores/TaskStore";
 import { usePersistent } from "../stores/persistent";
 import GoalSelect from "../components/GoalSelect.vue";
 import DateInput from "../components/DateInput.vue";
@@ -10,6 +11,7 @@ import DurationInput from "../components/DurationInput.vue";
 
 const route = useRoute();
 const $q = useQuasar();
+const store = useTaskStore();
 const itemId = parseInt(route.params.id);
 const group = "recurring/";
 const { item, path, persist, remove, save, back } = usePersistent(
@@ -26,6 +28,7 @@ const { item, path, persist, remove, save, back } = usePersistent(
     performance_history: [],
   },
   "/tasks/",
+  store,
   itemId
 );
 const performanceHistory = computed(() => {

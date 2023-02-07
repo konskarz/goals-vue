@@ -1,6 +1,7 @@
 <script setup>
 import "drag-drop-touch";
 import { date } from "quasar";
+import { useTaskStore } from "../stores/TaskStore";
 import apiClient from "../stores/api.client";
 import TaskListItem from "./TaskListItem.vue";
 
@@ -11,6 +12,7 @@ const props = defineProps({
   },
 });
 const emit = defineEmits(["mutate"]);
+const store = useTaskStore();
 const monday = new Date(props.week.day);
 const formated = date.formatDate(monday, "w-Q-YYYY-MMM D").split("-");
 const subtitle = [
@@ -32,14 +34,17 @@ function onDragStart(e, task) {
 function onDrop(e) {
   const data = JSON.parse(e.dataTransfer.getData("text"));
   if (data.week === formated[0]) return;
-  const newDate = date.addToDate(monday, {
-    days: data.day - 1,
+  const newData = {
+    planned: date
+      .addToDate(monday, {
+        days: data.day - 1,
+      })
+      .toISOString(),
+  };
+  apiClient.update("/tasks/" + data.id + "/", newData).then(() => {
+    store.setItem(data.id, newData);
+    emit("mutate");
   });
-  apiClient
-    .update("/tasks/" + data.id + "/", {
-      planned: newDate.toISOString(),
-    })
-    .then(() => emit("mutate"));
 }
 </script>
 
