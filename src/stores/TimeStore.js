@@ -13,7 +13,12 @@ export const useTimeStore = defineStore("TimeStore", () => {
     setItem,
     addItem,
     getIndex,
+    removeItem,
+    createItem,
+    updateItem,
     deleteItem,
+    getChanges,
+    isChanged,
   } = useCollection("/times/");
   const relatedStore = useTaskStore();
   const addNames = (data) => {
@@ -35,7 +40,12 @@ export const useTimeStore = defineStore("TimeStore", () => {
     setItem,
     addItem,
     getIndex,
+    removeItem,
+    createItem,
+    updateItem,
     deleteItem,
+    getChanges,
+    isChanged,
     relative,
   };
 });

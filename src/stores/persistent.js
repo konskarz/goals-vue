@@ -19,10 +19,9 @@ export function usePersistent(schema, url, store, id) {
   }
   function update() {
     const current = { ...item.value };
-    const changed = Object.keys(current).reduce((changed, key) => {
-      if (current[key] !== original[key]) changed[key] = current[key];
-      return changed;
-    }, {});
+    const changed = Object.fromEntries(
+      Object.entries(current).filter(([key, value]) => original[key] !== value)
+    );
     if (Object.keys(changed).length) {
       apiClient.update(url + path.value, changed).then(() => {
         store.setItem(id, changed);

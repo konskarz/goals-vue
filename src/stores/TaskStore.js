@@ -14,7 +14,12 @@ export const useTaskStore = defineStore("TaskStore", () => {
     setItem,
     addItem,
     getIndex,
+    removeItem,
+    createItem,
+    updateItem,
     deleteItem,
+    getChanges,
+    isChanged,
   } = useCollection("/tasks/");
   const relatedStore = useGoalStore();
   const addNames = (data) => {
@@ -102,7 +107,12 @@ export const useTaskStore = defineStore("TaskStore", () => {
     setItem,
     addItem,
     getIndex,
+    removeItem,
+    createItem,
+    updateItem,
     deleteItem,
+    getChanges,
+    isChanged,
     currentWeek,
     filter,
     relative,

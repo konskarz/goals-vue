@@ -18,7 +18,12 @@ export const useGoalStore = defineStore("GoalStore", () => {
     setItem,
     addItem,
     getIndex,
+    removeItem,
+    createItem,
+    updateItem,
     deleteItem,
+    getChanges,
+    isChanged,
   } = useCollection("/goals/");
   const tree = computed(() => (data.value ? arrayToTree(data.value) : null));
   function getBranch(itemId) {
@@ -43,7 +48,12 @@ export const useGoalStore = defineStore("GoalStore", () => {
     setItem,
     addItem,
     getIndex,
+    removeItem,
+    createItem,
+    updateItem,
     deleteItem,
+    getChanges,
+    isChanged,
     tree,
     getBranch,
   };
