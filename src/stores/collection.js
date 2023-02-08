@@ -21,7 +21,7 @@ export function useCollection(url) {
     return apiClient.create(url, item);
   }
   function updateItem(path, item) {
-    apiClient.update(url + path, item);
+    return apiClient.update(url + path, item);
   }
   function deleteItem(path) {
     return apiClient.delete(url + path);

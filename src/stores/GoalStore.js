@@ -25,7 +25,9 @@ export const useGoalStore = defineStore("GoalStore", () => {
     getChanges,
     isChanged,
   } = useCollection("/goals/");
-  const tree = computed(() => (data.value ? arrayToTree(data.value) : null));
+  const tree = computed(() => {
+    return data.value ? arrayToTree(data.value) : null;
+  });
   function getBranch(itemId) {
     const branch = [itemId];
     const rFilter = (id) =>
