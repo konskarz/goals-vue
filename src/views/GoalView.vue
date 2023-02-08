@@ -43,7 +43,7 @@ function update() {
   if (Object.keys(changed).length) {
     store.updateItem(path, changed).then(() => {
       store.setItem(itemId, changed);
-      // store.mutate();
+      store.mutate();
       back();
     });
   } else {

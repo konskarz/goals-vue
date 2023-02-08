@@ -1,13 +1,8 @@
 import { csrftoken } from "./csrftoken.js";
 import axios from "axios";
-import useSWRV from "swrv";
-import LocalStorageCache from "swrv/dist/cache/adapters/localStorage";
+import { useSWR } from "swr-vue";
 import { Notify } from "quasar";
 
-const SWRV_CONFIG = {
-  cache: new LocalStorageCache("swrv"),
-  shouldRetryOnError: false,
-};
 const HOST = window.location.host;
 const BASE_URL =
   HOST === "lifetrackerbuddy.com" ||
@@ -52,7 +47,7 @@ export default {
     return api.post(url, data).then(handleSuccess).catch(handleError);
   },
   read(url) {
-    return useSWRV(url, fetcher, SWRV_CONFIG);
+    return useSWR(url, fetcher);
   },
   replace(url, data) {
     return api.put(url, data).then(handleSuccess).catch(handleError);
