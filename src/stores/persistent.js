@@ -1,48 +1,43 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import apiClient from "./api.client";
 
-export function usePersistent(schema, url, store, id) {
-  const item = ref(id ? store.getItem(id) : schema);
+export function usePersistent(id, store, model) {
+  const item = ref(id ? { ...store.getItem(id) } : model);
   const path = ref(id + "/");
   const persist = ref(false);
-  const router = useRouter();
   const original = id ? { ...item.value } : null;
-  function remove() {
-    if (id) {
-      persist.value = true;
-      apiClient.delete(url + path.value).then(() => {
-        store.deleteItem(id);
-        back();
-      });
-    }
+  const router = useRouter();
+  function back() {
+    router.back();
+  }
+  function create() {
+    store.createItem(item.value).then((/* data */) => {
+      // store.addItem(data);
+      store.mutate();
+      back();
+    });
   }
   function update() {
-    const current = { ...item.value };
-    const changed = Object.fromEntries(
-      Object.entries(current).filter(([key, value]) => original[key] !== value)
-    );
-    if (Object.keys(changed).length) {
-      apiClient.update(url + path.value, changed).then(() => {
-        store.setItem(id, changed);
-        back();
-      });
-    } else {
+    const changed = store.getChanges(original, { ...item.value });
+    store.updateItem(path.value, changed).then(() => {
+      // store.setItem(id, changed);
+      store.mutate();
       back();
-    }
+    });
+  }
+  function remove() {
+    persist.value = true;
+    store.deleteItem(path.value).then(() => {
+      // store.removeItem(id);
+      store.mutate();
+      back();
+    });
   }
   function save() {
     persist.value = true;
     if (id) update();
-    else
-      apiClient.create(url, item.value).then((data) => {
-        store.addItem(data);
-        back();
-      });
-  }
-  function back() {
-    router.back();
+    else create();
   }
 
-  return { item, path, persist, remove, save, back };
+  return { item, original, path, persist, remove, save, back };
 }

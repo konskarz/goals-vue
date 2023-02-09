@@ -13,8 +13,9 @@ const route = useRoute();
 const $q = useQuasar();
 const store = useTaskStore();
 const itemId = parseInt(route.params.id);
-const group = "recurring/";
-const { item, path, persist, remove, save, back } = usePersistent(
+const { item, original, path, persist, remove, save, back } = usePersistent(
+  itemId,
+  store,
   {
     name: "",
     goal: null,
@@ -26,10 +27,13 @@ const { item, path, persist, remove, save, back } = usePersistent(
     done: null,
     description: "",
     performance_history: [],
-  },
-  "/tasks/",
-  store,
-  itemId
+  }
+);
+const disable = computed(
+  () =>
+    !item.value.name ||
+    persist.value ||
+    Boolean(itemId && !store.isChanged(original, { ...item.value }))
 );
 const performanceHistory = computed(() => {
   const ph = item.value.performance_history;
@@ -49,6 +53,9 @@ const options = {
     { label: "All tasks", value: "all" },
   ],
 };
+function setGroupPath() {
+  path.value = "recurring/" + item.value.group_id + "/";
+}
 function removeOptions() {
   if (item.value.group_id) {
     $q.dialog({
@@ -57,7 +64,7 @@ function removeOptions() {
       ok: "Delete",
       options: options,
     }).onOk((data) => {
-      if (data === "all") path.value = group + item.value.group_id + "/";
+      if (data === "all") setGroupPath();
       remove();
     });
   } else {
@@ -72,7 +79,7 @@ function saveOptions() {
       ok: "Save",
       options: options,
     }).onOk((data) => {
-      if (data === "all") path.value = group + item.value.group_id + "/";
+      if (data === "all") setGroupPath();
       save();
     });
   } else {
@@ -96,13 +103,7 @@ function saveOptions() {
           :disable="persist"
           @click="removeOptions"
         />
-        <q-btn
-          type="submit"
-          flat
-          round
-          icon="save"
-          :disable="!item.name || persist"
-        />
+        <q-btn type="submit" flat round icon="save" :disable="disable" />
         <q-btn type="button" flat round icon="clear" @click="back" />
       </q-toolbar>
       <div class="q-pa-md">

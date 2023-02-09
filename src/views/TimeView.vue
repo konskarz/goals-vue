@@ -11,17 +11,22 @@ const route = useRoute();
 const store = useTimeStore();
 const taskStore = useTaskStore();
 const itemId = parseInt(route.params.id);
-const { item, persist, remove, save, back } = usePersistent(
+const { item, original, persist, remove, save, back } = usePersistent(
+  itemId,
+  store,
   {
     task: parseInt(route.params.task),
     start: new Date().toISOString(),
     end: null,
     duration: null,
     description: "",
-  },
-  "/times/",
-  store,
-  itemId
+  }
+);
+const disable = computed(
+  () =>
+    !item.value.duration ||
+    persist.value ||
+    Boolean(itemId && !store.isChanged(original, { ...item.value }))
 );
 const taskName = computed(() => taskStore.getItem(item.value.task).name);
 </script>
@@ -40,13 +45,7 @@ const taskName = computed(() => taskStore.getItem(item.value.task).name);
           :disable="persist"
           @click="remove"
         />
-        <q-btn
-          type="submit"
-          flat
-          round
-          icon="save"
-          :disable="!item.duration || persist"
-        />
+        <q-btn type="submit" flat round icon="save" :disable="disable" />
         <q-btn type="button" flat round icon="clear" @click="back" />
       </q-toolbar>
       <div class="q-pa-md">
