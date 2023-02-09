@@ -51,20 +51,22 @@ export const useTaskStore = defineStore("TaskStore", () => {
   );
   const filtered = computed(() =>
     data.value
-      .filter((task) => {
-        const passed = new Date(task.planned.slice(0, 10)) < currentMonday;
-        if (passed && filter.value.done && task.done) {
-          return false;
-        } else if (passed && filter.value.recurring && task.group_id) {
-          return false;
-        } else if (
-          filter.value.goal &&
-          !relatedStore.getBranch(filter.value.goal).includes(task.goal)
-        ) {
-          return false;
-        } else return true;
-      })
-      .sort((a, b) => Date.parse(a.planned) - Date.parse(b.planned))
+      ? data.value
+          .filter((task) => {
+            const passed = new Date(task.planned.slice(0, 10)) < currentMonday;
+            if (passed && filter.value.done && task.done) {
+              return false;
+            } else if (passed && filter.value.recurring && task.group_id) {
+              return false;
+            } else if (
+              filter.value.goal &&
+              !relatedStore.getBranch(filter.value.goal).includes(task.goal)
+            ) {
+              return false;
+            } else return true;
+          })
+          .sort((a, b) => Date.parse(a.planned) - Date.parse(b.planned))
+      : null
   );
   const calendar = computed(() => {
     const build = (weeks, startMonday, endMonday) => {
@@ -77,7 +79,7 @@ export const useTaskStore = defineStore("TaskStore", () => {
       }
       return weeks;
     };
-    if (filtered.value.length) {
+    if (filtered.value && filtered.value.length) {
       const start = new Date(filtered.value[0].planned.slice(0, 10));
       const end = date.addToDate(
         new Date(
