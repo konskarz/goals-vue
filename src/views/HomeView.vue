@@ -46,7 +46,6 @@ const store = useTaskStore();
           v-if="week.day"
           :color="key === store.currentWeek ? 'orange' : ''"
           :week="week"
-          @mutate="store.mutate"
         />
       </template>
     </q-timeline>

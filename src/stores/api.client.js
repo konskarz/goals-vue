@@ -1,7 +1,7 @@
-import { csrftoken } from "./csrftoken.js";
 import axios from "axios";
 import { useSWR } from "swr-vue";
 import { Notify } from "quasar";
+import { csrftoken } from "../lib/csrftoken.js";
 
 const HOST = window.location.host;
 const BASE_URL =
