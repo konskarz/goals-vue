@@ -10,8 +10,6 @@ const BASE_URL =
   HOST === "localhost:8088"
     ? "/api/v2"
     : "https://lifetrackerbuddy.com/api/v2";
-const AUTH_TOKEN_KEY = "Access-Token";
-const AUTH_TOKEN_VALUE = localStorage.getItem(AUTH_TOKEN_KEY);
 const api = axios.create({
   baseURL: BASE_URL,
   headers: {
@@ -19,9 +17,6 @@ const api = axios.create({
     "X-CSRFTOKEN": csrftoken,
   },
 });
-if (AUTH_TOKEN_VALUE) {
-  api.defaults.headers.common["Authorization"] = `Token ${AUTH_TOKEN_VALUE}`;
-}
 const handleSuccess = (response) => {
   Notify.create({
     color: "positive",
@@ -58,12 +53,7 @@ export default {
   delete(url) {
     return api.delete(url).then(handleSuccess).catch(handleError);
   },
-  setAuthToken(token) {
-    api.defaults.headers.common["Authorization"] = `Token ${token}`;
-    localStorage.setItem(AUTH_TOKEN_KEY, token);
-  },
-  clearAuthToken() {
-    api.defaults.headers.common["Authorization"] = "";
-    localStorage.removeItem(AUTH_TOKEN_KEY);
+  auth(data) {
+    api.defaults.headers.common["Authorization"] = data;
   },
 };

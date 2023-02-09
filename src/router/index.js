@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import routes from "./routes";
+import { useUserStore } from "../stores/UserStore";
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -8,9 +9,10 @@ const router = createRouter({
     savedPosition ? savedPosition : { left: 0, top: 0 },
 });
 router.beforeEach((to, from, next) => {
+  const store = useUserStore();
   if (
     to.matched.some((record) => record.meta.requiresAuth) &&
-    !localStorage.getItem("Access-Token")
+    !store.loggedIn
   ) {
     next({ name: "login", query: { next: to.fullPath } });
   } else {
