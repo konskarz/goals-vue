@@ -47,7 +47,7 @@ export const useTaskStore = defineStore("TaskStore", () => {
   const currentMonday = getMonday(currentDate);
   const currentWeek = getWeek(currentDate);
   const relative = computed(() =>
-    data.value ? addNames([...data.value]) : null
+    data.value && relatedStore.data ? addNames([...data.value]) : null
   );
   const filtered = computed(() =>
     data.value

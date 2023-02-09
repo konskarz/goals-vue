@@ -28,7 +28,7 @@ export const useTimeStore = defineStore("TimeStore", () => {
     return data;
   };
   const relative = computed(() =>
-    data.value ? addNames([...data.value]) : null
+    data.value && relatedStore.data ? addNames([...data.value]) : null
   );
 
   return {
