@@ -6,6 +6,8 @@ import { useUserStore } from "../stores/UserStore";
 const router = useRouter();
 const route = useRoute();
 const store = useUserStore();
+if (store.loggedIn) router.push(route.query.next ? route.query.next : "/");
+
 const user = ref({
   username: "",
   password: "",
