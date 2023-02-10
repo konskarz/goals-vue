@@ -1,9 +1,10 @@
 <script setup>
 import { computed } from "vue";
 import { useQuasar } from "quasar";
-import confetti from "canvas-confetti";
+import fireworks from "../lib/fireworks";
 import ProgressDialog from "./ProgressDialog.vue";
-import apiClient from "../stores/api.client";
+import { useTaskStore } from "../stores/TaskStore";
+import { useTimeStore } from "../stores/TimeStore";
 
 const props = defineProps({
   task: {
@@ -11,8 +12,9 @@ const props = defineProps({
     required: true,
   },
 });
-const emit = defineEmits(["mutate", "ondragstart"]);
 const $q = useQuasar();
+const taskStore = useTaskStore();
+const timeStore = useTimeStore();
 const showProgress = computed(() => props.task.target > 1 && !props.task.done);
 const progress = computed(() =>
   showProgress.value ? props.task.performance / props.task.target : 0
@@ -20,39 +22,6 @@ const progress = computed(() =>
 const caption = computed(() =>
   [props.task.performance, "of", props.task.target].join(" ")
 );
-function fireworks() {
-  var duration = 3 * 1000;
-  var animationEnd = Date.now() + duration;
-  var defaults = {
-    startVelocity: 30,
-    spread: 360,
-    ticks: 60,
-    zIndex: 0,
-    disableForReducedMotion: true,
-  };
-  function randomInRange(min, max) {
-    return Math.random() * (max - min) + min;
-  }
-  var interval = setInterval(function () {
-    var timeLeft = animationEnd - Date.now();
-    if (timeLeft <= 0) {
-      return clearInterval(interval);
-    }
-    var particleCount = 100 * (timeLeft / duration);
-    confetti(
-      Object.assign({}, defaults, {
-        particleCount,
-        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
-      })
-    );
-    confetti(
-      Object.assign({}, defaults, {
-        particleCount,
-        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
-      })
-    );
-  }, 250);
-}
 function showProgressDialog() {
   $q.dialog({
     component: ProgressDialog,
@@ -60,22 +29,25 @@ function showProgressDialog() {
   }).onOk((data) => {
     if (data.performance !== props.task.performance) {
       if (data.performance >= props.task.target) fireworks();
-      apiClient
-        .update("/tasks/" + props.task.id + "/", {
-          performance: data.performance,
-        })
-        .then(() => emit("mutate"));
+      const changed = { performance: data.performance };
+      taskStore.setItem(props.task.id, changed);
+      taskStore
+        .updateItem(props.task.id + "/", changed)
+        .then(() => taskStore.mutate());
     }
     if (data.duration) {
-      apiClient
-        .create("/times/", {
+      timeStore
+        .createItem({
           task: props.task.id,
           start: new Date().toISOString(),
           end: null,
           duration: data.duration,
           description: "",
         })
-        .then(() => emit("mutate"));
+        .then((/* data */) => {
+          // store.addItem(data);
+          timeStore.mutate();
+        });
     }
   });
 }

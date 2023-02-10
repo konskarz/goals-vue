@@ -1,10 +1,13 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import apiClient from "../stores/api.client";
+import { getActivePinia } from "pinia";
+import { useUserStore } from "../stores/UserStore";
 
 const router = useRouter();
 const route = useRoute();
+const pinia = getActivePinia();
+const store = useUserStore();
 const menuList = [
   {
     to: "/",
@@ -32,8 +35,12 @@ function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
 function logout() {
-  apiClient.clearAuthToken();
+  store.logout();
   router.push({ name: "login", query: { next: route.fullPath } });
+  pinia._s.forEach((store) => {
+    store.$dispose();
+    delete pinia.state.value[store.$id];
+  });
 }
 </script>
 

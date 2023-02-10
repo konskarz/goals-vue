@@ -1,13 +1,8 @@
-import { csrftoken } from "./csrftoken.js";
 import axios from "axios";
-import useSWRV from "swrv";
-import LocalStorageCache from "swrv/dist/cache/adapters/localStorage";
+import { useSWR } from "swr-vue";
 import { Notify } from "quasar";
+import { csrftoken } from "../lib/csrftoken.js";
 
-const SWRV_CONFIG = {
-  cache: new LocalStorageCache("swrv"),
-  shouldRetryOnError: false,
-};
 const HOST = window.location.host;
 const BASE_URL =
   HOST === "lifetrackerbuddy.com" ||
@@ -15,8 +10,6 @@ const BASE_URL =
   HOST === "localhost:8088"
     ? "/api/v2"
     : "https://lifetrackerbuddy.com/api/v2";
-const AUTH_TOKEN_KEY = "Access-Token";
-const AUTH_TOKEN_VALUE = localStorage.getItem(AUTH_TOKEN_KEY);
 const api = axios.create({
   baseURL: BASE_URL,
   headers: {
@@ -24,9 +17,6 @@ const api = axios.create({
     "X-CSRFTOKEN": csrftoken,
   },
 });
-if (AUTH_TOKEN_VALUE) {
-  api.defaults.headers.common["Authorization"] = `Token ${AUTH_TOKEN_VALUE}`;
-}
 const handleSuccess = (response) => {
   Notify.create({
     color: "positive",
@@ -52,7 +42,7 @@ export default {
     return api.post(url, data).then(handleSuccess).catch(handleError);
   },
   read(url) {
-    return useSWRV(url, fetcher, SWRV_CONFIG);
+    return useSWR(url, fetcher);
   },
   replace(url, data) {
     return api.put(url, data).then(handleSuccess).catch(handleError);
@@ -63,12 +53,7 @@ export default {
   delete(url) {
     return api.delete(url).then(handleSuccess).catch(handleError);
   },
-  setAuthToken(token) {
-    api.defaults.headers.common["Authorization"] = `Token ${token}`;
-    localStorage.setItem(AUTH_TOKEN_KEY, token);
-  },
-  clearAuthToken() {
-    api.defaults.headers.common["Authorization"] = "";
-    localStorage.removeItem(AUTH_TOKEN_KEY);
+  auth(data) {
+    api.defaults.headers.common["Authorization"] = data;
   },
 };
