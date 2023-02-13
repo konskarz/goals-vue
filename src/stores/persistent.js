@@ -11,25 +11,22 @@ export function usePersistent(id, store, model) {
     router.back();
   }
   function create() {
-    store.createItem(item.value).then((/* data */) => {
-      // store.addItem(data);
-      store.mutate();
+    store.createItem(item.value).then(() => {
+      store.refetch();
       back();
     });
   }
   function update() {
     const changed = store.getChanges(original, { ...item.value });
     store.updateItem(path.value, changed).then(() => {
-      // store.setItem(id, changed);
-      store.mutate();
+      store.refetch();
       back();
     });
   }
   function remove() {
     persist.value = true;
     store.deleteItem(path.value).then(() => {
-      // store.removeItem(id);
-      store.mutate();
+      store.refetch();
       back();
     });
   }

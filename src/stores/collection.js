@@ -1,30 +1,22 @@
-import apiClient from "./api.client";
+import { useApiClient } from "./ApiClient";
 
 export function useCollection(url) {
-  const { data, error, isValidating, mutate } = apiClient.read(url);
+  const { post, patch, remove, query } = useApiClient();
+  const { isLoading, isError, data, error, refetch } = query(url);
   function getItem(itemId) {
     return data.value.find((item) => item.id === itemId);
-  }
-  function setItem(itemId, trgItem) {
-    Object.assign(getItem(itemId), trgItem);
-  }
-  function addItem(item) {
-    data.value.push(item);
   }
   function getIndex(item) {
     return data.value.indexOf(item);
   }
-  function removeItem(itemId) {
-    data.value.splice(getIndex(getItem(itemId)), 1);
+  function createItem(data) {
+    return post(url, data);
   }
-  function createItem(item) {
-    return apiClient.create(url, item);
-  }
-  function updateItem(path, item) {
-    return apiClient.update(url + path, item);
+  function updateItem(path, data) {
+    return patch(url + path, data);
   }
   function deleteItem(path) {
-    return apiClient.delete(url + path);
+    return remove(url + path);
   }
   function getChanges(src, trg) {
     return Object.fromEntries(
@@ -35,15 +27,13 @@ export function useCollection(url) {
     return Object.keys(getChanges(src, trg)).length;
   }
   return {
+    isLoading,
+    isError,
     data,
     error,
-    isValidating,
-    mutate,
+    refetch,
     getItem,
-    setItem,
-    addItem,
     getIndex,
-    removeItem,
     createItem,
     updateItem,
     deleteItem,

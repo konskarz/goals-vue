@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, watch, onMounted } from "vue";
 import { date } from "quasar";
-import apiClient from "../stores/api.client";
+import { useApiClient } from "../stores/ApiClient";
 import GoalSelect from "../components/GoalSelect.vue";
 import WeekTimelineEntry from "../components/WeekTimelineEntry.vue";
 
@@ -11,7 +11,8 @@ const goal = ref(null);
 const url = computed(() =>
   goal.value ? "/plan/?goal=" + goal.value : "/plan/"
 );
-const { data: plan, mutate } = apiClient.read(url);
+const { query } = useApiClient();
+const { data: plan, refetch: mutate } = query(url);
 onMounted(() => {
   const stored = localStorage.getItem(GOAL_FILTER_KEY);
   if (stored) goal.value = parseInt(stored);

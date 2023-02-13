@@ -10,15 +10,13 @@ const arrayToTree = (array, parent = null) =>
 
 export const useGoalStore = defineStore("GoalStore", () => {
   const {
+    isLoading,
+    isError,
     data,
     error,
-    isValidating,
-    mutate,
+    refetch,
     getItem,
-    setItem,
-    addItem,
     getIndex,
-    removeItem,
     createItem,
     updateItem,
     deleteItem,
@@ -42,15 +40,13 @@ export const useGoalStore = defineStore("GoalStore", () => {
   }
 
   return {
+    isLoading,
+    isError,
     data,
     error,
-    isValidating,
-    mutate,
+    refetch,
     getItem,
-    setItem,
-    addItem,
     getIndex,
-    removeItem,
     createItem,
     updateItem,
     deleteItem,

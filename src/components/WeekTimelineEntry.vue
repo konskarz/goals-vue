@@ -39,8 +39,7 @@ function onDrop(e) {
       })
       .toISOString(),
   };
-  store.setItem(data.id, changed);
-  store.updateItem(data.id + "/", changed).then(() => store.mutate());
+  store.updateItem(data.id + "/", changed).then(() => store.refetch());
 }
 </script>
 

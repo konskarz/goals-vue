@@ -1,19 +1,17 @@
-import { computed } from "vue";
+import { computed, toRaw } from "vue";
 import { defineStore } from "pinia";
 import { useCollection } from "./collection";
 import { useTaskStore } from "./TaskStore";
 
 export const useTimeStore = defineStore("TimeStore", () => {
   const {
+    isLoading,
+    isError,
     data,
     error,
-    isValidating,
-    mutate,
+    refetch,
     getItem,
-    setItem,
-    addItem,
     getIndex,
-    removeItem,
     createItem,
     updateItem,
     deleteItem,
@@ -28,19 +26,17 @@ export const useTimeStore = defineStore("TimeStore", () => {
     return data;
   };
   const relative = computed(() =>
-    data.value && relatedStore.data ? addNames([...data.value]) : null
+    data.value && relatedStore.data ? addNames([...toRaw(data.value)]) : null
   );
 
   return {
+    isLoading,
+    isError,
     data,
     error,
-    isValidating,
-    mutate,
+    refetch,
     getItem,
-    setItem,
-    addItem,
     getIndex,
-    removeItem,
     createItem,
     updateItem,
     deleteItem,

@@ -30,10 +30,9 @@ function showProgressDialog() {
     if (data.performance !== props.task.performance) {
       if (data.performance >= props.task.target) fireworks();
       const changed = { performance: data.performance };
-      taskStore.setItem(props.task.id, changed);
       taskStore
         .updateItem(props.task.id + "/", changed)
-        .then(() => taskStore.mutate());
+        .then(() => taskStore.refetch());
     }
     if (data.duration) {
       timeStore
@@ -44,9 +43,8 @@ function showProgressDialog() {
           duration: data.duration,
           description: "",
         })
-        .then((/* data */) => {
-          // store.addItem(data);
-          timeStore.mutate();
+        .then(() => {
+          timeStore.refetch();
         });
     }
   });
