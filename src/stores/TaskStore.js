@@ -51,6 +51,7 @@ export const useTaskStore = defineStore("TaskStore", () => {
     data.value
       ? data.value
           .filter((task) => {
+            if (!task.planned) return false;
             const passed = new Date(task.planned.slice(0, 10)) < currentMonday;
             if (passed && filter.value.done && task.done) {
               return false;

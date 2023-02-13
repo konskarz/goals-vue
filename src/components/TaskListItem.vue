@@ -1,10 +1,10 @@
 <script setup>
 import { computed } from "vue";
 import { useQuasar } from "quasar";
-import fireworks from "../lib/fireworks";
-import ProgressDialog from "./ProgressDialog.vue";
 import { useTaskStore } from "../stores/TaskStore";
 import { useTimeStore } from "../stores/TimeStore";
+import { fireworks } from "../lib/fireworks";
+import ProgressDialog from "./ProgressDialog.vue";
 
 const props = defineProps({
   task: {

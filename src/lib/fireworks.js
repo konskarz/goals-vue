@@ -1,7 +1,7 @@
 // https://www.kirilv.com/canvas-confetti/#fireworks
 import confetti from "canvas-confetti";
 
-export default function fireworks() {
+export function fireworks() {
   var duration = 3 * 1000;
   var animationEnd = Date.now() + duration;
   var defaults = {
