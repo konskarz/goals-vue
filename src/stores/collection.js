@@ -1,23 +1,26 @@
+import { ref } from "vue";
 import { useApiClient } from "./ApiClient";
 
 export function useCollection(url) {
-  const { query, mutation } = useApiClient();
-  const { isLoading, isError, data, error, refetch } = query(url);
-  const { mutateAsync } = mutation();
+  const { request, get } = useApiClient();
+  const data = ref(JSON.parse(localStorage.getItem(url)));
+  function refetch() {
+    get(url).then((response) => {
+      data.value = response;
+      localStorage.setItem(url, JSON.stringify(response));
+    });
+  }
   function getItem(itemId) {
     return data.value.find((item) => item.id === itemId);
   }
-  function getIndex(item) {
-    return data.value.indexOf(item);
-  }
   function createItem(data) {
-    return mutateAsync({ method: "post", url, data });
+    return request({ method: "post", url, data });
   }
   function updateItem(path, data) {
-    return mutateAsync({ method: "patch", url: url + path, data });
+    return request({ method: "patch", url: url + path, data });
   }
   function deleteItem(path) {
-    return mutateAsync({ method: "delete", url: url + path });
+    return request({ method: "delete", url: url + path });
   }
   function getChanges(src, trg) {
     return Object.fromEntries(
@@ -27,14 +30,11 @@ export function useCollection(url) {
   function isChanged(src, trg) {
     return Object.keys(getChanges(src, trg)).length;
   }
+  refetch();
   return {
-    isLoading,
-    isError,
     data,
-    error,
     refetch,
     getItem,
-    getIndex,
     createItem,
     updateItem,
     deleteItem,

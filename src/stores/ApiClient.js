@@ -1,6 +1,4 @@
 import axios from "axios";
-import { useQuery, useMutation } from "@tanstack/vue-query";
-import { isRef } from "vue";
 import { Notify } from "quasar";
 import { csrftoken } from "../lib/csrftoken.js";
 
@@ -44,32 +42,9 @@ export function useApiClient() {
       .then((response) => response.data)
       .catch(handleError);
   }
-  function post(url, data) {
-    return request({ method: "post", url, data });
-  }
-  function put(url, data) {
-    return request({ method: "put", url, data });
-  }
-  function patch(url, data) {
-    return request({ method: "patch", url, data });
-  }
-  function remove(url) {
-    return request({ method: "delete", url });
-  }
-  function query(url) {
-    return useQuery([url], () => get(isRef(url) ? url.value : url));
-  }
-  function mutation() {
-    return useMutation((config) => request(config));
-  }
   return {
     auth,
+    request,
     get,
-    post,
-    put,
-    patch,
-    remove,
-    query,
-    mutation,
   };
 }

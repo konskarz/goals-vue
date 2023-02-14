@@ -1,4 +1,4 @@
-import { computed, ref, toRaw } from "vue";
+import { computed, ref } from "vue";
 import { defineStore } from "pinia";
 import { date } from "quasar";
 import { useCollection } from "./collection";
@@ -6,13 +6,9 @@ import { useGoalStore } from "./GoalStore";
 
 export const useTaskStore = defineStore("TaskStore", () => {
   const {
-    isLoading,
-    isError,
     data,
-    error,
     refetch,
     getItem,
-    getIndex,
     createItem,
     updateItem,
     deleteItem,
@@ -45,7 +41,7 @@ export const useTaskStore = defineStore("TaskStore", () => {
   const currentMonday = getMonday(currentDate);
   const currentWeek = getWeek(currentDate);
   const relative = computed(() =>
-    data.value && relatedStore.data ? addNames([...toRaw(data.value)]) : null
+    data.value && relatedStore.data ? addNames([...data.value]) : null
   );
   const filtered = computed(() =>
     data.value
@@ -100,13 +96,9 @@ export const useTaskStore = defineStore("TaskStore", () => {
   });
 
   return {
-    isLoading,
-    isError,
     data,
-    error,
     refetch,
     getItem,
-    getIndex,
     createItem,
     updateItem,
     deleteItem,

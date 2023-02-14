@@ -1,6 +1,5 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
-import { VueQueryPlugin } from "@tanstack/vue-query";
 import { Quasar, Notify, Dialog } from "quasar";
 
 import "@quasar/extras/material-icons/material-icons.css";
@@ -13,7 +12,6 @@ const app = createApp(App);
 
 app.use(router);
 app.use(createPinia());
-app.use(VueQueryPlugin);
 app.use(Quasar, { plugins: { Notify, Dialog } });
 
 app.mount("#app");

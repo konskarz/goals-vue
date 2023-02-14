@@ -5,12 +5,12 @@ import { useApiClient } from "./ApiClient";
 const AUTH_TOKEN_KEY = "Access-Token";
 
 export const useUserStore = defineStore("UserStore", () => {
-  const { auth, post } = useApiClient();
+  const { auth, request } = useApiClient();
   const authToken = ref(localStorage.getItem(AUTH_TOKEN_KEY));
   const loggedIn = computed(() => Boolean(authToken.value));
   if (loggedIn.value) auth(`Token ${authToken.value}`);
-  function login(credentials) {
-    return post("/auth/", credentials);
+  function login(data) {
+    return request({ method: "post", url: "/auth/", data });
   }
   function setToken(token) {
     auth(`Token ${token}`);
