@@ -7,7 +7,6 @@ export const useUserStore = defineStore("UserStore", () => {
   const { auth, request } = useApiClient();
   const authToken = ref(localStorage.getItem(url));
   const loggedIn = computed(() => Boolean(authToken.value));
-  if (loggedIn.value) auth(`Token ${authToken.value}`);
   function login(data) {
     return request({ method: "post", url, data });
   }
@@ -21,6 +20,7 @@ export const useUserStore = defineStore("UserStore", () => {
     localStorage.removeItem(url);
     authToken.value = null;
   }
+  if (loggedIn.value) auth(`Token ${authToken.value}`);
 
   return {
     loggedIn,

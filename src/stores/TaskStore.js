@@ -16,17 +16,22 @@ export const useTaskStore = defineStore("TaskStore", () => {
     isChanged,
   } = useCollection("/tasks/");
   const relatedStore = useGoalStore();
-  const addNames = (data) => {
-    data.forEach((item) => {
-      item.goalName = item.goal ? relatedStore.getItem(item.goal).name : null;
-    });
-    return data;
-  };
+  const relative = computed(() =>
+    data.value && relatedStore.data
+      ? data.value.map((item) => ({
+          ...item,
+          goalName: item.goal ? relatedStore.getItem(item.goal).name : null,
+        }))
+      : null
+  );
   const filter = ref({
     done: true,
     recurring: true,
     goal: null,
   });
+  const branch = computed(() =>
+    filter.value.goal ? relatedStore.getBranch(filter.value.goal) : null
+  );
   relatedStore.$onAction(({ name, args }) => {
     if (name === "deleteItem" && filter.value.goal === args[0]) {
       filter.value.goal = null;
@@ -40,25 +45,19 @@ export const useTaskStore = defineStore("TaskStore", () => {
   const currentDate = date.startOfDate(new Date(), "day");
   const currentMonday = getMonday(currentDate);
   const currentWeek = getWeek(currentDate);
-  const relative = computed(() =>
-    data.value && relatedStore.data ? addNames([...data.value]) : null
-  );
   const filtered = computed(() =>
     data.value
       ? data.value
           .filter((task) => {
             if (!task.planned) return false;
-            const passed = new Date(task.planned.slice(0, 10)) < currentMonday;
-            if (passed && filter.value.done && task.done) {
+            if (new Date(task.planned.slice(0, 10)) < currentMonday) {
+              if (filter.value.done && task.done) return false;
+              if (filter.value.recurring && task.group_id) return false;
+            }
+            if (branch.value && !branch.value.includes(task.goal)) {
               return false;
-            } else if (passed && filter.value.recurring && task.group_id) {
-              return false;
-            } else if (
-              filter.value.goal &&
-              !relatedStore.getBranch(filter.value.goal).includes(task.goal)
-            ) {
-              return false;
-            } else return true;
+            }
+            return true;
           })
           .sort((a, b) => Date.parse(a.planned) - Date.parse(b.planned))
       : null
@@ -104,10 +103,9 @@ export const useTaskStore = defineStore("TaskStore", () => {
     deleteItem,
     getChanges,
     isChanged,
-    currentWeek,
-    filter,
     relative,
-    filtered,
+    filter,
+    currentWeek,
     calendar,
   };
 });

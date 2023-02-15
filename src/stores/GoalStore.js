@@ -24,14 +24,14 @@ export const useGoalStore = defineStore("GoalStore", () => {
   });
   function getBranch(itemId) {
     const branch = [itemId];
-    const rFilter = (id) =>
+    const getChildren = (parent) =>
       data.value
-        .filter((item) => item.parent === id)
-        .forEach((item) => {
-          branch.push(item.id);
-          rFilter(item.id);
+        .filter((item) => item.parent === parent)
+        .forEach((child) => {
+          branch.push(child.id);
+          getChildren(child.id);
         });
-    rFilter(itemId);
+    getChildren(itemId);
     return branch;
   }
 

@@ -15,14 +15,13 @@ export const useTimeStore = defineStore("TimeStore", () => {
     isChanged,
   } = useCollection("/times/");
   const relatedStore = useTaskStore();
-  const addNames = (data) => {
-    data.forEach((item) => {
-      item.taskName = relatedStore.getItem(item.task).name;
-    });
-    return data;
-  };
   const relative = computed(() =>
-    data.value && relatedStore.data ? addNames([...data.value]) : null
+    data.value && relatedStore.data
+      ? data.value.map((item) => ({
+          ...item,
+          taskName: relatedStore.getItem(item.task).name,
+        }))
+      : null
   );
 
   return {
