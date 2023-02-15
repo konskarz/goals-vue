@@ -41,6 +41,7 @@ function logout() {
     store.$dispose();
     delete pinia.state.value[store.$id];
   });
+  localStorage.clear();
 }
 </script>
 
