@@ -4,16 +4,8 @@ import { useCollection } from "./collection";
 import { useTaskStore } from "./TaskStore";
 
 export const useTimeStore = defineStore("TimeStore", () => {
-  const {
-    data,
-    refetch,
-    getItem,
-    createItem,
-    updateItem,
-    deleteItem,
-    getChanges,
-    isChanged,
-  } = useCollection("/times/");
+  const { data, refetch, getItem, createItem, updateItem, deleteItem } =
+    useCollection("/times/");
   const relatedStore = useTaskStore();
   const relative = computed(() =>
     data.value && relatedStore.data
@@ -31,8 +23,6 @@ export const useTimeStore = defineStore("TimeStore", () => {
     createItem,
     updateItem,
     deleteItem,
-    getChanges,
-    isChanged,
     relative,
   };
 });

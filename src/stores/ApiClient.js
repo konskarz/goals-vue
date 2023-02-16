@@ -42,6 +42,7 @@ export function useApiClient() {
       .then((response) => response.data)
       .catch(handleError);
   }
+
   return {
     auth,
     request,

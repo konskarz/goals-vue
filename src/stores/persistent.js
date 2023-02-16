@@ -7,21 +7,16 @@ export function usePersistent(id, store, model) {
   const persist = ref(false);
   const original = id ? { ...item.value } : null;
   const router = useRouter();
+  function changes(src, trg) {
+    return Object.fromEntries(
+      Object.entries(trg).filter(([key, value]) => src[key] !== value)
+    );
+  }
+  function changed(src, trg) {
+    return Object.keys(changes(src, trg)).length;
+  }
   function back() {
     router.back();
-  }
-  function create() {
-    store.createItem(item.value).then(() => {
-      store.refetch();
-      back();
-    });
-  }
-  function update() {
-    const changed = store.getChanges(original, { ...item.value });
-    store.updateItem(path.value, changed).then(() => {
-      store.refetch();
-      back();
-    });
   }
   function remove() {
     persist.value = true;
@@ -32,9 +27,20 @@ export function usePersistent(id, store, model) {
   }
   function save() {
     persist.value = true;
-    if (id) update();
-    else create();
+    if (id) {
+      store
+        .updateItem(path.value, changes(original, { ...item.value }))
+        .then(() => {
+          store.refetch();
+          back();
+        });
+    } else {
+      store.createItem(item.value).then(() => {
+        store.refetch();
+        back();
+      });
+    }
   }
 
-  return { item, original, path, persist, remove, save, back };
+  return { item, original, path, persist, changed, remove, save, back };
 }

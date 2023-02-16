@@ -9,7 +9,7 @@ import DateInput from "../components/DateInput.vue";
 const route = useRoute();
 const store = useGoalStore();
 const itemId = parseInt(route.params.id);
-const { item, original, persist, remove, save, back } = usePersistent(
+const { item, original, persist, changed, remove, save, back } = usePersistent(
   itemId,
   store,
   {
@@ -23,7 +23,7 @@ const disable = computed(
   () =>
     !item.value.name ||
     persist.value ||
-    Boolean(itemId && !store.isChanged(original, { ...item.value }))
+    Boolean(itemId && !changed(original, { ...item.value }))
 );
 </script>
 

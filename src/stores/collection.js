@@ -22,15 +22,8 @@ export function useCollection(url) {
   function deleteItem(path) {
     return request({ method: "delete", url: url + path });
   }
-  function getChanges(src, trg) {
-    return Object.fromEntries(
-      Object.entries(trg).filter(([key, value]) => src[key] !== value)
-    );
-  }
-  function isChanged(src, trg) {
-    return Object.keys(getChanges(src, trg)).length;
-  }
   refetch();
+
   return {
     data,
     refetch,
@@ -38,7 +31,5 @@ export function useCollection(url) {
     createItem,
     updateItem,
     deleteItem,
-    getChanges,
-    isChanged,
   };
 }

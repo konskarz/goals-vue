@@ -13,10 +13,8 @@ const route = useRoute();
 const $q = useQuasar();
 const store = useTaskStore();
 const itemId = parseInt(route.params.id);
-const { item, original, path, persist, remove, save, back } = usePersistent(
-  itemId,
-  store,
-  {
+const { item, original, path, persist, changed, remove, save, back } =
+  usePersistent(itemId, store, {
     name: "",
     goal: null,
     planned: null,
@@ -27,13 +25,12 @@ const { item, original, path, persist, remove, save, back } = usePersistent(
     done: null,
     description: "",
     performance_history: [],
-  }
-);
+  });
 const disable = computed(
   () =>
     !item.value.name ||
     persist.value ||
-    Boolean(itemId && !store.isChanged(original, { ...item.value }))
+    Boolean(itemId && !changed(original, { ...item.value }))
 );
 const performanceHistory = computed(() => {
   const ph = item.value.performance_history;

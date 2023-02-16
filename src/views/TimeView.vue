@@ -11,7 +11,7 @@ const route = useRoute();
 const store = useTimeStore();
 const taskStore = useTaskStore();
 const itemId = parseInt(route.params.id);
-const { item, original, persist, remove, save, back } = usePersistent(
+const { item, original, persist, changed, remove, save, back } = usePersistent(
   itemId,
   store,
   {
@@ -26,7 +26,7 @@ const disable = computed(
   () =>
     !item.value.duration ||
     persist.value ||
-    Boolean(itemId && !store.isChanged(original, { ...item.value }))
+    Boolean(itemId && !changed(original, { ...item.value }))
 );
 const taskName = computed(() => taskStore.getItem(item.value.task).name);
 </script>

@@ -9,16 +9,8 @@ const arrayToTree = (array, parent = null) =>
     .map((child) => ({ ...child, children: arrayToTree(array, child.id) }));
 
 export const useGoalStore = defineStore("GoalStore", () => {
-  const {
-    data,
-    refetch,
-    getItem,
-    createItem,
-    updateItem,
-    deleteItem,
-    getChanges,
-    isChanged,
-  } = useCollection("/goals/");
+  const { data, refetch, getItem, createItem, updateItem, deleteItem } =
+    useCollection("/goals/");
   const tree = computed(() => {
     return data.value ? arrayToTree(data.value) : null;
   });
@@ -42,8 +34,6 @@ export const useGoalStore = defineStore("GoalStore", () => {
     createItem,
     updateItem,
     deleteItem,
-    getChanges,
-    isChanged,
     tree,
     getBranch,
   };
