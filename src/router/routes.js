@@ -25,11 +25,6 @@ const routes = [
         component: () => import("../views/TimesView.vue"),
       },
       {
-        path: "/calendar",
-        name: "calendar",
-        component: () => import("../views/CalendarView.vue"),
-      },
-      {
         path: "/tasks/:id",
         name: "task",
         component: () => import("../views/TaskView.vue"),

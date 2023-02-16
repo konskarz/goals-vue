@@ -9,7 +9,9 @@ const props = defineProps({
   },
 });
 const route = { name: "goal", params: { id: props.goal.id } };
-const hasChildren = props.goal.children && props.goal.children.length;
+const hasChildren = computed(
+  () => props.goal.children && props.goal.children.length
+);
 const caption = computed(() =>
   props.goal.planned
     ? date.formatDate(props.goal.planned, "ddd MMM DD YYYY")

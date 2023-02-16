@@ -1,10 +1,13 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import apiClient from "../stores/api.client";
+import { useUserStore } from "../stores/UserStore";
 
 const router = useRouter();
 const route = useRoute();
+const store = useUserStore();
+if (store.loggedIn) router.push(route.query.next ? route.query.next : "/");
+
 const user = ref({
   username: "",
   password: "",
@@ -13,9 +16,9 @@ const disabled = ref(false);
 function login() {
   if (!user.value.username || !user.value.password) return;
   disabled.value = true;
-  apiClient.create("/auth/", user.value).then((data) => {
+  store.login(user.value).then((data) => {
     if (data && data.token) {
-      apiClient.setAuthToken(data.token);
+      store.setToken(data.token);
       router.push(route.query.next);
     } else {
       disabled.value = false;

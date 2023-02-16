@@ -1,22 +1,34 @@
 <script setup>
+import { computed } from "vue";
 import { useRoute } from "vue-router";
+import { useTimeStore } from "../stores/TimeStore";
+import { useTaskStore } from "../stores/TaskStore";
 import { usePersistent } from "../stores/persistent";
 import DateInput from "../components/DateInput.vue";
 import DurationInput from "../components/DurationInput.vue";
 
 const route = useRoute();
+const store = useTimeStore();
+const taskStore = useTaskStore();
 const itemId = parseInt(route.params.id);
-const { item, persist, remove, save, back } = usePersistent(
+const { item, original, persist, changed, remove, save, back } = usePersistent(
+  itemId,
+  store,
   {
     task: parseInt(route.params.task),
     start: new Date().toISOString(),
     end: null,
     duration: null,
     description: "",
-  },
-  "/times/",
-  itemId
+  }
 );
+const disable = computed(
+  () =>
+    !item.value.duration ||
+    persist.value ||
+    Boolean(itemId && !changed(original, { ...item.value }))
+);
+const taskName = computed(() => taskStore.getItem(item.value.task).name);
 </script>
 
 <template>
@@ -33,19 +45,13 @@ const { item, persist, remove, save, back } = usePersistent(
           :disable="persist"
           @click="remove"
         />
-        <q-btn
-          type="submit"
-          flat
-          round
-          icon="save"
-          :disable="!item.duration || persist"
-        />
+        <q-btn type="submit" flat round icon="save" :disable="disable" />
         <q-btn type="button" flat round icon="clear" @click="back" />
       </q-toolbar>
       <div class="q-pa-md">
         <div class="row q-col-gutter-lg">
           <q-input
-            v-model="item.task"
+            v-model="taskName"
             label="Task"
             stack-label
             readonly

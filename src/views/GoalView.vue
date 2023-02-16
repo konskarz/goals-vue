@@ -1,20 +1,29 @@
 <script setup>
+import { computed } from "vue";
 import { useRoute } from "vue-router";
+import { useGoalStore } from "../stores/GoalStore";
 import { usePersistent } from "../stores/persistent";
 import GoalSelect from "../components/GoalSelect.vue";
 import DateInput from "../components/DateInput.vue";
 
 const route = useRoute();
+const store = useGoalStore();
 const itemId = parseInt(route.params.id);
-const { item, persist, remove, save, back } = usePersistent(
+const { item, original, persist, changed, remove, save, back } = usePersistent(
+  itemId,
+  store,
   {
     name: "",
     parent: null,
     planned: null,
     description: "",
-  },
-  "/goals/",
-  itemId
+  }
+);
+const disable = computed(
+  () =>
+    !item.value.name ||
+    persist.value ||
+    Boolean(itemId && !changed(original, { ...item.value }))
 );
 </script>
 
@@ -32,13 +41,7 @@ const { item, persist, remove, save, back } = usePersistent(
           :disable="persist"
           @click="remove"
         />
-        <q-btn
-          type="submit"
-          flat
-          round
-          icon="save"
-          :disable="!item.name || persist"
-        />
+        <q-btn type="submit" flat round icon="save" :disable="disable" />
         <q-btn type="button" flat round icon="clear" @click="back" />
       </q-toolbar>
       <div class="q-pa-md">

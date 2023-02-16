@@ -1,50 +1,46 @@
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
-import apiClient from "./api.client";
 
-export function usePersistent(schema, url, id) {
-  const item = ref(schema);
+export function usePersistent(id, store, model) {
+  const item = ref(id ? { ...store.getItem(id) } : model);
   const path = ref(id + "/");
   const persist = ref(false);
+  const original = id ? { ...item.value } : null;
   const router = useRouter();
-  let original = null;
-
-  if (id) {
-    const { data } = apiClient.read(url + id + "/");
-    const setItem = (newData) => {
-      item.value = newData;
-      original = { ...newData };
-    };
-    if (data.value) setItem(data.value);
-    watch(data, setItem);
+  function changes(src, trg) {
+    return Object.fromEntries(
+      Object.entries(trg).filter(([key, value]) => src[key] !== value)
+    );
   }
-
-  function remove() {
-    if (id) {
-      persist.value = true;
-      apiClient.delete(url + path.value).then(() => back());
-    }
-  }
-  function update() {
-    const current = { ...item.value };
-    const changed = Object.keys(current).reduce((changed, key) => {
-      if (current[key] !== original[key]) changed[key] = current[key];
-      return changed;
-    }, {});
-    if (Object.keys(changed).length) {
-      apiClient.update(url + path.value, changed).then(() => back());
-    } else {
-      back();
-    }
-  }
-  function save() {
-    persist.value = true;
-    if (id) update();
-    else apiClient.create(url, item.value).then(() => back());
+  function changed(src, trg) {
+    return Object.keys(changes(src, trg)).length;
   }
   function back() {
     router.back();
   }
+  function remove() {
+    persist.value = true;
+    store.deleteItem(path.value).then(() => {
+      store.refetch();
+      back();
+    });
+  }
+  function save() {
+    persist.value = true;
+    if (id) {
+      store
+        .updateItem(path.value, changes(original, { ...item.value }))
+        .then(() => {
+          store.refetch();
+          back();
+        });
+    } else {
+      store.createItem(item.value).then(() => {
+        store.refetch();
+        back();
+      });
+    }
+  }
 
-  return { item, path, persist, remove, save, back };
+  return { item, original, path, persist, changed, remove, save, back };
 }
