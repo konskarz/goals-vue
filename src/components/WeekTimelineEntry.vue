@@ -1,8 +1,9 @@
 <script setup>
-import "drag-drop-touch";
+import { computed } from "vue";
 import { date } from "quasar";
 import { useTaskStore } from "../stores/TaskStore";
 import TaskListItem from "./TaskListItem.vue";
+import "drag-drop-touch";
 
 const props = defineProps({
   week: {
@@ -11,6 +12,11 @@ const props = defineProps({
   },
 });
 const store = useTaskStore();
+const sorted = computed(() => {
+  return props.week.tasks.length
+    ? [...props.week.tasks].sort((a, b) => b.target - a.target)
+    : null;
+});
 const monday = new Date(props.week.day);
 const formated = date.formatDate(monday, "w-Q-YYYY-MMM D").split("-");
 const subtitle = [
@@ -50,13 +56,12 @@ function onDrop(e) {
     @dragenter.prevent
     @drop.prevent="onDrop($event)"
   >
-    <q-list v-if="week.tasks && week.tasks.length">
+    <q-list v-if="sorted">
       <TaskListItem
-        v-for="task in week.tasks"
+        v-for="task in sorted"
         :key="task.id"
         :task="task"
         @ondragstart="onDragStart"
-        @mutate="$emit('mutate')"
       />
     </q-list>
   </q-timeline-entry>
