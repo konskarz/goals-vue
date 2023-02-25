@@ -7,7 +7,7 @@ import { usePersistent } from "../stores/persistent";
 import GoalSelect from "../components/GoalSelect.vue";
 import DateInput from "../components/DateInput.vue";
 import NumberInput from "../components/NumberInput.vue";
-import DurationInput from "../components/DurationInput.vue";
+// import DurationInput from "../components/DurationInput.vue";
 
 const route = useRoute();
 const $q = useQuasar();
@@ -104,15 +104,16 @@ function saveOptions() {
         <q-btn type="button" flat round icon="clear" @click="back" />
       </q-toolbar>
       <div class="q-pa-md">
-        <q-input
-          v-model="item.name"
-          label="Name"
-          stack-label
-          :autofocus="!itemId"
-          :rules="[(val) => !!val || 'Field is required']"
-          @keyup.esc="back"
-        />
         <div class="row q-col-gutter-lg">
+          <q-input
+            v-model="item.name"
+            label="Name"
+            stack-label
+            :autofocus="!itemId"
+            :rules="[(val) => !!val || 'Field is required']"
+            class="col-12 col-sm-6"
+            @keyup.esc="back"
+          />
           <GoalSelect
             v-model="item.goal"
             label="Goal"
@@ -140,11 +141,11 @@ function saveOptions() {
             label="Performance"
             class="col-12 col-sm-6"
           />
-          <DurationInput
+          <!-- <DurationInput
             v-model="item.planned_total_time"
             label="Planned total time"
             class="col-12 col-sm-6"
-          />
+          /> -->
           <DateInput
             v-if="itemId"
             v-model="item.done"

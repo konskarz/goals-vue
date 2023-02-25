@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { useQuasar } from "quasar";
 import { useTaskStore } from "../stores/TaskStore";
-import { useTimeStore } from "../stores/TimeStore";
+// import { useTimeStore } from "../stores/TimeStore";
 import { fireworks } from "../lib/fireworks";
 import ProgressDialog from "./ProgressDialog.vue";
 
@@ -14,7 +14,7 @@ const props = defineProps({
 });
 const $q = useQuasar();
 const taskStore = useTaskStore();
-const timeStore = useTimeStore();
+// const timeStore = useTimeStore();
 const showProgress = computed(() => props.task.target > 1 && !props.task.done);
 const progress = computed(() =>
   showProgress.value ? props.task.performance / props.task.target : 0
@@ -34,7 +34,7 @@ function showProgressDialog() {
         .updateItem(props.task.id + "/", changed)
         .then(() => taskStore.refetch());
     }
-    if (data.duration) {
+    /* if (data.duration) {
       timeStore
         .createItem({
           task: props.task.id,
@@ -46,7 +46,7 @@ function showProgressDialog() {
         .then(() => {
           timeStore.refetch();
         });
-    }
+    } */
   });
 }
 </script>

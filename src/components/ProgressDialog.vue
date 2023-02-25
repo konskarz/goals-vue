@@ -2,7 +2,7 @@
 import { ref, computed } from "vue";
 import { useDialogPluginComponent, date } from "quasar";
 import NumberInput from "../components/NumberInput.vue";
-import DurationInput from "../components/DurationInput.vue";
+// import DurationInput from "../components/DurationInput.vue";
 
 const props = defineProps({
   task: {
@@ -40,9 +40,9 @@ function onOKClick() {
       <q-card-section>
         <NumberInput v-model="performance" label="Performance" :hint="hint" />
       </q-card-section>
-      <q-card-section>
+      <!-- <q-card-section>
         <DurationInput v-model="duration" label="Time spent" />
-      </q-card-section>
+      </q-card-section> -->
       <q-card-actions align="right">
         <q-btn
           flat
