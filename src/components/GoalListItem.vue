@@ -30,7 +30,6 @@ const caption = computed(() =>
     expand-icon-toggle
     expand-icon="keyboard_arrow_right"
     expanded-icon="keyboard_arrow_down"
-    expand-separator
   >
     <q-list>
       <GoalListItem
