@@ -17,11 +17,12 @@ const { item, original, path, persist, changed, remove, save, back } =
   usePersistent(itemId, store, {
     name: "",
     goal: null,
-    planned: null,
+    starts: null,
+    ends: null,
     recurring_until: null,
     target: 1,
     performance: 0,
-    planned_total_time: null,
+    // planned_total_time: null,
     done: null,
     description: "",
     performance_history: [],
@@ -104,16 +105,15 @@ function saveOptions() {
         <q-btn type="button" flat round icon="clear" @click="back" />
       </q-toolbar>
       <div class="q-pa-md">
+        <q-input
+          v-model="item.name"
+          label="Name"
+          stack-label
+          :autofocus="!itemId"
+          :rules="[(val) => !!val || 'Field is required']"
+          @keyup.esc="back"
+        />
         <div class="row q-col-gutter-lg">
-          <q-input
-            v-model="item.name"
-            label="Name"
-            stack-label
-            :autofocus="!itemId"
-            :rules="[(val) => !!val || 'Field is required']"
-            class="col-12 col-sm-6"
-            @keyup.esc="back"
-          />
           <GoalSelect
             v-model="item.goal"
             label="Goal"
@@ -121,10 +121,11 @@ function saveOptions() {
             class="col-12 col-sm-6"
           />
           <DateInput
-            v-model="item.planned"
-            label="Planned"
+            v-model="item.starts"
+            label="Starts"
             class="col-12 col-sm-6"
           />
+          <DateInput v-model="item.ends" label="Ends" class="col-12 col-sm-6" />
           <DateInput
             v-if="!itemId"
             v-model="item.recurring_until"

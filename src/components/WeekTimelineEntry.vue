@@ -29,7 +29,7 @@ const subtitle = [
 function onDragStart(e, task) {
   const data = {
     id: task.id,
-    day: date.getDayOfWeek(task.planned),
+    day: date.getDayOfWeek(task.starts),
     week: formated[0],
   };
   e.dataTransfer.setData("text", JSON.stringify(data));

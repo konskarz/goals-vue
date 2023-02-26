@@ -45,8 +45,8 @@ export const useTaskStore = defineStore("TaskStore", () => {
     data.value
       ? data.value
           .filter((task) => {
-            if (!task.planned) return false;
-            if (new Date(task.planned.slice(0, 10)) < currentMonday) {
+            if (!task.starts) return false;
+            if (new Date(task.starts.slice(0, 10)) < currentMonday) {
               if (filter.value.done && task.done) return false;
               if (filter.value.recurring && task.group_id) return false;
             }
@@ -55,7 +55,7 @@ export const useTaskStore = defineStore("TaskStore", () => {
             }
             return true;
           })
-          .sort((a, b) => Date.parse(a.planned) - Date.parse(b.planned))
+          .sort((a, b) => Date.parse(a.starts) - Date.parse(b.starts))
       : null
   );
   const calendar = computed(() => {
@@ -68,16 +68,16 @@ export const useTaskStore = defineStore("TaskStore", () => {
       return weeks;
     };
     if (filtered.value && filtered.value.length) {
-      const start = getMonday(filtered.value[0].planned.slice(0, 10));
+      const start = getMonday(filtered.value[0].starts.slice(0, 10));
       const end = date.addToDate(
         getMonday(
-          filtered.value[filtered.value.length - 1].planned.slice(0, 10)
+          filtered.value[filtered.value.length - 1].starts.slice(0, 10)
         ),
         { days: 7 }
       );
       const weeks = build({}, start, end);
       filtered.value.forEach((task) => {
-        weeks[getDay(getMonday(task.planned.slice(0, 10)))].tasks.push(task);
+        weeks[getDay(getMonday(task.starts.slice(0, 10)))].tasks.push(task);
       });
       return weeks;
     }

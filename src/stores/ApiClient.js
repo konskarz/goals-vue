@@ -7,8 +7,8 @@ const BASE_URL =
   HOST === "lifetrackerbuddy.com" ||
   HOST === "127.0.0.1:8000" ||
   HOST === "localhost:8088"
-    ? "/api/v2"
-    : "https://lifetrackerbuddy.com/api/v2";
+    ? "/api/v3"
+    : "https://lifetrackerbuddy.com/api/v3";
 const API = axios.create({
   baseURL: BASE_URL,
   headers: {

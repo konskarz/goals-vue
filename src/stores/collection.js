@@ -6,8 +6,8 @@ export function useCollection(url) {
   const data = ref(JSON.parse(localStorage.getItem(url)));
   function refetch() {
     get(url).then((response) => {
-      data.value = response;
-      localStorage.setItem(url, JSON.stringify(response));
+      data.value = response.results;
+      localStorage.setItem(url, JSON.stringify(response.results));
     });
   }
   function getItem(itemId) {
