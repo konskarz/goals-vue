@@ -20,11 +20,14 @@ const progress = computed(() =>
   showProgress.value ? props.task.performance / props.task.target : 0
 );
 const caption = computed(() =>
-  [props.task.performance, "of", props.task.target].join(" ")
+  [
+    props.task.on_track + "%",
+    "·",
+    props.task.performance,
+    "of",
+    props.task.target,
+  ].join(" ")
 );
-const onTrackColor = computed(() => {
-  return props.task.on_track > 0 ? "positive" : "negative";
-});
 function showProgressDialog() {
   $q.dialog({
     component: ProgressDialog,
@@ -78,9 +81,6 @@ function showProgressDialog() {
       <q-item-label v-if="showProgress">
         <q-linear-progress :value="progress" color="positive" />
       </q-item-label>
-    </q-item-section>
-    <q-item-section v-if="task.on_track !== 0" side>
-      <q-badge :color="onTrackColor" :label="task.on_track" />
     </q-item-section>
   </q-item>
 </template>
