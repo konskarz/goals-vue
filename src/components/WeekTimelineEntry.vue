@@ -57,12 +57,13 @@ function onDrop(e) {
     @drop.prevent="onDrop($event)"
   >
     <q-list v-if="sorted">
-      <TaskListItem
+      <q-intersection
         v-for="task in sorted"
         :key="task.id"
-        :task="task"
-        @ondragstart="onDragStart"
-      />
+        style="min-height: 51.19px"
+      >
+        <TaskListItem :task="task" @ondragstart="onDragStart" />
+      </q-intersection>
     </q-list>
   </q-timeline-entry>
 </template>
