@@ -39,7 +39,7 @@ function onDrop(e) {
   const data = JSON.parse(e.dataTransfer.getData("text"));
   if (data.week === formated[0]) return;
   const changed = {
-    planned: date
+    starts: date
       .addToDate(monday, {
         days: data.day - 1,
       })
