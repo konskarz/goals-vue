@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from "vue";
+import GoalListItemSections from "./GoalListItemSections.vue";
 
 const props = defineProps({
   goal: {
@@ -10,21 +11,6 @@ const props = defineProps({
 const route = { name: "goal", params: { id: props.goal.id } };
 const hasChildren = computed(
   () => props.goal.children && props.goal.children.length
-);
-const showProgress = computed(() => props.goal.tasks_target > 1);
-const progress = computed(() =>
-  showProgress.value
-    ? props.goal.tasks_performance / props.goal.tasks_target
-    : 0
-);
-const caption = computed(() =>
-  [
-    props.goal.on_track + "%",
-    "·",
-    props.goal.tasks_performance,
-    "of",
-    props.goal.tasks_target,
-  ].join(" ")
 );
 </script>
 
@@ -39,13 +25,7 @@ const caption = computed(() =>
     expanded-icon="keyboard_arrow_down"
   >
     <template #header>
-      <q-item-section>
-        <q-item-label>{{ goal.name }}</q-item-label>
-        <q-item-label v-if="showProgress" caption>{{ caption }}</q-item-label>
-        <q-item-label v-if="showProgress">
-          <q-linear-progress :value="progress" color="positive" />
-        </q-item-label>
-      </q-item-section>
+      <GoalListItemSections :goal="goal" />
     </template>
     <q-list>
       <GoalListItem
@@ -56,12 +36,6 @@ const caption = computed(() =>
     </q-list>
   </q-expansion-item>
   <q-item v-else :to="route">
-    <q-item-section>
-      <q-item-label>{{ goal.name }}</q-item-label>
-      <q-item-label v-if="showProgress" caption>{{ caption }}</q-item-label>
-      <q-item-label v-if="showProgress">
-        <q-linear-progress :value="progress" color="positive" />
-      </q-item-label>
-    </q-item-section>
+    <GoalListItemSections :goal="goal" />
   </q-item>
 </template>
