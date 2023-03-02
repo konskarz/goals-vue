@@ -6,19 +6,22 @@ import TaskListItem from "./TaskListItem.vue";
 import "drag-drop-touch";
 
 const props = defineProps({
-  week: {
-    type: Object,
+  tasks: {
+    type: Array,
+    required: true,
+  },
+  monday: {
+    type: String,
     required: true,
   },
 });
 const store = useTaskStore();
 const sorted = computed(() => {
-  return props.week.tasks.length
-    ? [...props.week.tasks].sort((a, b) => b.target - a.target)
+  return props.tasks.length
+    ? [...props.tasks].sort((a, b) => b.target - a.target)
     : null;
 });
-const monday = new Date(props.week.day);
-const formated = date.formatDate(monday, "w-Q-YYYY-MMM D").split("-");
+const formated = date.formatDate(props.monday, "w-Q-YYYY-MMM D").split("-");
 const subtitle = [
   "Week " + formated[0],
   "Q" + formated[1],
@@ -40,7 +43,7 @@ function onDrop(e) {
   if (data.week === formated[0]) return;
   const changed = {
     starts: date
-      .addToDate(monday, {
+      .addToDate(props.monday, {
         days: data.day - 1,
       })
       .toISOString(),
@@ -51,6 +54,7 @@ function onDrop(e) {
 
 <template>
   <q-timeline-entry
+    :color="monday === store.currentWeek ? 'orange' : ''"
     :subtitle="subtitle"
     @dragover.prevent
     @dragenter.prevent

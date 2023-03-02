@@ -61,8 +61,7 @@ export const useTaskStore = defineStore("TaskStore", () => {
   const calendar = computed(() => {
     const build = (weeks, startMonday, endMonday) => {
       while (startMonday <= endMonday) {
-        const day = getDay(startMonday);
-        weeks[day] = { day, tasks: [] };
+        weeks[getDay(startMonday)] = [];
         startMonday = date.addToDate(startMonday, { days: 7 });
       }
       return weeks;
@@ -77,7 +76,7 @@ export const useTaskStore = defineStore("TaskStore", () => {
       );
       const weeks = build({}, start, end);
       filtered.value.forEach((task) => {
-        weeks[getDay(getMonday(task.starts.slice(0, 10)))].tasks.push(task);
+        weeks[getDay(getMonday(task.starts.slice(0, 10)))].push(task);
       });
       return weeks;
     }

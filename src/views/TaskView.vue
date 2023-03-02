@@ -7,7 +7,6 @@ import { usePersistent } from "../stores/persistent";
 import GoalSelect from "../components/GoalSelect.vue";
 import DateInput from "../components/DateInput.vue";
 import NumberInput from "../components/NumberInput.vue";
-// import DurationInput from "../components/DurationInput.vue";
 
 const route = useRoute();
 const $q = useQuasar();
@@ -22,7 +21,6 @@ const { item, original, path, persist, changed, remove, save, back } =
     recurring_until: null,
     target: 1,
     performance: 0,
-    // planned_total_time: null,
     done: null,
     description: "",
     performance_history: [],
@@ -142,11 +140,6 @@ function saveOptions() {
             label="Performance"
             class="col-12 col-sm-6"
           />
-          <!-- <DurationInput
-            v-model="item.planned_total_time"
-            label="Planned total time"
-            class="col-12 col-sm-6"
-          /> -->
           <DateInput
             v-if="itemId"
             v-model="item.done"

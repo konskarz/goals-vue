@@ -24,11 +24,6 @@ const menuList = [
     icon: "done",
     label: "Tasks",
   },
-  /* {
-    to: "/times",
-    icon: "schedule",
-    label: "Times",
-  }, */
 ];
 const leftDrawerOpen = ref(false);
 function toggleLeftDrawer() {
