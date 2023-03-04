@@ -22,7 +22,7 @@ const store = useTaskStore();
             <q-item-label caption>{{ task.goalName }}</q-item-label>
           </q-item-section>
           <q-item-section side>
-            {{ date.formatDate(task.starts, "ddd MMM DD YYYY") }}
+            {{ date.formatDate(task.planned, "ddd MMM DD YYYY") }}
           </q-item-section>
         </q-item>
       </q-intersection>

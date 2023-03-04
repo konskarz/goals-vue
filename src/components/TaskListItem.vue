@@ -18,13 +18,7 @@ const progress = computed(() =>
   showProgress.value ? props.task.performance / props.task.target : 0
 );
 const caption = computed(() =>
-  [
-    props.task.on_track + "%",
-    "·",
-    props.task.performance,
-    "of",
-    props.task.target,
-  ].join(" ")
+  [props.task.performance, "of", props.task.target].join(" ")
 );
 function showProgressDialog() {
   $q.dialog({

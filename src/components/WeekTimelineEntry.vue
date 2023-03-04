@@ -32,7 +32,7 @@ const subtitle = [
 function onDragStart(e, task) {
   const data = {
     id: task.id,
-    day: date.getDayOfWeek(task.starts),
+    day: date.getDayOfWeek(task.planned),
     week: formated[0],
   };
   e.dataTransfer.setData("text", JSON.stringify(data));
@@ -42,7 +42,7 @@ function onDrop(e) {
   const data = JSON.parse(e.dataTransfer.getData("text"));
   if (data.week === formated[0]) return;
   const changed = {
-    starts: date
+    planned: date
       .addToDate(props.monday, {
         days: data.day - 1,
       })
