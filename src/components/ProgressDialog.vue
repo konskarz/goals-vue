@@ -2,7 +2,6 @@
 import { ref, computed } from "vue";
 import { useDialogPluginComponent, date } from "quasar";
 import NumberInput from "../components/NumberInput.vue";
-import DurationInput from "../components/DurationInput.vue";
 
 const props = defineProps({
   task: {
@@ -12,7 +11,6 @@ const props = defineProps({
 });
 defineEmits([...useDialogPluginComponent.emits]);
 const performance = ref(props.task.performance);
-const duration = ref(null);
 const hint = computed(() => {
   let txt = "of " + props.task.target;
   const ph = props.task.performance_history;
@@ -24,10 +22,10 @@ const hint = computed(() => {
 const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } =
   useDialogPluginComponent();
 const disable = computed(() => {
-  return performance.value === props.task.performance && !duration.value;
+  return performance.value === props.task.performance;
 });
 function onOKClick() {
-  onDialogOK({ performance: performance.value, duration: duration.value });
+  onDialogOK({ performance: performance.value });
 }
 </script>
 
@@ -39,9 +37,6 @@ function onOKClick() {
       </q-card-section>
       <q-card-section>
         <NumberInput v-model="performance" label="Performance" :hint="hint" />
-      </q-card-section>
-      <q-card-section>
-        <DurationInput v-model="duration" label="Time spent" />
       </q-card-section>
       <q-card-actions align="right">
         <q-btn

@@ -1,6 +1,6 @@
 <script setup>
 import { useTaskStore } from "../stores/TaskStore";
-import GoalSelect from "../components/GoalSelect.vue";
+import GoalSelect from "../components/GoalTreeSelect.vue";
 import WeekTimelineEntry from "../components/WeekTimelineEntry.vue";
 
 const store = useTaskStore();
@@ -41,12 +41,12 @@ const store = useTaskStore();
       </q-btn>
     </q-toolbar>
     <q-timeline v-if="store.calendar" layout="dense" class="q-px-md">
-      <template v-for="(week, key) in store.calendar" :key="key">
-        <WeekTimelineEntry
-          :color="key === store.currentWeek ? 'orange' : ''"
-          :week="week"
-        />
-      </template>
+      <WeekTimelineEntry
+        v-for="(tasks, key) in store.calendar"
+        :key="key"
+        :tasks="tasks"
+        :monday="key"
+      />
     </q-timeline>
   </q-page>
 </template>

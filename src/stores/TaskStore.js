@@ -33,10 +33,14 @@ export const useTaskStore = defineStore("TaskStore", () => {
     date.subtractFromDate(srcDate, {
       days: date.getDayOfWeek(srcDate) - 1,
     });
-  const getWeek = (srcDate) => date.formatDate(srcDate, "YYYY-w");
+  /*
+  https://quasar.dev/quasar-utils/date-utils#format-for-display
+  console.log(date.formatDate("2024-12-30", "YYYY-w")); // output: 2024-1
+  */
+  const getDay = (srcDate) => date.formatDate(srcDate, "YYYY-MM-DD");
   const currentDate = date.startOfDate(new Date(), "day");
   const currentMonday = getMonday(currentDate);
-  const currentWeek = getWeek(currentDate);
+  const currentWeek = getDay(currentMonday);
   const filtered = computed(() =>
     data.value
       ? data.value
@@ -57,25 +61,22 @@ export const useTaskStore = defineStore("TaskStore", () => {
   const calendar = computed(() => {
     const build = (weeks, startMonday, endMonday) => {
       while (startMonday <= endMonday) {
-        weeks[getWeek(startMonday)] = {
-          day: date.formatDate(startMonday, "YYYY-MM-DD"),
-          tasks: [],
-        };
+        weeks[getDay(startMonday)] = [];
         startMonday = date.addToDate(startMonday, { days: 7 });
       }
       return weeks;
     };
     if (filtered.value && filtered.value.length) {
-      const start = new Date(filtered.value[0].planned.slice(0, 10));
+      const start = getMonday(filtered.value[0].planned.slice(0, 10));
       const end = date.addToDate(
-        new Date(
+        getMonday(
           filtered.value[filtered.value.length - 1].planned.slice(0, 10)
         ),
         { days: 7 }
       );
-      const weeks = build({}, getMonday(start), getMonday(end));
+      const weeks = build({}, start, end);
       filtered.value.forEach((task) => {
-        weeks[getWeek(task.planned)].tasks.push(task);
+        weeks[getDay(getMonday(task.planned.slice(0, 10)))].push(task);
       });
       return weeks;
     }

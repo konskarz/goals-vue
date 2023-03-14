@@ -1,18 +1,27 @@
 <script setup>
-import "drag-drop-touch";
+import { computed } from "vue";
 import { date } from "quasar";
 import { useTaskStore } from "../stores/TaskStore";
 import TaskListItem from "./TaskListItem.vue";
+import "drag-drop-touch";
 
 const props = defineProps({
-  week: {
-    type: Object,
+  tasks: {
+    type: Array,
+    required: true,
+  },
+  monday: {
+    type: String,
     required: true,
   },
 });
 const store = useTaskStore();
-const monday = new Date(props.week.day);
-const formated = date.formatDate(monday, "w-Q-YYYY-MMM D").split("-");
+const sorted = computed(() => {
+  return props.tasks.length
+    ? [...props.tasks].sort((a, b) => b.target - a.target)
+    : null;
+});
+const formated = date.formatDate(props.monday, "w-Q-YYYY-MMM D").split("-");
 const subtitle = [
   "Week " + formated[0],
   "Q" + formated[1],
@@ -34,7 +43,7 @@ function onDrop(e) {
   if (data.week === formated[0]) return;
   const changed = {
     planned: date
-      .addToDate(monday, {
+      .addToDate(props.monday, {
         days: data.day - 1,
       })
       .toISOString(),
@@ -45,19 +54,20 @@ function onDrop(e) {
 
 <template>
   <q-timeline-entry
+    :color="monday === store.currentWeek ? 'orange' : ''"
     :subtitle="subtitle"
     @dragover.prevent
     @dragenter.prevent
     @drop.prevent="onDrop($event)"
   >
-    <q-list v-if="week.tasks && week.tasks.length">
-      <TaskListItem
-        v-for="task in week.tasks"
+    <q-list v-if="sorted">
+      <q-intersection
+        v-for="task in sorted"
         :key="task.id"
-        :task="task"
-        @ondragstart="onDragStart"
-        @mutate="$emit('mutate')"
-      />
+        style="min-height: 51.19px"
+      >
+        <TaskListItem :task="task" @ondragstart="onDragStart" />
+      </q-intersection>
     </q-list>
   </q-timeline-entry>
 </template>
