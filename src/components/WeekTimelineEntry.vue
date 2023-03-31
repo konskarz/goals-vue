@@ -21,6 +21,16 @@ const sorted = computed(() => {
     ? [...props.tasks].sort((a, b) => b.target - a.target)
     : null;
 });
+const isNewMonth = computed(() => {
+  const previousSunday = date.subtractFromDate(props.monday, { days: 1 });
+  const currentSunday = date.addToDate(props.monday, { days: 6 });
+  const getMonth = (srcDate) => date.formatDate(srcDate, "MMMM");
+  const currentMonth = getMonth(props.monday);
+  return (
+    currentMonth !== getMonth(previousSunday) ||
+    currentMonth !== getMonth(currentSunday)
+  );
+});
 const formated = date.formatDate(props.monday, "w-Q-YYYY-MMM D").split("-");
 const subtitle = [
   "Week " + formated[0],
@@ -54,12 +64,15 @@ function onDrop(e) {
 
 <template>
   <q-timeline-entry
-    :color="monday === store.currentWeek ? 'orange' : ''"
+    :color="monday === store.currentWeek ? 'orange' : 'primary'"
     :subtitle="subtitle"
     @dragover.prevent
     @dragenter.prevent
     @drop.prevent="onDrop($event)"
   >
+    <template v-if="isNewMonth" #subtitle>
+      <span class="text-orange-14">{{ subtitle }}</span>
+    </template>
     <q-list v-if="sorted">
       <q-intersection
         v-for="task in sorted"
