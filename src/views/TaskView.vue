@@ -1,84 +1,84 @@
 <script setup>
-import { computed } from "vue";
-import { useRoute } from "vue-router";
-import { useQuasar, date } from "quasar";
-import { useTaskStore } from "../stores/TaskStore";
-import { usePersistent } from "../stores/persistent";
-import GoalSelect from "../components/GoalSelect.vue";
-import DateInput from "../components/DateInput.vue";
-import NumberInput from "../components/NumberInput.vue";
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { useQuasar, date } from 'quasar'
+import { useTaskStore } from '../stores/TaskStore'
+import { usePersistent } from '../stores/persistent'
+import GoalSelect from '../components/GoalSelect.vue'
+import DateInput from '../components/DateInput.vue'
+import NumberInput from '../components/NumberInput.vue'
 
-const route = useRoute();
-const $q = useQuasar();
-const store = useTaskStore();
-const itemId = parseInt(route.params.id);
-const { item, original, path, persist, changed, remove, save, back } =
-  usePersistent(itemId, store, {
-    name: "",
+const route = useRoute()
+const $q = useQuasar()
+const store = useTaskStore()
+const itemId = parseInt(route.params.id)
+const { item, original, path, persist, changed, remove, save, back } = usePersistent(
+  itemId,
+  store,
+  {
+    name: '',
     goal: null,
     planned: null,
     recurring_until: null,
     target: 1,
     performance: 0,
     done: null,
-    description: "",
-    performance_history: [],
-  });
+    description: '',
+    performance_history: []
+  }
+)
 const disable = computed(
   () =>
-    !item.value.name ||
-    persist.value ||
-    Boolean(itemId && !changed(original, { ...item.value }))
-);
+    !item.value.name || persist.value || Boolean(itemId && !changed(original, { ...item.value }))
+)
 const performanceHistory = computed(() => {
-  const ph = item.value.performance_history;
-  if (!ph || !ph.length) return null;
-  const getTxt = (log) =>
-    date.formatDate(log.updated, "DD.MM.YYYY HH:mm") + " to " + log.value;
-  let txt = getTxt(ph[0]);
-  if (ph.length === 1) return txt;
-  for (let i = 1; i < ph.length; i++) txt += ", " + getTxt(ph[i]);
-  return txt;
-});
+  const ph = item.value.performance_history
+  if (!ph || !ph.length) return null
+  const getTxt = (log) => date.formatDate(log.updated, 'DD.MM.YYYY HH:mm') + ' to ' + log.value
+  let txt = getTxt(ph[0])
+  if (ph.length === 1) return txt
+  for (let i = 1; i < ph.length; i++) txt += ', ' + getTxt(ph[i])
+  return txt
+})
 const options = {
-  type: "radio",
-  model: "this",
+  type: 'radio',
+  model: 'this',
   items: [
-    { label: "This task", value: "this" },
-    { label: "All tasks", value: "all" },
-  ],
-};
+    { label: 'This task', value: 'this' },
+    { label: 'All tasks', value: 'all' }
+  ]
+}
 function setGroupPath() {
-  path.value = "recurring/" + item.value.group_id + "/";
+  path.value = 'recurring/' + item.value.group_id + '/'
 }
 function removeOptions() {
   if (item.value.group_id) {
     $q.dialog({
-      title: "Delete recurring task",
+      title: 'Delete recurring task',
       cancel: true,
-      ok: "Delete",
-      options: options,
+      ok: 'Delete',
+      options: options
     }).onOk((data) => {
-      if (data === "all") setGroupPath();
-      remove();
-    });
+      if (data === 'all') setGroupPath()
+      remove()
+    })
   } else {
-    remove();
+    remove()
   }
 }
 function saveOptions() {
   if (item.value.group_id) {
     $q.dialog({
-      title: "Save recurring task",
+      title: 'Save recurring task',
       cancel: true,
-      ok: "Save",
-      options: options,
+      ok: 'Save',
+      options: options
     }).onOk((data) => {
-      if (data === "all") setGroupPath();
-      save();
-    });
+      if (data === 'all') setGroupPath()
+      save()
+    })
   } else {
-    save();
+    save()
   }
 }
 </script>
@@ -112,39 +112,17 @@ function saveOptions() {
             class="col-12 col-sm-6"
             @keyup.esc="back"
           />
-          <GoalSelect
-            v-model="item.goal"
-            label="Goal"
-            stack-label
-            class="col-12 col-sm-6"
-          />
-          <DateInput
-            v-model="item.planned"
-            label="Planned"
-            class="col-12 col-sm-6"
-          />
+          <GoalSelect v-model="item.goal" label="Goal" stack-label class="col-12 col-sm-6" />
+          <DateInput v-model="item.planned" label="Planned" class="col-12 col-sm-6" />
           <DateInput
             v-if="!itemId"
             v-model="item.recurring_until"
             label="Recurring until"
             class="col-12 col-sm-6"
           />
-          <NumberInput
-            v-model="item.target"
-            label="Target"
-            class="col-12 col-sm-6"
-          />
-          <NumberInput
-            v-model="item.performance"
-            label="Performance"
-            class="col-12 col-sm-6"
-          />
-          <DateInput
-            v-if="itemId"
-            v-model="item.done"
-            label="Done"
-            class="col-12 col-sm-6"
-          />
+          <NumberInput v-model="item.target" label="Target" class="col-12 col-sm-6" />
+          <NumberInput v-model="item.performance" label="Performance" class="col-12 col-sm-6" />
+          <DateInput v-if="itemId" v-model="item.done" label="Done" class="col-12 col-sm-6" />
         </div>
         <q-input
           v-model="item.description"

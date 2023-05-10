@@ -1,26 +1,24 @@
 <script setup>
-import { computed } from "vue";
-import { useGoalStore } from "../stores/GoalStore";
+import { computed } from 'vue'
+import { useGoalStore } from '../stores/GoalStore'
 
 const props = defineProps({
   modelValue: {
     type: Number,
-    default: null,
-  },
-});
-const emit = defineEmits(["update:modelValue"]);
+    default: null
+  }
+})
+const emit = defineEmits(['update:modelValue'])
 const model = computed({
   get() {
-    return props.modelValue;
+    return props.modelValue
   },
   set(value) {
-    emit("update:modelValue", value);
-  },
-});
-const store = useGoalStore();
-const selected = computed(() =>
-  props.modelValue ? store.getItem(props.modelValue).name : null
-);
+    emit('update:modelValue', value)
+  }
+})
+const store = useGoalStore()
+const selected = computed(() => (props.modelValue ? store.getItem(props.modelValue).name : null))
 </script>
 
 <template>

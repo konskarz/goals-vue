@@ -1,8 +1,8 @@
 <script setup>
-import { useGoalStore } from "../stores/GoalStore";
-import GoalListItem from "../components/GoalListItem.vue";
+import { useGoalStore } from '../stores/GoalStore'
+import GoalListItem from '../components/GoalListItem.vue'
 
-const store = useGoalStore();
+const store = useGoalStore()
 </script>
 
 <template>

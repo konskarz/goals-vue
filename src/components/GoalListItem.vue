@@ -1,17 +1,15 @@
 <script setup>
-import { computed } from "vue";
-import GoalListItemSections from "./GoalListItemSections.vue";
+import { computed } from 'vue'
+import GoalListItemSections from './GoalListItemSections.vue'
 
 const props = defineProps({
   goal: {
     type: Object,
-    required: true,
-  },
-});
-const route = { name: "goal", params: { id: props.goal.id } };
-const hasChildren = computed(
-  () => props.goal.children && props.goal.children.length
-);
+    required: true
+  }
+})
+const route = { name: 'goal', params: { id: props.goal.id } }
+const hasChildren = computed(() => props.goal.children && props.goal.children.length)
 </script>
 
 <template>
@@ -28,11 +26,7 @@ const hasChildren = computed(
       <GoalListItemSections :goal="goal" />
     </template>
     <q-list>
-      <GoalListItem
-        v-for="child in goal.children"
-        :key="child.id"
-        :goal="child"
-      />
+      <GoalListItem v-for="child in goal.children" :key="child.id" :goal="child" />
     </q-list>
   </q-expansion-item>
   <q-item v-else :to="route">

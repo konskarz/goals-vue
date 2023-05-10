@@ -1,42 +1,42 @@
 <script setup>
-import { ref } from "vue";
-import { useRouter, useRoute } from "vue-router";
-import { getActivePinia } from "pinia";
-import { useUserStore } from "../stores/UserStore";
+import { ref } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { getActivePinia } from 'pinia'
+import { useUserStore } from '../stores/UserStore'
 
-const router = useRouter();
-const route = useRoute();
-const pinia = getActivePinia();
-const store = useUserStore();
+const router = useRouter()
+const route = useRoute()
+const pinia = getActivePinia()
+const store = useUserStore()
 const menuList = [
   {
-    to: "/",
-    icon: "pending_actions",
-    label: "Plan",
+    to: '/',
+    icon: 'pending_actions',
+    label: 'Plan'
   },
   {
-    to: "/goals",
-    icon: "task_alt",
-    label: "Goals",
+    to: '/goals',
+    icon: 'task_alt',
+    label: 'Goals'
   },
   {
-    to: "/tasks",
-    icon: "done",
-    label: "Tasks",
-  },
-];
-const leftDrawerOpen = ref(false);
+    to: '/tasks',
+    icon: 'done',
+    label: 'Tasks'
+  }
+]
+const leftDrawerOpen = ref(false)
 function toggleLeftDrawer() {
-  leftDrawerOpen.value = !leftDrawerOpen.value;
+  leftDrawerOpen.value = !leftDrawerOpen.value
 }
 function logout() {
-  store.logout();
-  router.push({ name: "login", query: { next: route.fullPath } });
+  store.logout()
+  router.push({ name: 'login', query: { next: route.fullPath } })
   pinia._s.forEach((store) => {
-    store.$dispose();
-    delete pinia.state.value[store.$id];
-  });
-  localStorage.clear();
+    store.$dispose()
+    delete pinia.state.value[store.$id]
+  })
+  localStorage.clear()
 }
 </script>
 

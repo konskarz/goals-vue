@@ -1,25 +1,25 @@
 <script setup>
-import { computed } from "vue";
+import { computed } from 'vue'
 
 const props = defineProps({
   label: {
     type: String,
-    required: true,
+    required: true
   },
   modelValue: {
     type: String,
-    default: null,
-  },
-});
-const emit = defineEmits(["update:modelValue"]);
+    default: null
+  }
+})
+const emit = defineEmits(['update:modelValue'])
 const model = computed({
   get() {
-    return props.modelValue ? props.modelValue.slice(0, 10) : null;
+    return props.modelValue ? props.modelValue.slice(0, 10) : null
   },
   set(value) {
-    emit("update:modelValue", value ? new Date(value).toISOString() : null);
-  },
-});
+    emit('update:modelValue', value ? new Date(value).toISOString() : null)
+  }
+})
 </script>
 
 <template>
