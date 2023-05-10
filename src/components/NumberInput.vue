@@ -17,7 +17,7 @@ const model = computed({
     return props.modelValue;
   },
   set(value) {
-    emit("update:modelValue", value);
+    if (value >= 0) emit("update:modelValue", value);
   },
 });
 </script>
@@ -31,8 +31,8 @@ const model = computed({
     stack-label
   >
     <template #append>
-      <q-btn round label="-10" @click="if (model >= 10) model -= 10;" />
-      <q-btn round label="-1" @click="if (model >= 1) model--;" />
+      <q-btn round label="-10" @click="model -= 10" />
+      <q-btn round label="-1" @click="model--" />
       <q-btn round label="+1" @click="model++" />
       <q-btn round label="+10" @click="model += 10" />
     </template>
