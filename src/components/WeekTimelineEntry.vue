@@ -56,13 +56,11 @@ function onDrop(e) {
   <q-timeline-entry
     :color="monday === store.currentWeek ? 'orange' : 'primary'"
     :subtitle="subtitle"
+    :icon="isNewMonth ? 'calendar_month' : none"
     @dragover.prevent
     @dragenter.prevent
     @drop.prevent="onDrop($event)"
   >
-    <template v-if="isNewMonth" #subtitle>
-      <span class="text-orange-14">{{ subtitle }}</span>
-    </template>
     <q-list v-if="sorted">
       <q-intersection v-for="task in sorted" :key="task.id" style="min-height: 51.19px">
         <TaskListItem :task="task" @ondragstart="onDragStart" />

@@ -7,7 +7,7 @@ const props = defineProps({
     type: Number,
     default: null
   },
-  optionDisableId: {
+  exceptId: {
     type: Number,
     default: null
   }
@@ -22,22 +22,36 @@ const model = computed({
   }
 })
 const store = useGoalStore()
-function optionDisable(option) {
-  return option.id === props.optionDisableId
+const selected = computed(() => (props.modelValue ? store.getItem(props.modelValue).name : null))
+function except(node) {
+  return node.id !== props.exceptId
 }
 </script>
 
 <template>
-  <q-select
-    v-model="model"
-    :options="store.data"
-    option-value="id"
-    option-label="name"
-    :option-disable="optionDisable"
-    emit-value
-    map-options
-    clearable
-    clear-icon="close"
-    dropdown-icon="keyboard_arrow_down"
-  />
+  <q-field v-model="model" clearable clear-icon="close">
+    <template #control>
+      <div class="self-center full-width no-outline ellipsis" tabindex="0">
+        {{ selected }}
+      </div>
+    </template>
+    <template #append>
+      <q-icon name="keyboard_arrow_down"></q-icon>
+    </template>
+    <q-popup-proxy fit auto-close>
+      <q-banner>
+        <q-tree
+          v-model:selected="model"
+          :nodes="store.tree"
+          :filter="String(exceptId)"
+          :filter-method="except"
+          node-key="id"
+          label-key="name"
+          icon="keyboard_arrow_right"
+          no-selection-unset
+          default-expand-all
+        />
+      </q-banner>
+    </q-popup-proxy>
+  </q-field>
 </template>

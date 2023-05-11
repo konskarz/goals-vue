@@ -52,7 +52,7 @@ const disable = computed(
             v-model="item.parent"
             label="Parent"
             stack-label
-            :option-disable-id="itemId"
+            :except-id="itemId"
             class="col-12 col-sm-6"
           />
           <DateInput v-model="item.planned" label="Planned" class="col-12 col-sm-6" />
