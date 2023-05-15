@@ -1,18 +1,16 @@
 <script setup>
-import { computed } from "vue";
-import { date } from "quasar";
+import { computed } from 'vue'
+import { date } from 'quasar'
 
 const props = defineProps({
   goal: {
     type: Object,
-    required: true,
-  },
-});
+    required: true
+  }
+})
 const caption = computed(() =>
-  props.goal.planned
-    ? date.formatDate(props.goal.planned, "ddd MMM DD YYYY")
-    : null
-);
+  props.goal.planned ? date.formatDate(props.goal.planned, 'ddd MMM DD YYYY') : null
+)
 </script>
 
 <template>

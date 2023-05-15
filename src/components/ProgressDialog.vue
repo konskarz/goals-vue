@@ -1,31 +1,30 @@
 <script setup>
-import { ref, computed } from "vue";
-import { useDialogPluginComponent, date } from "quasar";
-import NumberInput from "../components/NumberInput.vue";
+import { ref, computed } from 'vue'
+import { useDialogPluginComponent, date } from 'quasar'
+import NumberInput from '../components/NumberInput.vue'
 
 const props = defineProps({
   task: {
     type: Object,
-    required: true,
-  },
-});
-defineEmits([...useDialogPluginComponent.emits]);
-const performance = ref(props.task.performance);
-const hint = computed(() => {
-  let txt = "of " + props.task.target;
-  const ph = props.task.performance_history;
-  if (ph && ph.length) {
-    txt += " · changed " + date.formatDate(ph[0].updated, "DD.MM.YYYY HH:mm");
+    required: true
   }
-  return txt;
-});
-const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } =
-  useDialogPluginComponent();
+})
+defineEmits([...useDialogPluginComponent.emits])
+const performance = ref(props.task.performance)
+const hint = computed(() => {
+  let txt = 'of ' + props.task.target
+  const ph = props.task.performance_history
+  if (ph && ph.length) {
+    txt += ' · changed ' + date.formatDate(ph[0].updated, 'DD.MM.YYYY HH:mm')
+  }
+  return txt
+})
+const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginComponent()
 const disable = computed(() => {
-  return performance.value === props.task.performance;
-});
+  return performance.value === props.task.performance
+})
 function onOKClick() {
-  onDialogOK({ performance: performance.value });
+  onDialogOK({ performance: performance.value })
 }
 </script>
 
@@ -46,19 +45,8 @@ function onOKClick() {
           :to="{ name: 'task', params: { id: task.id } }"
         />
         <q-space />
-        <q-btn
-          flat
-          label="Cancel"
-          class="text-primary"
-          @click="onDialogCancel"
-        />
-        <q-btn
-          :disable="disable"
-          flat
-          label="Submit"
-          class="text-primary"
-          @click="onOKClick"
-        />
+        <q-btn flat label="Cancel" class="text-primary" @click="onDialogCancel" />
+        <q-btn :disable="disable" flat label="Submit" class="text-primary" @click="onOKClick" />
       </q-card-actions>
     </q-card>
   </q-dialog>

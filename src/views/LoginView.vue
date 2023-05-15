@@ -1,32 +1,32 @@
 <script setup>
-import { ref } from "vue";
-import { useRouter, useRoute } from "vue-router";
-import { useUserStore } from "../stores/UserStore";
+import { ref } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { useUserStore } from '../stores/UserStore'
 
-const router = useRouter();
-const route = useRoute();
-const store = useUserStore();
-if (store.loggedIn) router.push(route.query.next ? route.query.next : "/");
+const router = useRouter()
+const route = useRoute()
+const store = useUserStore()
+if (store.loggedIn) router.push(route.query.next ? route.query.next : '/')
 
 const user = ref({
-  username: "",
-  password: "",
-});
-const disabled = ref(false);
+  username: '',
+  password: ''
+})
+const disabled = ref(false)
 function login() {
-  if (!user.value.username || !user.value.password) return;
-  disabled.value = true;
+  if (!user.value.username || !user.value.password) return
+  disabled.value = true
   store.login(user.value).then((data) => {
     if (data && data.token) {
-      store.setToken(data.token);
-      router.push(route.query.next);
+      store.setToken(data.token)
+      router.push(route.query.next)
     } else {
-      disabled.value = false;
+      disabled.value = false
     }
-  });
+  })
 }
 function required(val) {
-  return !!val || "Field is required";
+  return !!val || 'Field is required'
 }
 /* function isEmail(val) {
   const emailPattern =
@@ -52,23 +52,17 @@ function required(val) {
               <q-icon name="person_outline" />
             </template>
           </q-input>
-          <q-input
-            v-model="user.password"
-            type="password"
-            label="Password"
-            :rules="[required]"
-          >
+          <q-input v-model="user.password" type="password" label="Password" :rules="[required]">
             <template #prepend>
               <q-icon name="lock_outline" />
             </template>
           </q-input>
         </q-card-section>
+        <q-card-section class="q-pt-none">
+          <div class="text-caption text-grey text-center">demo/demofirst daily data refresh</div>
+        </q-card-section>
         <q-card-actions class="q-pa-md">
-          <q-btn
-            type="submit"
-            class="bg-primary text-white full-width"
-            label="Login"
-          />
+          <q-btn type="submit" class="bg-primary text-white full-width" label="Login" />
         </q-card-actions>
       </q-form>
     </q-card>

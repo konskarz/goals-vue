@@ -1,36 +1,32 @@
 <script setup>
-import { computed } from "vue";
-import { useQuasar } from "quasar";
-import { useTaskStore } from "../stores/TaskStore";
-import { fireworks } from "../lib/fireworks";
-import ProgressDialog from "./ProgressDialog.vue";
+import { computed } from 'vue'
+import { useQuasar } from 'quasar'
+import { useTaskStore } from '../stores/TaskStore'
+import { fireworks } from '../lib/fireworks'
+import ProgressDialog from './ProgressDialog.vue'
 
 const props = defineProps({
   task: {
     type: Object,
-    required: true,
-  },
-});
-const $q = useQuasar();
-const taskStore = useTaskStore();
-const showProgress = computed(() => props.task.target > 1 && !props.task.done);
+    required: true
+  }
+})
+const $q = useQuasar()
+const taskStore = useTaskStore()
+const showProgress = computed(() => props.task.target > 1 && !props.task.done)
 const progress = computed(() =>
   showProgress.value ? props.task.performance / props.task.target : 0
-);
-const caption = computed(() =>
-  [props.task.performance, "of", props.task.target].join(" ")
-);
+)
+const caption = computed(() => [props.task.performance, 'of', props.task.target].join(' '))
 function showProgressDialog() {
   $q.dialog({
     component: ProgressDialog,
-    componentProps: { task: props.task },
+    componentProps: { task: props.task }
   }).onOk((data) => {
-    if (data.performance >= props.task.target) fireworks();
-    const changed = { performance: data.performance };
-    taskStore
-      .updateItem(props.task.id + "/", changed)
-      .then(() => taskStore.refetch());
-  });
+    if (data.performance >= props.task.target) fireworks()
+    const changed = { performance: data.performance }
+    taskStore.updateItem(props.task.id + '/', changed).then(() => taskStore.refetch())
+  })
 }
 </script>
 

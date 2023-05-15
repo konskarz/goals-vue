@@ -1,9 +1,9 @@
 <script setup>
-import { useTaskStore } from "../stores/TaskStore";
-import GoalSelect from "../components/GoalTreeSelect.vue";
-import WeekTimelineEntry from "../components/WeekTimelineEntry.vue";
+import { useTaskStore } from '../stores/TaskStore'
+import GoalSelect from '../components/GoalSelect.vue'
+import WeekTimelineEntry from '../components/WeekTimelineEntry.vue'
 
-const store = useTaskStore();
+const store = useTaskStore()
 </script>
 
 <template>
