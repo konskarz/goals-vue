@@ -25,10 +25,8 @@ const model = computed({
 <template>
   <q-input v-model.number="model" type="number" min="0" :label="label" stack-label>
     <template #append>
-      <q-btn round label="-10" @click="model -= 10" />
       <q-btn round label="-1" @click="model--" />
       <q-btn round label="+1" @click="model++" />
-      <q-btn round label="+10" @click="model += 10" />
     </template>
   </q-input>
 </template>

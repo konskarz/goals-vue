@@ -114,15 +114,15 @@ function saveOptions() {
           />
           <GoalSelect v-model="item.goal" label="Goal" stack-label class="col-12 col-sm-6" />
           <DateInput v-model="item.planned" label="Planned" class="col-12 col-sm-6" />
+          <DateInput v-if="itemId" v-model="item.done" label="Done" class="col-12 col-sm-6" />
           <DateInput
-            v-if="!itemId"
+            v-else
             v-model="item.recurring_until"
             label="Recurring until"
             class="col-12 col-sm-6"
           />
           <NumberInput v-model="item.target" label="Target" class="col-12 col-sm-6" />
           <NumberInput v-model="item.performance" label="Performance" class="col-12 col-sm-6" />
-          <DateInput v-if="itemId" v-model="item.done" label="Done" class="col-12 col-sm-6" />
         </div>
         <q-input
           v-model="item.description"

@@ -11,6 +11,7 @@ const props = defineProps({
     required: true
   }
 })
+const emit = defineEmits(['ondragstart'])
 const $q = useQuasar()
 const taskStore = useTaskStore()
 const showProgress = computed(() => props.task.target > 1 && !props.task.done)
@@ -28,6 +29,9 @@ function showProgressDialog() {
     taskStore.updateItem(props.task.id + '/', changed).then(() => taskStore.refetch())
   })
 }
+function onDragStart(event) {
+  emit('ondragstart', event, props.task)
+}
 </script>
 
 <template>
@@ -43,7 +47,7 @@ function showProgressDialog() {
       thumbnail
       style="cursor: grab"
       draggable="true"
-      @dragstart="$emit('ondragstart', $event, task)"
+      @dragstart="onDragStart"
       @touchmove:native="(e) => {}"
     >
       <q-icon name="drag_indicator" />
