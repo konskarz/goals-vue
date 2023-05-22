@@ -84,7 +84,7 @@ function saveOptions() {
 </script>
 
 <template>
-  <q-page padding>
+  <q-page class="q-pa-md">
     <q-form @submit.prevent="saveOptions">
       <q-toolbar>
         <q-avatar v-if="item.group_id" icon="event_repeat" />
@@ -109,20 +109,20 @@ function saveOptions() {
             stack-label
             :autofocus="!itemId"
             :rules="[(val) => !!val || 'Field is required']"
-            class="col-12 col-sm-6"
+            class="col-12 col-lg-6"
             @keyup.esc="back"
           />
-          <GoalSelect v-model="item.goal" label="Goal" stack-label class="col-12 col-sm-6" />
-          <DateInput v-model="item.planned" label="Planned" class="col-12 col-sm-6" />
-          <DateInput v-if="itemId" v-model="item.done" label="Done" class="col-12 col-sm-6" />
+          <GoalSelect v-model="item.goal" label="Goal" stack-label class="col-12 col-lg-6" />
+          <DateInput v-model="item.planned" label="Planned" class="col-12 col-lg-6" />
+          <DateInput v-if="itemId" v-model="item.done" label="Done" class="col-12 col-lg-6" />
           <DateInput
             v-else
             v-model="item.recurring_until"
             label="Recurring until"
-            class="col-12 col-sm-6"
+            class="col-12 col-lg-6"
           />
-          <NumberInput v-model="item.target" label="Target" class="col-12 col-sm-6" />
-          <NumberInput v-model="item.performance" label="Performance" class="col-12 col-sm-6" />
+          <NumberInput v-model="item.target" label="Target" class="col-12 col-lg-6" />
+          <NumberInput v-model="item.performance" label="Performance" class="col-12 col-lg-6" />
         </div>
         <q-input
           v-model="item.description"

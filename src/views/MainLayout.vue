@@ -3,31 +3,20 @@ import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { getActivePinia } from 'pinia'
 import { useUserStore } from '../stores/UserStore'
+import GoalsDrawer from '../components/GoalsDrawer.vue'
+import TasksDrawer from '../components/TasksDrawer.vue'
 
 const router = useRouter()
 const route = useRoute()
 const pinia = getActivePinia()
 const store = useUserStore()
-const menuList = [
-  {
-    to: '/',
-    icon: 'pending_actions',
-    label: 'Plan'
-  },
-  {
-    to: '/goals',
-    icon: 'task_alt',
-    label: 'Goals'
-  },
-  {
-    to: '/tasks',
-    icon: 'done',
-    label: 'Tasks'
-  }
-]
 const leftDrawerOpen = ref(false)
+const rightDrawerOpen = ref(false)
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value
+}
+function toggleRightDrawer() {
+  rightDrawerOpen.value = !rightDrawerOpen.value
 }
 function logout() {
   store.logout()
@@ -44,7 +33,8 @@ function logout() {
   <q-layout view="hHh LpR fff">
     <q-header>
       <q-toolbar>
-        <q-btn flat round icon="menu" @click="toggleLeftDrawer" />
+        <q-btn flat round icon="done" class="lt-md" @click="toggleLeftDrawer" />
+        <q-btn flat round icon="task_alt" class="lt-sm" @click="toggleRightDrawer" />
         <q-toolbar-title>LifeTrackerBuddy</q-toolbar-title>
         <q-btn flat round icon="add">
           <q-menu auto-close>
@@ -75,22 +65,8 @@ function logout() {
         </q-btn>
       </q-toolbar>
     </q-header>
-    <q-drawer v-model="leftDrawerOpen" show-if-above>
-      <q-scroll-area class="fit q-pa-sm">
-        <q-list padding>
-          <template v-for="(menuItem, index) in menuList" :key="index">
-            <q-item :to="menuItem.to" exact>
-              <q-item-section avatar>
-                <q-icon :name="menuItem.icon" />
-              </q-item-section>
-              <q-item-section>
-                {{ menuItem.label }}
-              </q-item-section>
-            </q-item>
-          </template>
-        </q-list>
-      </q-scroll-area>
-    </q-drawer>
+    <TasksDrawer v-model="leftDrawerOpen" show-if-above side="left" bordered />
+    <GoalsDrawer v-model="rightDrawerOpen" :breakpoint="599" show-if-above side="right" bordered />
     <q-page-container>
       <router-view :key="$route.path" />
     </q-page-container>

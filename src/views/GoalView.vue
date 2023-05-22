@@ -22,7 +22,7 @@ const disable = computed(
 </script>
 
 <template>
-  <q-page padding>
+  <q-page class="q-pa-md">
     <q-form @submit.prevent="save">
       <q-toolbar>
         <q-toolbar-title>Goal</q-toolbar-title>
@@ -53,9 +53,9 @@ const disable = computed(
             label="Parent"
             stack-label
             :except-id="itemId"
-            class="col-12 col-sm-6"
+            class="col-12 col-lg-6"
           />
-          <DateInput v-model="item.planned" label="Planned" class="col-12 col-sm-6" />
+          <DateInput v-model="item.planned" label="Planned" class="col-12 col-lg-6" />
         </div>
         <q-input
           v-model="item.description"
