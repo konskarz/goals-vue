@@ -34,7 +34,7 @@ function logout() {
     <q-header>
       <q-toolbar>
         <q-btn flat round icon="done" class="lt-md" @click="toggleLeftDrawer" />
-        <q-btn flat round icon="task_alt" class="lt-sm" @click="toggleRightDrawer" />
+        <q-btn flat round icon="outlined_flag" class="lt-sm" @click="toggleRightDrawer" />
         <q-toolbar-title>LifeTrackerBuddy</q-toolbar-title>
         <q-btn flat round icon="add">
           <q-menu auto-close>
