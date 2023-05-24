@@ -51,6 +51,7 @@ function increase() {
 }
 function done() {
   const changed = { done: new Date().toISOString() }
+  fireworks()
   taskStore.updateItem(props.task.id + '/', changed).then(() => taskStore.refetch())
 }
 function onDragStart(event) {
