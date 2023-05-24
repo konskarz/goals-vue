@@ -11,8 +11,8 @@ const store = useTaskStore()
       <q-toolbar>
         <q-toolbar-title>Tasks</q-toolbar-title>
       </q-toolbar>
-      <q-list v-if="store.relative" class="q-py-sm">
-        <q-intersection v-for="task in store.relative" :key="task.id" style="min-height: 51.19px">
+      <q-list v-if="store.filtered" class="q-py-sm">
+        <q-intersection v-for="task in store.filtered" :key="task.id" style="min-height: 51.19px">
           <q-item :to="{ name: 'task', params: { id: task.id } }">
             <q-item-section>
               <q-item-label>{{ task.name }}</q-item-label>

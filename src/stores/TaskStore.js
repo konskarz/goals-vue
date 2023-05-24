@@ -90,6 +90,7 @@ export const useTaskStore = defineStore('TaskStore', () => {
     relative,
     filter,
     currentWeek,
+    filtered,
     calendar
   }
 })
