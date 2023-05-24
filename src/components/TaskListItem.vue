@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 // import { useQuasar } from 'quasar'
+import { date } from 'quasar'
 import { useRouter } from 'vue-router'
 import { useTaskStore } from '../stores/TaskStore'
 import { fireworks } from '../lib/fireworks'
@@ -21,6 +22,10 @@ const progress = computed(() =>
   showProgress.value ? props.task.performance / props.task.target : 0
 )
 const caption = computed(() => [props.task.performance, 'of', props.task.target].join(' '))
+const hint = computed(() => {
+  const ph = props.task.performance_history
+  return ph && ph.length ? 'Changed ' + date.formatDate(ph[0].updated, 'DD.MM.YYYY HH:mm') : null
+})
 /* function showProgressDialog() {
   $q.dialog({
     component: ProgressDialog,
@@ -69,6 +74,7 @@ function onDragStart(event) {
       <q-item-label v-if="showProgress">
         <q-linear-progress :value="progress" color="positive" />
       </q-item-label>
+      <q-item-label v-if="showProgress && hint" caption>{{ hint }}</q-item-label>
     </q-item-section>
     <q-item-section avatar>
       <q-btn v-if="task.done" flat round icon="done" @click="undone" />
