@@ -1,11 +1,9 @@
 <script setup>
 import { computed } from 'vue'
-// import { useQuasar } from 'quasar'
 import { date } from 'quasar'
 import { useRouter } from 'vue-router'
 import { useTaskStore } from '../stores/TaskStore'
 import { fireworks } from '../lib/fireworks'
-// import ProgressDialog from './ProgressDialog.vue'
 
 const props = defineProps({
   task: {
@@ -14,7 +12,6 @@ const props = defineProps({
   }
 })
 const emit = defineEmits(['ondragstart'])
-// const $q = useQuasar()
 const router = useRouter()
 const taskStore = useTaskStore()
 const showProgress = computed(() => props.task.target > 1 && !props.task.done)
@@ -26,16 +23,6 @@ const hint = computed(() => {
   const ph = props.task.performance_history
   return ph && ph.length ? 'Changed ' + date.formatDate(ph[0].updated, 'DD.MM.YYYY HH:mm') : null
 })
-/* function showProgressDialog() {
-  $q.dialog({
-    component: ProgressDialog,
-    componentProps: { task: props.task }
-  }).onOk((data) => {
-    if (data.performance >= props.task.target) fireworks()
-    const changed = { performance: data.performance }
-    taskStore.updateItem(props.task.id + '/', changed).then(() => taskStore.refetch())
-  })
-} */
 function go() {
   router.push({ name: 'task', params: { id: props.task.id } })
 }
