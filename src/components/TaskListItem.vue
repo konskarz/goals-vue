@@ -40,12 +40,17 @@ function go() {
   router.push({ name: 'task', params: { id: props.task.id } })
 }
 function undone() {
-  const changed = { performance: props.task.performance - 1, done: null }
+  const changed = { done: null }
+  if (props.task.performance >= props.task.target) changed.performance = props.task.target - 1
   taskStore.updateItem(props.task.id + '/', changed).then(() => taskStore.refetch())
 }
 function increase() {
   const changed = { performance: props.task.performance + 1 }
   if (changed.performance >= props.task.target) fireworks()
+  taskStore.updateItem(props.task.id + '/', changed).then(() => taskStore.refetch())
+}
+function done() {
+  const changed = { done: new Date().toISOString() }
   taskStore.updateItem(props.task.id + '/', changed).then(() => taskStore.refetch())
 }
 function onDragStart(event) {
@@ -77,8 +82,9 @@ function onDragStart(event) {
       <q-item-label v-if="showProgress && hint" caption>{{ hint }}</q-item-label>
     </q-item-section>
     <q-item-section avatar>
-      <q-btn v-if="task.done" flat round icon="done" @click="undone" />
-      <q-btn v-else flat round icon="plus_one" @click="increase" />
+      <q-btn v-if="task.done" flat round icon="check_box" @click="undone" />
+      <q-btn v-else-if="showProgress" flat round icon="plus_one" @click="increase" />
+      <q-btn v-else flat round icon="check_box_outline_blank" @click="done" />
     </q-item-section>
   </q-item>
 </template>
