@@ -10,7 +10,6 @@ const store = useGoalStore()
     <q-scroll-area class="fit q-pa-md">
       <q-toolbar>
         <q-toolbar-title>Goals</q-toolbar-title>
-        <q-btn :to="{ name: 'goal', params: { id: 'new' } }" flat round icon="add" />
       </q-toolbar>
       <q-list v-if="store.tree" class="q-py-sm">
         <GoalListItem v-for="goal in store.tree" :key="goal.id" :goal="goal" />

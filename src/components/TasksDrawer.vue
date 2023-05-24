@@ -10,7 +10,6 @@ const store = useTaskStore()
     <q-scroll-area class="fit q-pa-md">
       <q-toolbar>
         <q-toolbar-title>Tasks</q-toolbar-title>
-        <q-btn :to="{ name: 'task', params: { id: 'new' } }" flat round icon="add" />
       </q-toolbar>
       <q-list v-if="store.filtered" class="q-py-sm">
         <q-intersection v-for="task in store.filtered" :key="task.id" style="min-height: 51.19px">
