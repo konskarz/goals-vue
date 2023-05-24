@@ -36,7 +36,7 @@ function logout() {
         <q-btn flat round icon="done" class="lt-md" @click="toggleLeftDrawer" />
         <q-btn flat round icon="outlined_flag" class="lt-sm" @click="toggleRightDrawer" />
         <q-toolbar-title>LifeTrackerBuddy</q-toolbar-title>
-        <q-btn flat round icon="add">
+        <!-- <q-btn flat round icon="add">
           <q-menu auto-close>
             <q-list>
               <q-item :to="{ name: 'goal', params: { id: 'new' } }">
@@ -62,7 +62,8 @@ function logout() {
               </q-item>
             </q-list>
           </q-menu>
-        </q-btn>
+        </q-btn> -->
+        <q-btn flat round icon="logout" @click="logout" />
       </q-toolbar>
     </q-header>
     <TasksDrawer v-model="leftDrawerOpen" show-if-above side="left" bordered />

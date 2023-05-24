@@ -32,7 +32,7 @@ const caption = computed(() => [props.task.performance, 'of', props.task.target]
   })
 } */
 function go() {
-  router.push('/tasks/' + props.task.id)
+  router.push({ name: 'task', params: { id: props.task.id } })
 }
 function undone() {
   const changed = { performance: props.task.performance - 1, done: null }
