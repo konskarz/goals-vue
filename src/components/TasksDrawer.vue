@@ -7,8 +7,8 @@ const store = useTaskStore()
 
 <template>
   <q-drawer>
-    <q-scroll-area class="fit q-pa-md">
-      <q-toolbar>
+    <q-scroll-area class="fit">
+      <q-toolbar class="q-mt-md">
         <q-toolbar-title>Tasks</q-toolbar-title>
       </q-toolbar>
       <q-list v-if="store.filtered" class="q-py-sm">

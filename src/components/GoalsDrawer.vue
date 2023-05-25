@@ -7,8 +7,8 @@ const store = useGoalStore()
 
 <template>
   <q-drawer>
-    <q-scroll-area class="fit q-pa-md">
-      <q-toolbar>
+    <q-scroll-area class="fit">
+      <q-toolbar class="q-mt-md">
         <q-toolbar-title>Goals</q-toolbar-title>
       </q-toolbar>
       <q-list v-if="store.tree" class="q-py-sm">

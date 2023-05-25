@@ -7,8 +7,8 @@ const store = useTaskStore()
 </script>
 
 <template>
-  <q-page class="q-pa-md">
-    <q-toolbar>
+  <q-page>
+    <q-toolbar class="q-mt-md q-pl-lg">
       <q-toolbar-title>Plan</q-toolbar-title>
       <GoalSelect
         v-model="store.filter.goal"
@@ -40,7 +40,7 @@ const store = useTaskStore()
         </q-menu>
       </q-btn>
     </q-toolbar>
-    <q-timeline v-if="store.calendar" class="q-px-sm">
+    <q-timeline v-if="store.calendar" class="q-pl-lg">
       <WeekTimelineEntry
         v-for="(tasks, key) in store.calendar"
         :key="key"
