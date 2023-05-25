@@ -15,7 +15,7 @@ const store = useTaskStore()
         label="For Goal"
         dense
         borderless
-        class="col-6 col-sm-3 col-lg-2"
+        class="col-6 col-lg-3"
       />
       <q-btn flat round icon="filter_list">
         <q-menu>
