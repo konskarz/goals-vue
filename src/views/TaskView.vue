@@ -49,7 +49,8 @@ watch(allTasks, (newValue) => {
   <q-page>
     <q-form @submit.prevent="save">
       <q-toolbar class="q-mt-md q-pl-lg">
-        <q-toolbar-title>Task</q-toolbar-title>
+        <q-toolbar-title v-if="!allTasks">Task</q-toolbar-title>
+        <q-toolbar-title v-else>Group</q-toolbar-title>
         <q-toggle
           v-if="item.group_id"
           v-model="allTasks"
