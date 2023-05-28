@@ -110,7 +110,7 @@ watch(allTasks, (newValue) => {
           class="q-pt-md"
         />
         <q-input
-          v-if="performanceHistory"
+          v-if="performanceHistory && !allTasks"
           v-model="performanceHistory"
           type="textarea"
           label="Performance updates"
