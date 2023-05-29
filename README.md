@@ -8,6 +8,10 @@ Vue-Frontend for [lifetrackerbuddy.com](https://lifetrackerbuddy.com/), - an adv
 git clone -b gh-pages https://github.com/konskarz/goals-vue.git vue
 ```
 
+## Customize configuration
+
+See [Vite Configuration Reference](https://vitejs.dev/config/).
+
 ## Project Setup
 
 ```sh
@@ -31,7 +35,3 @@ npm run build
 ```sh
 npm run lint
 ```
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
