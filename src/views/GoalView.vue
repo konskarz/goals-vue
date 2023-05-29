@@ -24,7 +24,7 @@ const disable = computed(
 <template>
   <q-page>
     <q-form @submit.prevent="save">
-      <q-toolbar class="q-mt-md q-pl-lg">
+      <q-toolbar class="q-mt-md">
         <q-toolbar-title>Goal</q-toolbar-title>
         <q-btn
           v-if="itemId"
@@ -38,7 +38,7 @@ const disable = computed(
         <q-btn type="submit" flat round icon="save" :disable="disable" />
         <q-btn type="button" flat round icon="clear" @click="back" />
       </q-toolbar>
-      <div class="q-px-lg q-py-sm">
+      <div class="q-py-sm q-px-md">
         <q-input
           v-model="item.name"
           label="Name"

@@ -8,7 +8,7 @@ const store = useTaskStore()
 <template>
   <q-drawer>
     <q-scroll-area class="fit">
-      <q-toolbar class="q-mt-md q-pl-md">
+      <q-toolbar class="q-mt-md">
         <q-toolbar-title>Tasks</q-toolbar-title>
         <q-btn :to="{ name: 'task', params: { id: 'new' } }" flat round icon="add" />
       </q-toolbar>

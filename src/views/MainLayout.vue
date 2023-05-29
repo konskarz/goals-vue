@@ -24,8 +24,8 @@ function logout() {
 </script>
 
 <template>
-  <q-layout view="hHh LpR fff">
-    <q-header>
+  <q-layout view="hhh LpR fff">
+    <q-header reveal>
       <q-toolbar>
         <q-toolbar-title>LifeTrackerBuddy</q-toolbar-title>
         <q-btn flat round icon="done" class="lt-md" @click="drawerLeft = !drawerLeft" />
