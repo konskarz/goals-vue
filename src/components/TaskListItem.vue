@@ -68,7 +68,7 @@ function onDragStart(event) {
         <q-linear-progress :value="progress" color="positive" />
       </q-item-label>
       <q-item-label v-if="showProgress && hint" caption>
-        <q-icon name="update" /> {{ hint }}
+        <q-icon name="update" class="vertical-top" /> {{ hint }}
       </q-item-label>
     </q-item-section>
     <q-item-section avatar>
