@@ -21,7 +21,7 @@ const progress = computed(() =>
 const caption = computed(() => [props.task.performance, 'of', props.task.target].join(' '))
 const hint = computed(() => {
   const ph = props.task.performance_history
-  return ph && ph.length ? 'Changed ' + date.formatDate(ph[0].updated, 'DD.MM.YYYY HH:mm') : null
+  return ph && ph.length ? date.formatDate(ph[0].updated, 'DD.MM.YYYY HH:mm') : null
 })
 function go() {
   router.push({ name: 'task', params: { id: props.task.id } })
@@ -67,7 +67,9 @@ function onDragStart(event) {
       <q-item-label v-if="showProgress">
         <q-linear-progress :value="progress" color="positive" />
       </q-item-label>
-      <q-item-label v-if="showProgress && hint" caption>{{ hint }}</q-item-label>
+      <q-item-label v-if="showProgress && hint" caption>
+        <q-icon name="update" /> {{ hint }}
+      </q-item-label>
     </q-item-section>
     <q-item-section avatar>
       <q-btn v-if="task.done" flat round icon="check_box" @click="undone" />
