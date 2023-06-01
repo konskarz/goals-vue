@@ -28,7 +28,7 @@ function logout() {
     <q-header reveal>
       <q-toolbar>
         <q-toolbar-title>LifeTrackerBuddy</q-toolbar-title>
-        <q-btn flat round icon="done" class="lt-md" @click="drawerLeft = !drawerLeft" />
+        <q-btn flat round icon="task_alt" class="lt-md" @click="drawerLeft = !drawerLeft" />
         <q-btn flat round icon="outlined_flag" class="lt-sm" @click="drawerRight = !drawerRight" />
         <q-btn flat round icon="logout" @click="logout" />
         <!-- <q-btn flat round icon="add">
