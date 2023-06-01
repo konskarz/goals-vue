@@ -8,7 +8,7 @@ const store = useTaskStore()
 
 <template>
   <q-page>
-    <q-toolbar class="q-mt-md q-pl-lg">
+    <q-toolbar class="q-mt-md q-pl-md">
       <q-toolbar-title>Plan</q-toolbar-title>
       <GoalSelect
         v-model="store.filter.goal"
