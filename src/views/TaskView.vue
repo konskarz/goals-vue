@@ -48,7 +48,7 @@ watch(allTasks, (newValue) => {
 <template>
   <q-page>
     <q-form @submit.prevent="save">
-      <q-toolbar class="q-mt-md">
+      <q-toolbar class="q-mt-md q-pl-lg">
         <q-toolbar-title v-if="!allTasks">Task</q-toolbar-title>
         <q-toolbar-title v-else>Group</q-toolbar-title>
         <q-toggle
@@ -69,7 +69,7 @@ watch(allTasks, (newValue) => {
         <q-btn type="submit" flat round icon="save" :disable="disable" />
         <q-btn type="button" flat round icon="clear" @click="back" />
       </q-toolbar>
-      <div class="q-py-sm q-px-md">
+      <div class="q-py-sm q-px-lg">
         <div class="row q-col-gutter-lg">
           <q-input
             v-model="item.name"
