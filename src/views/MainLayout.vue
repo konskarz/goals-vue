@@ -31,33 +31,6 @@ function logout() {
         <q-btn flat round icon="task_alt" class="lt-md" @click="drawerLeft = !drawerLeft" />
         <q-btn flat round icon="outlined_flag" class="lt-sm" @click="drawerRight = !drawerRight" />
         <q-btn flat round icon="logout" @click="logout" />
-        <!-- <q-btn flat round icon="add">
-          <q-menu auto-close>
-            <q-list>
-              <q-item :to="{ name: 'goal', params: { id: 'new' } }">
-                <q-item-section>
-                  <q-item-label>New goal</q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item :to="{ name: 'task', params: { id: 'new' } }">
-                <q-item-section>
-                  <q-item-label>New task</q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </q-menu>
-        </q-btn>
-        <q-btn flat round icon="person_outline">
-          <q-menu>
-            <q-list>
-              <q-item v-close-popup clickable @click="logout">
-                <q-item-section>
-                  <q-item-label>Logout</q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </q-menu>
-        </q-btn> -->
       </q-toolbar>
     </q-header>
     <TasksDrawer v-model="drawerLeft" show-if-above side="left" bordered />
