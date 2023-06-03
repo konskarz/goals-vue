@@ -53,9 +53,9 @@ const disable = computed(
             label="Parent"
             stack-label
             :except-id="itemId"
-            class="col-12 col-lg-6"
+            class="col-12 col-sm-6"
           />
-          <DateInput v-model="item.planned" label="Planned" class="col-12 col-lg-6" />
+          <DateInput v-model="item.planned" label="Planned" class="col-12 col-sm-6" />
         </div>
         <q-input
           v-model="item.description"
