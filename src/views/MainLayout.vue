@@ -23,6 +23,11 @@ const menuList = [
     to: '/tasks',
     icon: 'done',
     label: 'Tasks'
+  },
+  {
+    to: '/reports',
+    icon: 'auto_graph',
+    label: 'Reports'
   }
 ]
 const drawerLeft = ref(false)

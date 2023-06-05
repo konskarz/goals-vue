@@ -79,6 +79,42 @@ export const useTaskStore = defineStore('TaskStore', () => {
     }
     return build({}, currentMonday, date.addToDate(currentMonday, { days: 14 }))
   })
+  const recurring = computed(() => {
+    if (!data.value) return null
+    const rtasks = data.value
+      .filter((task) => {
+        if (!task.group_id || !task.planned) return false
+        const planned = new Date(task.planned.slice(0, 10))
+        if (planned > currentDate || planned < date.subtractFromDate(currentDate, { years: 1 }))
+          return false
+        return true
+      })
+      .sort((a, b) => Date.parse(a.planned) - Date.parse(b.planned))
+    if (!rtasks.length) return null
+    const getData = (task) => {
+      if (task.done) return 100
+      else if (task.target > 1) return (task.performance / task.target) * 100
+      else return 0
+    }
+    const reduced = rtasks.reduce(
+      (acc, task) => ({
+        ...acc,
+        [task.name]: [
+          ...(acc[task.name] || []),
+          { x: 'w' + date.formatDate(task.planned.slice(0, 10), 'w'), y: getData(task) }
+        ]
+      }),
+      {}
+    )
+    const series = []
+    for (const name in reduced) {
+      series.push({
+        name,
+        data: reduced[name]
+      })
+    }
+    return series
+  })
 
   return {
     data,
@@ -91,6 +127,7 @@ export const useTaskStore = defineStore('TaskStore', () => {
     filter,
     currentWeek,
     filtered,
-    calendar
+    calendar,
+    recurring
   }
 })
