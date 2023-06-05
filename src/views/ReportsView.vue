@@ -1,16 +1,18 @@
 <script setup>
+import { getCssVar } from 'quasar'
 import { useTaskStore } from '../stores/TaskStore'
 
 const store = useTaskStore()
 const options = {
   chart: {
-    height: 350,
-    type: 'heatmap'
+    toolbar: {
+      tools: { download: false }
+    }
   },
   dataLabels: {
     enabled: false
   },
-  colors: ['#21BA45'],
+  colors: [getCssVar('positive')],
   title: {
     text: 'Recurring Tasks'
   }
@@ -23,7 +25,12 @@ const options = {
       <q-toolbar-title>Reports</q-toolbar-title>
     </q-toolbar>
     <div v-if="store.recurring" class="q-px-md">
-      <apexchart type="heatmap" height="350" :options="options" :series="store.recurring" />
+      <apexchart
+        type="heatmap"
+        :height="store.recurring.length * 50"
+        :options="options"
+        :series="store.recurring"
+      />
     </div>
   </q-page>
 </template>
