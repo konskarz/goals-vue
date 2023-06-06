@@ -13,7 +13,7 @@ const options = {
     {
       breakpoint: 600,
       options: {
-        chart: { width: 535 },
+        chart: { width: 568 },
         yaxis: {
           labels: { maxWidth: 100 }
         }
@@ -28,7 +28,7 @@ const options = {
     <q-toolbar class="q-mt-md q-pl-lg">
       <q-toolbar-title>Reports</q-toolbar-title>
     </q-toolbar>
-    <div v-if="store.recurring" class="q-px-lg">
+    <div v-if="store.recurring" class="q-pl-lg q-pr-sm">
       <div class="text-subtitle2">Recurring Tasks</div>
       <apexchart
         type="heatmap"
