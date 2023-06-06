@@ -29,8 +29,8 @@ const heatmapWidth = computed(() => {
     <q-toolbar class="q-mt-md q-pl-lg">
       <q-toolbar-title>Reports</q-toolbar-title>
     </q-toolbar>
-    <div v-if="store.recurring" class="q-px-lg">
-      <div class="text-subtitle2">Recurring Tasks</div>
+    <div v-if="store.recurring" class="q-py-md q-px-lg">
+      <q-item-label>Recurring Tasks</q-item-label>
       <apexchart
         type="heatmap"
         :series="store.recurring"
