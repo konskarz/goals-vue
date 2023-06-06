@@ -85,7 +85,7 @@ export const useTaskStore = defineStore('TaskStore', () => {
       .filter((task) => {
         if (!task.group_id || !task.planned) return false
         const planned = new Date(task.planned.slice(0, 10))
-        if (planned > currentDate || planned < date.subtractFromDate(currentDate, { years: 1 }))
+        if (planned > currentDate || planned < date.subtractFromDate(currentDate, { months: 6 }))
           return false
         return true
       })
