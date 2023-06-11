@@ -28,7 +28,7 @@ function logout() {
 
 <template>
   <q-layout view="hhh LpR fff">
-    <q-header reveal>
+    <q-header reveal reveal-offset="0">
       <q-toolbar>
         <q-btn flat round icon="menu" class="lt-md" @click="drawer = !drawer" />
         <q-toolbar-title>LifeTrackerBuddy</q-toolbar-title>
