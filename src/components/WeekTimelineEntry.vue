@@ -61,11 +61,11 @@ function onDrop(e) {
     @dragenter.prevent
     @drop.prevent="onDrop($event)"
   >
-    <q-list v-if="sorted">
-      <q-intersection v-for="task in sorted" :key="task.id" class="task-list-item">
+    <div v-if="sorted">
+      <q-intersection v-for="task in sorted" :key="task.id" class="task-list-item" once>
         <TaskListItem :task="task" @ondragstart="onDragStart" />
       </q-intersection>
-    </q-list>
+    </div>
   </q-timeline-entry>
 </template>
 <style scoped>

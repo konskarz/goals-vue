@@ -10,8 +10,8 @@ const store = useTaskStore()
     <q-toolbar class="q-mt-md q-pl-lg">
       <q-toolbar-title>Tasks</q-toolbar-title>
     </q-toolbar>
-    <q-list v-if="store.data" class="q-py-sm q-pl-sm">
-      <q-intersection v-for="task in store.filtered" :key="task.id" class="task-list-item">
+    <div v-if="store.data" class="q-py-sm q-pl-sm">
+      <q-intersection v-for="task in store.filtered" :key="task.id" class="task-list-item" once>
         <q-item :to="{ name: 'task', params: { id: task.id } }">
           <q-item-section>
             <q-item-label>{{ task.name }}</q-item-label>
@@ -21,7 +21,7 @@ const store = useTaskStore()
           </q-item-section>
         </q-item>
       </q-intersection>
-    </q-list>
+    </div>
   </q-page>
 </template>
 <style scoped>
