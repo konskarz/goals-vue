@@ -55,7 +55,7 @@ function logout() {
         </q-btn>
       </q-toolbar>
     </q-header>
-    <q-drawer v-model="drawer" show-if-above bordered>
+    <q-drawer v-model="drawer" show-if-above>
       <q-scroll-area class="fit">
         <q-list class="q-mt-md">
           <q-item v-for="(view, index) in views" :key="index" :to="view.to" exact>
