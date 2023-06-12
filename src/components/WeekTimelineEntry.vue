@@ -6,14 +6,8 @@ import TaskListItem from './TaskListItem.vue'
 import 'drag-drop-touch'
 
 const props = defineProps({
-  tasks: {
-    type: Array,
-    required: true
-  },
-  monday: {
-    type: String,
-    required: true
-  }
+  tasks: { type: Array, required: true },
+  monday: { type: String, required: true }
 })
 const store = useTaskStore()
 const sorted = computed(() => {

@@ -2,14 +2,7 @@
 import { computed } from 'vue'
 
 const props = defineProps({
-  label: {
-    type: String,
-    required: true
-  },
-  modelValue: {
-    type: Number,
-    default: null
-  }
+  modelValue: { type: Number, default: null }
 })
 const emit = defineEmits(['update:modelValue'])
 const model = computed({
@@ -23,7 +16,7 @@ const model = computed({
 </script>
 
 <template>
-  <q-input v-model.number="model" type="number" min="0" :label="label" stack-label>
+  <q-input v-model.number="model" type="number" min="0" stack-label>
     <template #append>
       <q-btn round label="-1" @click="model--" />
       <q-btn round label="+1" @click="model++" />

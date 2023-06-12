@@ -6,10 +6,7 @@ import { useTaskStore } from '../stores/TaskStore'
 import { fireworks } from '../lib/fireworks'
 
 const props = defineProps({
-  task: {
-    type: Object,
-    required: true
-  }
+  task: { type: Object, required: true }
 })
 const emit = defineEmits(['ondragstart'])
 const router = useRouter()

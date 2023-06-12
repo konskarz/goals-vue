@@ -2,14 +2,7 @@
 import { computed } from 'vue'
 
 const props = defineProps({
-  label: {
-    type: String,
-    required: true
-  },
-  modelValue: {
-    type: String,
-    default: null
-  }
+  modelValue: { type: String, default: null }
 })
 const emit = defineEmits(['update:modelValue'])
 const model = computed({
@@ -23,5 +16,5 @@ const model = computed({
 </script>
 
 <template>
-  <q-input v-model="model" type="date" :label="label" stack-label />
+  <q-input v-model="model" type="date" stack-label />
 </template>

@@ -1,6 +1,5 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
 import { date } from 'quasar'
 import { useTaskStore } from '../stores/TaskStore'
 import { usePersistent } from '../stores/persistent'
@@ -8,12 +7,13 @@ import GoalSelect from '../components/GoalSelect.vue'
 import DateInput from '../components/DateInput.vue'
 import NumberInput from '../components/NumberInput.vue'
 
-const route = useRoute()
-const store = useTaskStore()
-const itemId = parseInt(route.params.id)
+const props = defineProps({
+  id: { type: String, required: true }
+})
+const itemId = parseInt(props.id)
 const { item, original, path, persist, changed, remove, save, back } = usePersistent(
   itemId,
-  store,
+  useTaskStore(),
   {
     name: '',
     goal: null,

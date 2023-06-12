@@ -1,20 +1,24 @@
 <script setup>
 import { computed } from 'vue'
-import { useRoute } from 'vue-router'
 import { useGoalStore } from '../stores/GoalStore'
 import { usePersistent } from '../stores/persistent'
 import GoalSelect from '../components/GoalSelect.vue'
 import DateInput from '../components/DateInput.vue'
 
-const route = useRoute()
-const store = useGoalStore()
-const itemId = parseInt(route.params.id)
-const { item, original, persist, changed, remove, save, back } = usePersistent(itemId, store, {
-  name: '',
-  parent: null,
-  planned: null,
-  description: ''
+const props = defineProps({
+  id: { type: String, required: true }
 })
+const itemId = parseInt(props.id)
+const { item, original, persist, changed, remove, save, back } = usePersistent(
+  itemId,
+  useGoalStore(),
+  {
+    name: '',
+    parent: null,
+    planned: null,
+    description: ''
+  }
+)
 const disable = computed(
   () =>
     !item.value.name || persist.value || Boolean(itemId && !changed(original, { ...item.value }))

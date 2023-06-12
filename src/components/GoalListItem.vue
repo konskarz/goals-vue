@@ -3,10 +3,7 @@ import { computed } from 'vue'
 import GoalListItemSections from './GoalListItemSections.vue'
 
 const props = defineProps({
-  goal: {
-    type: Object,
-    required: true
-  }
+  goal: { type: Object, required: true }
 })
 const route = { name: 'goal', params: { id: props.goal.id } }
 const hasChildren = computed(() => props.goal.children && props.goal.children.length)

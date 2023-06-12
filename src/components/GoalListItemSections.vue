@@ -3,10 +3,7 @@ import { computed } from 'vue'
 import { date } from 'quasar'
 
 const props = defineProps({
-  goal: {
-    type: Object,
-    required: true
-  }
+  goal: { type: Object, required: true }
 })
 const caption = computed(() =>
   props.goal.planned ? date.formatDate(props.goal.planned, 'ddd MMM DD YYYY') : null

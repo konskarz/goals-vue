@@ -27,12 +27,14 @@ const routes = [
       {
         path: '/tasks/:id',
         name: 'task',
-        component: () => import('../views/TaskView.vue')
+        component: () => import('../views/TaskView.vue'),
+        props: true
       },
       {
         path: '/goals/:id',
         name: 'goal',
-        component: () => import('../views/GoalView.vue')
+        component: () => import('../views/GoalView.vue'),
+        props: true
       }
     ]
   },

@@ -10,9 +10,9 @@ const pinia = getActivePinia()
 const store = useUserStore()
 const views = [
   { to: '/', icon: 'pending_actions', label: 'Plan' },
-  { to: 'tasks', icon: 'task_alt', label: 'Tasks' },
-  { to: 'goals', icon: 'outlined_flag', label: 'Goals' },
-  { to: 'reports', icon: 'auto_graph', label: 'Reports' }
+  { to: '/tasks', icon: 'task_alt', label: 'Tasks' },
+  { to: '/goals', icon: 'outlined_flag', label: 'Goals' },
+  { to: '/reports', icon: 'auto_graph', label: 'Reports' }
 ]
 const drawer = ref(false)
 function logout() {
