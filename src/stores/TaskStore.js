@@ -16,8 +16,8 @@ export const useTaskStore = defineStore('TaskStore', () => {
       : null
   )
   const filter = ref({
-    done: true,
-    recurring: true,
+    done: false,
+    recurring: false,
     goal: null
   })
   const branch = computed(() =>
@@ -46,8 +46,8 @@ export const useTaskStore = defineStore('TaskStore', () => {
           .filter((task) => {
             if (!task.planned) return false
             if (new Date(task.planned.slice(0, 10)) < currentMonday) {
-              if (filter.value.done && task.done) return false
-              if (filter.value.recurring && task.group_id) return false
+              if (!filter.value.done && task.done) return false
+              if (!filter.value.recurring && task.group_id) return false
             }
             if (branch.value && !branch.value.includes(task.goal)) {
               return false
