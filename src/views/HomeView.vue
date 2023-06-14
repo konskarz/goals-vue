@@ -1,21 +1,19 @@
 <script setup>
-import { ref } from 'vue'
 import { useTaskStore } from '../stores/TaskStore'
 import GoalSelect from '../components/GoalSelect.vue'
 import WeekTimelineEntry from '../components/WeekTimelineEntry.vue'
 
 const store = useTaskStore()
-const filter = ref(false)
 </script>
 
 <template>
   <q-page>
     <q-toolbar class="q-mt-md q-pl-lg">
       <q-toolbar-title>Plan</q-toolbar-title>
-      <q-btn flat round icon="filter_list" @click="filter = !filter" />
+      <q-btn flat round icon="filter_list" @click="store.filter.show = !store.filter.show" />
     </q-toolbar>
     <q-slide-transition>
-      <div v-show="filter" class="row">
+      <div v-show="store.filter.show" class="row">
         <GoalSelect
           v-model="store.filter.goal"
           label="For Goal"

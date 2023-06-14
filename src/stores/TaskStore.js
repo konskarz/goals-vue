@@ -16,6 +16,7 @@ export const useTaskStore = defineStore('TaskStore', () => {
       : null
   )
   const filter = ref({
+    show: false,
     done: false,
     recurring: false,
     goal: null
