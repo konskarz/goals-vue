@@ -13,25 +13,25 @@ const store = useTaskStore()
       <q-btn flat round icon="filter_list" @click="store.filter.show = !store.filter.show" />
     </q-toolbar>
     <q-slide-transition>
-      <div v-show="store.filter.show" class="row q-px-md">
+      <div v-show="store.filter.show" class="row q-pl-lg q-pr-sm">
         <GoalSelect
           v-model="store.filter.goal"
           label="For Goal"
-          dense
           :borderless="$q.screen.gt.xs"
-          class="q-px-sm q-pb-md col-xs-12 col-sm-4"
+          dense
+          class="col-xs-12 col-sm-4 q-pb-md q-pr-md"
         />
         <q-toggle
           v-model="store.filter.done"
           label="Show passed done"
           dense
-          class="q-pl-sm q-pb-md"
+          class="col-xs-12 col-sm-auto q-pb-md q-pr-md"
         />
         <q-toggle
           v-model="store.filter.recurring"
           label="Show passed recurring"
           dense
-          class="q-pl-sm q-pb-md"
+          class="col-xs-12 col-sm-auto q-pb-md q-pr-md"
         />
       </div>
     </q-slide-transition>
