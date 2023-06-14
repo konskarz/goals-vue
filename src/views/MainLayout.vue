@@ -33,7 +33,7 @@ function logout() {
         <q-btn flat round icon="menu" class="lt-md" @click="drawer = !drawer" />
         <q-toolbar-title>LifeTrackerBuddy</q-toolbar-title>
         <q-btn flat round icon="add">
-          <q-menu auto-close>
+          <q-menu :offset="[0, 4]" auto-close>
             <q-list>
               <q-item :to="{ name: 'task', params: { id: 'new' } }">
                 <q-item-section><q-item-label>New task</q-item-label></q-item-section>
@@ -45,7 +45,7 @@ function logout() {
           </q-menu>
         </q-btn>
         <q-btn flat round icon="person_outline">
-          <q-menu>
+          <q-menu :offset="[0, 4]">
             <q-list>
               <q-item v-close-popup clickable @click="logout">
                 <q-item-section><q-item-label>Logout</q-item-label></q-item-section>
