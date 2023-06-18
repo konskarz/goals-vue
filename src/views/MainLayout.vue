@@ -10,7 +10,7 @@ const pinia = getActivePinia()
 const store = useUserStore()
 const views = [
   { to: '/', icon: 'pending_actions', label: 'Plan' },
-  { to: '/tasks', icon: 'task_alt', label: 'Tasks' },
+  // { to: '/tasks', icon: 'task_alt', label: 'Tasks' },
   { to: '/goals', icon: 'outlined_flag', label: 'Goals' },
   { to: '/reports', icon: 'auto_graph', label: 'Reports' }
 ]
@@ -32,34 +32,26 @@ function logout() {
       <q-toolbar>
         <q-btn flat round icon="menu" class="lt-md" @click="drawer = !drawer" />
         <q-toolbar-title>LifeTrackerBuddy</q-toolbar-title>
-        <q-btn flat round icon="add">
-          <q-menu :offset="[0, 4]" auto-close>
-            <q-list>
-              <q-item :to="{ name: 'task', params: { id: 'new' } }">
-                <q-item-section no-wrap><q-item-label>New task</q-item-label></q-item-section>
-              </q-item>
-              <q-item :to="{ name: 'goal', params: { id: 'new' } }">
-                <q-item-section no-wrap><q-item-label>New goal</q-item-label></q-item-section>
-              </q-item>
-            </q-list>
-          </q-menu>
-        </q-btn>
-        <q-btn flat round icon="person_outline">
-          <q-menu :offset="[0, 4]">
-            <q-list>
-              <q-item v-close-popup clickable @click="logout">
-                <q-item-section><q-item-label>Logout</q-item-label></q-item-section>
-              </q-item>
-            </q-list>
-          </q-menu>
-        </q-btn>
+        <q-btn flat round icon="logout" class="gt-sm" @click="logout" />
       </q-toolbar>
     </q-header>
     <q-drawer v-model="drawer" show-if-above>
       <q-scroll-area class="fit">
         <q-toolbar class="lt-md bg-primary text-white">
-          <q-btn flat round dense icon="menu_open" @click="drawer = false" />
+          <q-btn flat round icon="menu_open" @click="drawer = false" />
+          <q-space />
+          <q-btn flat round icon="logout" @click="logout" />
         </q-toolbar>
+        <q-list class="q-mt-md">
+          <q-item :to="{ name: 'task', params: { id: 'new' } }">
+            <q-item-section avatar><q-icon name="add_task" /></q-item-section>
+            <q-item-section no-wrap><q-item-label>New task</q-item-label></q-item-section>
+          </q-item>
+          <q-item :to="{ name: 'goal', params: { id: 'new' } }">
+            <q-item-section avatar><q-icon name="control_point" /></q-item-section>
+            <q-item-section no-wrap><q-item-label>New goal</q-item-label></q-item-section>
+          </q-item>
+        </q-list>
         <q-list class="q-mt-md">
           <q-item v-for="(view, index) in views" :key="index" :to="view.to" exact>
             <q-item-section avatar><q-icon :name="view.icon" /></q-item-section>
