@@ -32,15 +32,13 @@ function logout() {
       <q-toolbar>
         <q-btn flat round icon="menu" class="lt-md" @click="drawer = !drawer" />
         <q-toolbar-title>LifeTrackerBuddy</q-toolbar-title>
-        <q-btn flat round icon="logout" class="gt-sm" @click="logout" />
+        <q-btn flat round icon="logout" @click="logout" />
       </q-toolbar>
     </q-header>
     <q-drawer v-model="drawer" show-if-above>
       <q-scroll-area class="fit">
         <q-toolbar class="lt-md bg-primary text-white">
           <q-btn flat round icon="menu_open" @click="drawer = false" />
-          <q-space />
-          <q-btn flat round icon="logout" @click="logout" />
         </q-toolbar>
         <q-list class="q-mt-md">
           <q-item :to="{ name: 'task', params: { id: 'new' } }">
