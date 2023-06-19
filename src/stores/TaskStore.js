@@ -97,7 +97,7 @@ export const useTaskStore = defineStore('TaskStore', () => {
       else if (task.target > 1) return (task.performance / task.target) * 100
       else return 0
     }
-    const reduced = rtasks.reduce(
+    return rtasks.reduce(
       (acc, task) => ({
         ...acc,
         [task.name]: [
@@ -107,14 +107,6 @@ export const useTaskStore = defineStore('TaskStore', () => {
       }),
       {}
     )
-    const series = []
-    for (const name in reduced) {
-      series.push({
-        name,
-        data: reduced[name]
-      })
-    }
-    return series
   })
 
   return {
