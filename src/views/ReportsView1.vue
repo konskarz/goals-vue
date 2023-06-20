@@ -27,6 +27,8 @@ const heatmapOptions = {
     type: 'datetime',
     labels: {
       show: true,
+      rotate: 0,
+      hideOverlappingLabels: true,
       formatter: (value, timestamp) => date.formatDate(timestamp, 'DD.MM'),
       offsetY: -4,
       offsetX: 5
@@ -40,7 +42,7 @@ const heatmapOptions = {
       top: -14, // -30,
       bottom: -15,
       // left: -10,
-      right: 0
+      right: 15 // 0
     }
   },
   tooltip: {
@@ -57,14 +59,6 @@ const heatmapOptions = {
   dataLabels: { enabled: false },
   colors: [getCssVar('positive')]
 }
-const heatmapHeight = computed(() => 33 + heatmapSeries.value.length * 24)
-const heatmapWidth = computed(() => {
-  let length = 0
-  heatmapSeries.value.forEach((group) => {
-    if (group.data.length > length) length = group.data.length
-  })
-  return length > 0 ? 110 + length * 24 : '100%'
-})
 </script>
 
 <template>
@@ -78,8 +72,8 @@ const heatmapWidth = computed(() => {
         type="heatmap"
         :series="heatmapSeries"
         :options="heatmapOptions"
-        :height="heatmapHeight"
-        :width="heatmapWidth"
+        :height="33 + heatmapSeries.length * 24"
+        :width="125 + heatmapSeries[0].data.length * 24"
         style="overflow: auto hidden"
       />
     </div>

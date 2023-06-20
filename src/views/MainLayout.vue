@@ -50,7 +50,7 @@ function logout() {
             <q-item-section no-wrap><q-item-label>New goal</q-item-label></q-item-section>
           </q-item>
         </q-list>
-        <q-list class="q-mt-md">
+        <q-list class="q-mt-lg">
           <q-item v-for="(view, index) in views" :key="index" :to="view.to" exact>
             <q-item-section avatar><q-icon :name="view.icon" /></q-item-section>
             <q-item-section>{{ view.label }}</q-item-section>

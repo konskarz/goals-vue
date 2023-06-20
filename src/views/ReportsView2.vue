@@ -15,6 +15,8 @@ const heatmapOptions = {
     type: 'datetime',
     labels: {
       show: true,
+      rotate: 0,
+      hideOverlappingLabels: true,
       formatter: (value, timestamp) => date.formatDate(timestamp, 'DD.MM'),
       offsetY: -4,
       offsetX: 5
@@ -28,7 +30,7 @@ const heatmapOptions = {
       top: -30,
       bottom: -15,
       left: -10,
-      right: 0
+      right: 15 // 0
     }
   },
   tooltip: {
@@ -63,7 +65,7 @@ const heatmapOptions = {
               :series="[{ name, data }]"
               :options="heatmapOptions"
               :height="heatmapOptions.xaxis.labels.show ? 17 + 24 : 7 + 24"
-              :width="data.length * 24"
+              :width="15 + data.length * 24"
               style="overflow: auto hidden"
             />
           </q-item-label>
