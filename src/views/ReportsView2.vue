@@ -1,5 +1,5 @@
 <script setup>
-import { getCssVar } from 'quasar'
+import { date, getCssVar } from 'quasar'
 import { useTaskStore } from '../stores/TaskStore'
 
 const store = useTaskStore()
@@ -7,6 +7,21 @@ const heatmapOptions = {
   chart: {
     toolbar: { show: false },
     parentHeightOffset: 0
+  },
+  yaxis: {
+    labels: { show: false }
+  },
+  xaxis: {
+    type: 'datetime',
+    labels: {
+      show: true,
+      formatter: (value, timestamp) => date.formatDate(timestamp, 'DD.MM'),
+      offsetY: -4,
+      offsetX: 5
+    },
+    tooltip: { enabled: false },
+    axisBorder: { show: false },
+    axisTicks: { show: false }
   },
   grid: {
     padding: {
@@ -16,22 +31,16 @@ const heatmapOptions = {
       right: 0
     }
   },
-  yaxis: {
-    labels: { show: false }
-  },
-  xaxis: {
-    labels: { show: true },
-    tooltip: { enabled: false },
-    axisBorder: { show: false },
-    axisTicks: { show: false }
-  },
   tooltip: {
     custom: ({ series, seriesIndex, dataPointIndex, w }) =>
-      '<div class="arrow_box"><span>' +
-      w.globals.labels[dataPointIndex] +
-      ': ' +
+      '<div class="apexcharts-tooltip-series-group apexcharts-active" style="order: 1; display: flex;">' +
+      '<div class="apexcharts-tooltip-text" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;">' +
+      '<div class="apexcharts-tooltip-y-group">' +
+      '<span class="apexcharts-tooltip-text-y-label">' +
+      date.formatDate(w.globals.seriesX[seriesIndex][dataPointIndex], 'DD.MM') +
+      ':  </span><span class="apexcharts-tooltip-text-y-value">' +
       series[seriesIndex][dataPointIndex] +
-      '</span></div>'
+      '</span></div></div></div>'
   },
   dataLabels: { enabled: false },
   colors: [getCssVar('positive')]
@@ -53,7 +62,7 @@ const heatmapOptions = {
               type="heatmap"
               :series="[{ name, data }]"
               :options="heatmapOptions"
-              :height="heatmapOptions.xaxis.labels.show ? 36 + 24 : 7 + 24"
+              :height="heatmapOptions.xaxis.labels.show ? 17 + 24 : 7 + 24"
               :width="data.length * 24"
               style="overflow: auto hidden"
             />

@@ -82,31 +82,36 @@ export const useTaskStore = defineStore('TaskStore', () => {
   })
   const recurring = computed(() => {
     if (!data.value) return null
+    const startDate = date.subtractFromDate(currentDate, { months: 6 })
     const rtasks = data.value
       .filter((task) => {
         if (!task.group_id || !task.planned) return false
         const planned = new Date(task.planned.slice(0, 10))
-        if (planned > currentDate || planned < date.subtractFromDate(currentDate, { months: 6 }))
-          return false
+        if (planned > currentDate || planned < startDate) return false
         return true
       })
       .sort((a, b) => Date.parse(a.planned) - Date.parse(b.planned))
     if (!rtasks.length) return null
+    const build = (weeks, startMonday, endMonday) => {
+      while (startMonday <= endMonday) {
+        weeks.push({ x: getDay(startMonday), y: null })
+        startMonday = date.addToDate(startMonday, { days: 7 })
+      }
+      return weeks
+    }
     const getData = (task) => {
       if (task.done) return 100
-      else if (task.target > 1) return (task.performance / task.target) * 100
+      else if (task.target > 1) return Math.round((task.performance / task.target) * 100)
       else return 0
     }
-    return rtasks.reduce(
-      (acc, task) => ({
-        ...acc,
-        [task.name]: [
-          ...(acc[task.name] || []),
-          { x: 'w' + date.formatDate(task.planned.slice(0, 10), 'w'), y: getData(task) }
-        ]
-      }),
-      {}
-    )
+    const start = getMonday(rtasks[0].planned.slice(0, 10))
+    const end = getMonday(rtasks[rtasks.length - 1].planned.slice(0, 10))
+    return rtasks.reduce((groups, task) => {
+      groups[task.name] = groups[task.name] ?? build([], start, end)
+      const key = getDay(getMonday(task.planned.slice(0, 10)))
+      groups[task.name].find((item) => item.x === key).y = getData(task)
+      return groups
+    }, {})
   })
 
   return {
