@@ -21,7 +21,11 @@ const heatmapOptions = {
     parentHeightOffset: 0
   },
   yaxis: {
-    labels: { maxWidth: 100 }
+    labels: {
+      maxWidth: 100,
+      align: 'left',
+      offsetX: 9
+    }
   },
   xaxis: {
     type: 'datetime',
@@ -29,9 +33,10 @@ const heatmapOptions = {
       show: true,
       rotate: 0,
       hideOverlappingLabels: true,
+      // format: 'dd.MM',
       formatter: (value, timestamp) => date.formatDate(timestamp, 'DD.MM'),
-      offsetY: -4,
-      offsetX: 5
+      offsetY: -4
+      // offsetX: 5
     },
     tooltip: { enabled: false },
     axisBorder: { show: false },
@@ -41,8 +46,8 @@ const heatmapOptions = {
     padding: {
       top: -14, // -30,
       bottom: -12, // -15,
-      // left: -10,
-      right: 15 // 0
+      left: 0, // -10,
+      right: 0
     }
   },
   tooltip: {
@@ -73,7 +78,7 @@ const heatmapOptions = {
         :series="heatmapSeries"
         :options="heatmapOptions"
         :height="36 + heatmapSeries.length * 24"
-        :width="125 + heatmapSeries[0].data.length * 24"
+        :width="100 + heatmapSeries[0].data.length * 24"
         style="overflow: auto hidden"
       />
     </div>

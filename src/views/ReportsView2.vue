@@ -17,6 +17,7 @@ const heatmapOptions = {
       show: true,
       rotate: 0,
       hideOverlappingLabels: true,
+      // format: 'dd.MM',
       formatter: (value, timestamp) => date.formatDate(timestamp, 'DD.MM'),
       offsetY: -4,
       offsetX: 5
