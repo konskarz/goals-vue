@@ -40,7 +40,7 @@ const heatmapOptions = {
   grid: {
     padding: {
       top: -14, // -30,
-      bottom: -15,
+      bottom: -12, // -15,
       // left: -10,
       right: 15 // 0
     }
@@ -72,7 +72,7 @@ const heatmapOptions = {
         type="heatmap"
         :series="heatmapSeries"
         :options="heatmapOptions"
-        :height="33 + heatmapSeries.length * 24"
+        :height="36 + heatmapSeries.length * 24"
         :width="125 + heatmapSeries[0].data.length * 24"
         style="overflow: auto hidden"
       />

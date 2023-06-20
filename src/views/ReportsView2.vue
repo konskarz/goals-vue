@@ -28,7 +28,7 @@ const heatmapOptions = {
   grid: {
     padding: {
       top: -30,
-      bottom: -15,
+      bottom: -12, // -15,
       left: -10,
       right: 15 // 0
     }
@@ -64,7 +64,7 @@ const heatmapOptions = {
               type="heatmap"
               :series="[{ name, data }]"
               :options="heatmapOptions"
-              :height="heatmapOptions.xaxis.labels.show ? 17 + 24 : 7 + 24"
+              :height="heatmapOptions.xaxis.labels.show ? 20 + 24 : 7 + 24"
               :width="15 + data.length * 24"
               style="overflow: auto hidden"
             />
