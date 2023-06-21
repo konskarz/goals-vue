@@ -53,7 +53,7 @@ const heatmapOptions = {
   tooltip: {
     custom: ({ series, seriesIndex, dataPointIndex, w }) =>
       '<div class="apexcharts-tooltip-series-group apexcharts-active" style="order: 1; display: flex;">' +
-      '<div class="apexcharts-tooltip-text" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;">' +
+      '<div class="apexcharts-tooltip-text">' +
       '<div class="apexcharts-tooltip-y-group">' +
       '<span class="apexcharts-tooltip-text-y-label">' +
       date.formatDate(w.globals.seriesX[seriesIndex][dataPointIndex], 'DD.MM') +
