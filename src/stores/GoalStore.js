@@ -1,6 +1,7 @@
 import { computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useCollection } from './collection'
+import { useTaskStore } from './TaskStore'
 
 // https://stackoverflow.com/questions/18017869/build-tree-array-from-flat-array-in-javascript/70554215#70554215
 const arrayToTree = (array, parent = null) =>
@@ -10,8 +11,18 @@ const arrayToTree = (array, parent = null) =>
 
 export const useGoalStore = defineStore('GoalStore', () => {
   const { data, refetch, getItem, createItem, updateItem, deleteItem } = useCollection('/goals/')
+  const relatedStore = useTaskStore()
+  const relative = computed(() => {
+    if (!data.value || !relatedStore.data) return null
+    return data.value.map(({ ...item }) => {
+      const branch = getBranch(item.id)
+      const tasks = relatedStore.data.filter((task) => branch.includes(task.goal) && !task.group_id)
+      const done = tasks.filter((task) => task.done)
+      return { ...item, target: tasks.length, performance: done.length }
+    })
+  })
   const tree = computed(() => {
-    return data.value ? arrayToTree(data.value) : null
+    return relative.value ? arrayToTree(relative.value) : null
   })
   function getBranch(itemId) {
     const branch = [itemId]
@@ -33,6 +44,7 @@ export const useGoalStore = defineStore('GoalStore', () => {
     createItem,
     updateItem,
     deleteItem,
+    relative,
     tree,
     getBranch
   }
