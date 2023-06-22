@@ -16,7 +16,7 @@ export const useGoalStore = defineStore('GoalStore', () => {
     if (!data.value || !relatedStore.data) return null
     return data.value.map(({ ...item }) => {
       const branch = getBranch(item.id)
-      const tasks = relatedStore.data.filter((task) => branch.includes(task.goal) && !task.group_id)
+      const tasks = relatedStore.data.filter((task) => !task.group_id && branch.includes(task.goal))
       const done = tasks.filter((task) => task.done)
       return { ...item, target: tasks.length, performance: done.length }
     })
