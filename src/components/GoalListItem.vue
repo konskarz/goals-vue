@@ -26,7 +26,13 @@ const hasChildren = computed(() => props.goal.children && props.goal.children.le
       <GoalListItem v-for="child in goal.children" :key="child.id" :goal="child" />
     </q-list>
   </q-expansion-item>
-  <q-item v-else :to="route">
+  <q-item v-else :to="route" class="pr-56">
     <GoalListItemSections :goal="goal" />
   </q-item>
 </template>
+
+<style scoped>
+.pr-56 {
+  padding-right: 56px;
+}
+</style>
