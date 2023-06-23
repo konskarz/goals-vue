@@ -1,6 +1,6 @@
 # goals-vue
 
-Vue-Frontend for [lifetrackerbuddy.com](https://lifetrackerbuddy.com/), - an advanced task manager with main focus on the goal, goal achievement and its current progress
+Vue-Frontend for [lifetrackerbuddy.com](https://lifetrackerbuddy.com/), - an application to manage [OKRs](https://wikipedia.org/wiki/Objectives_and_Key_Results). It is an advanced task manager with main focus on the goal, goal achievement and it's current progress. It should answer the question: _"How far am I away from achieving my goals?"_
 
 ## Production
 
