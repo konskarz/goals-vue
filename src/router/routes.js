@@ -12,7 +12,7 @@ const routes = [
       {
         path: '/reports',
         name: 'reports',
-        component: () => import('../views/ReportsView2.vue')
+        component: () => import('../views/ReportsView.vue')
       },
       {
         path: '/goals',

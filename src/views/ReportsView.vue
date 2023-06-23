@@ -29,24 +29,14 @@ const heatmapOptions = {
   grid: {
     padding: {
       top: -30,
-      bottom: -12, // -15,
+      // bottom: -15,
       left: -10,
-      right: 15 // 0
+      right: 10 // 0
     }
   },
-  tooltip: {
-    custom: ({ series, seriesIndex, dataPointIndex, w }) =>
-      '<div class="apexcharts-tooltip-series-group apexcharts-active" style="order: 1; display: flex;">' +
-      '<div class="apexcharts-tooltip-text">' +
-      '<div class="apexcharts-tooltip-y-group">' +
-      '<span class="apexcharts-tooltip-text-y-label">' +
-      date.formatDate(w.globals.seriesX[seriesIndex][dataPointIndex], 'DD.MM') +
-      ':  </span><span class="apexcharts-tooltip-text-y-value">' +
-      series[seriesIndex][dataPointIndex] +
-      '</span></div></div></div>'
-  },
+  tooltip: { enabled: false },
   dataLabels: { enabled: false },
-  colors: [getCssVar('positive')]
+  colors: [getCssVar('primary')]
 }
 </script>
 
@@ -55,8 +45,7 @@ const heatmapOptions = {
     <q-toolbar class="q-mt-md q-pl-lg">
       <q-toolbar-title>Reports</q-toolbar-title>
     </q-toolbar>
-    <q-list v-if="store.recurring" class="q-pl-sm">
-      <q-item-label header>Recurring Tasks</q-item-label>
+    <q-list v-if="store.recurring" class="q-py-sm q-pl-sm">
       <q-item v-for="(data, name) in store.recurring" :key="name">
         <q-item-section>
           <q-item-label>{{ name }}</q-item-label>
@@ -65,9 +54,7 @@ const heatmapOptions = {
               type="heatmap"
               :series="[{ name, data }]"
               :options="heatmapOptions"
-              :height="heatmapOptions.xaxis.labels.show ? 20 + 24 : 7 + 24"
-              :width="15 + data.length * 24"
-              style="overflow: auto hidden"
+              :height="32 + 14"
             />
           </q-item-label>
         </q-item-section>
