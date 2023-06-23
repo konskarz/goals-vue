@@ -9,7 +9,10 @@ const caption = computed(() => [props.goal.performance, 'of', props.goal.target]
 const progress = computed(() =>
   showProgress.value ? props.goal.performance / props.goal.target : 0
 )
-const showAverage = computed(() => props.goal.average_performance !== null)
+const showRProgress = computed(() => props.goal.rperformance !== null)
+const rprogress = computed(() =>
+  showRProgress.value ? props.goal.rperformance / props.goal.rtarget : 0
+)
 </script>
 
 <template>
@@ -19,12 +22,12 @@ const showAverage = computed(() => props.goal.average_performance !== null)
     <q-item-label v-if="showProgress">
       <q-linear-progress :value="progress" color="positive" />
     </q-item-label>
-    <q-item-label v-if="showAverage" caption>
+    <q-item-label v-if="showRProgress" caption>
       <q-icon name="event_repeat" class="vertical-top" />
-      {{ Math.round(goal.average_performance * 100) }}%
+      {{ Math.round(rprogress * 100) }}% for {{ props.goal.rtarget }}
     </q-item-label>
-    <q-item-label v-if="showAverage">
-      <q-linear-progress :value="goal.average_performance" color="primary" />
+    <q-item-label v-if="showRProgress">
+      <q-linear-progress :value="rprogress" color="primary" />
     </q-item-label>
   </q-item-section>
 </template>

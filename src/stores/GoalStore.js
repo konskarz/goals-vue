@@ -29,21 +29,22 @@ export const useGoalStore = defineStore('GoalStore', () => {
         ...item,
         target: regular.length,
         performance: done.length,
-        average_performance: averagePerformance(recurring)
+        rtarget: recurring.length,
+        rperformance: sumPerformance(recurring)
       }
     })
   })
   const tree = computed(() => {
     return relative.value ? arrayToTree(relative.value) : null
   })
-  function averagePerformance(tasks) {
-    if (!tasks.length) return null
-    let perf = 0
-    tasks.forEach((task) => {
-      if (task.done) perf = perf + 1
-      else if (task.target > 1) perf = perf + task.performance / task.target
-    })
-    return perf / tasks.length
+  function sumPerformance(tasks) {
+    return tasks.length
+      ? tasks.reduce((sum, task) => {
+          if (task.done) return sum + 1
+          else if (task.target > 1) return sum + task.performance / task.target
+          return sum
+        }, 0)
+      : null
   }
   function getBranch(itemId) {
     const branch = [itemId]
