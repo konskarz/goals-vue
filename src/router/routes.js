@@ -6,13 +6,8 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'plan',
+        name: 'tasks',
         component: () => import('../views/HomeView.vue')
-      },
-      {
-        path: '/reports',
-        name: 'reports',
-        component: () => import('../views/ReportsView.vue')
       },
       {
         path: '/goals',
@@ -20,9 +15,9 @@ const routes = [
         component: () => import('../views/GoalsView.vue')
       },
       {
-        path: '/tasks',
-        name: 'tasks',
-        component: () => import('../views/TasksView.vue')
+        path: '/reports',
+        name: 'reports',
+        component: () => import('../views/ReportsView.vue')
       },
       {
         path: '/tasks/:id',

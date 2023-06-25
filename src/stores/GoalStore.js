@@ -38,13 +38,11 @@ export const useGoalStore = defineStore('GoalStore', () => {
     return relative.value ? arrayToTree(relative.value) : null
   })
   function sumPerformance(tasks) {
-    return tasks.length
-      ? tasks.reduce((sum, task) => {
-          if (task.done) return sum + 1
-          else if (task.target > 1) return sum + task.performance / task.target
-          return sum
-        }, 0)
-      : null
+    if (!tasks.length) return null
+    return tasks.reduce((sum, task) => {
+      if (task.done) return sum + 1
+      return task.target > 1 ? sum + task.performance / task.target : sum
+    }, 0)
   }
   function getBranch(itemId) {
     const branch = [itemId]

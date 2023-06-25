@@ -7,14 +7,13 @@ import { useGoalStore } from './GoalStore'
 export const useTaskStore = defineStore('TaskStore', () => {
   const { data, refetch, getItem, createItem, updateItem, deleteItem } = useCollection('/tasks/')
   const relatedStore = useGoalStore()
-  const relative = computed(() =>
-    data.value && relatedStore.data
-      ? data.value.map((item) => ({
-          ...item,
-          goalName: item.goal ? relatedStore.getItem(item.goal).name : null
-        }))
-      : null
-  )
+  const relative = computed(() => {
+    if (!data.value || relatedStore.data) return null
+    return data.value.map((item) => ({
+      ...item,
+      goalName: item.goal ? relatedStore.getItem(item.goal).name : null
+    }))
+  })
   const filter = ref({
     show: false,
     done: false,
@@ -41,23 +40,22 @@ export const useTaskStore = defineStore('TaskStore', () => {
   const currentDate = date.startOfDate(new Date(), 'day')
   const currentMonday = getMonday(currentDate)
   const currentWeek = getDay(currentMonday)
-  const filtered = computed(() =>
-    data.value
-      ? data.value
-          .filter((task) => {
-            if (!task.planned) return false
-            if (new Date(task.planned.slice(0, 10)) < currentMonday) {
-              if (!filter.value.done && task.done) return false
-              if (!filter.value.recurring && task.group_id) return false
-            }
-            if (branch.value && !branch.value.includes(task.goal)) {
-              return false
-            }
-            return true
-          })
-          .sort((a, b) => Date.parse(a.planned) - Date.parse(b.planned))
-      : null
-  )
+  const filtered = computed(() => {
+    if (!data.value) return null
+    return data.value
+      .filter((task) => {
+        if (!task.planned) return false
+        if (new Date(task.planned.slice(0, 10)) < currentMonday) {
+          if (!filter.value.done && task.done) return false
+          if (!filter.value.recurring && task.group_id) return false
+        }
+        if (branch.value && !branch.value.includes(task.goal)) {
+          return false
+        }
+        return true
+      })
+      .sort((a, b) => Date.parse(a.planned) - Date.parse(b.planned))
+  })
   const calendar = computed(() => {
     const build = (weeks, startMonday, endMonday) => {
       while (startMonday <= endMonday) {
@@ -107,7 +105,7 @@ export const useTaskStore = defineStore('TaskStore', () => {
     const start = getMonday(rtasks[0].planned.slice(0, 10))
     const end = getMonday(rtasks[rtasks.length - 1].planned.slice(0, 10))
     return rtasks.reduce((groups, task) => {
-      groups[task.name] = groups[task.name] ?? build([], start, end)
+      if (!groups[task.name]) groups[task.name] = build([], start, end)
       const key = getDay(getMonday(task.planned.slice(0, 10)))
       groups[task.name].find((item) => item.x === key).y = getData(task)
       return groups

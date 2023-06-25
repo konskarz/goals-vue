@@ -9,14 +9,14 @@ const store = useTaskStore()
 <template>
   <q-page>
     <q-toolbar class="q-mt-md q-pl-lg">
-      <q-toolbar-title>Plan</q-toolbar-title>
+      <q-toolbar-title>Tasks</q-toolbar-title>
       <q-btn flat round icon="filter_list" @click="store.filter.show = !store.filter.show" />
     </q-toolbar>
     <q-slide-transition>
       <div v-show="store.filter.show" class="row q-pl-lg q-pr-sm">
         <GoalSelect
           v-model="store.filter.goal"
-          label="For Goal"
+          label="Filter by goal"
           :borderless="$q.screen.gt.xs"
           dense
           class="col-xs-12 col-sm-4 q-pb-md q-pr-md"

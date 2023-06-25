@@ -9,8 +9,7 @@ const route = useRoute()
 const pinia = getActivePinia()
 const store = useUserStore()
 const views = [
-  { to: '/', icon: 'pending_actions', label: 'Plan' },
-  // { to: '/tasks', icon: 'task_alt', label: 'Tasks' },
+  { to: '/', icon: 'task_alt', label: 'Tasks' },
   { to: '/goals', icon: 'outlined_flag', label: 'Goals' },
   { to: '/reports', icon: 'bar_chart', label: 'Reports' }
 ]
@@ -41,6 +40,12 @@ function logout() {
           <q-btn flat round icon="menu_open" @click="drawer = false" />
         </q-toolbar>
         <q-list class="q-mt-md">
+          <q-item v-for="(view, index) in views" :key="index" :to="view.to" exact>
+            <q-item-section avatar><q-icon :name="view.icon" /></q-item-section>
+            <q-item-section>{{ view.label }}</q-item-section>
+          </q-item>
+        </q-list>
+        <q-list class="q-mt-lg">
           <q-item :to="{ name: 'task', params: { id: 'new' } }">
             <q-item-section avatar><q-icon name="add_task" /></q-item-section>
             <q-item-section no-wrap><q-item-label>New task</q-item-label></q-item-section>
@@ -48,12 +53,6 @@ function logout() {
           <q-item :to="{ name: 'goal', params: { id: 'new' } }">
             <q-item-section avatar><q-icon name="control_point" /></q-item-section>
             <q-item-section no-wrap><q-item-label>New goal</q-item-label></q-item-section>
-          </q-item>
-        </q-list>
-        <q-list class="q-mt-lg">
-          <q-item v-for="(view, index) in views" :key="index" :to="view.to" exact>
-            <q-item-section avatar><q-icon :name="view.icon" /></q-item-section>
-            <q-item-section>{{ view.label }}</q-item-section>
           </q-item>
         </q-list>
       </q-scroll-area>
