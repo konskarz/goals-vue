@@ -7,40 +7,35 @@ const store = useTaskStore()
 </script>
 
 <template>
-  <q-page padding>
-    <q-toolbar>
-      <q-toolbar-title>Plan</q-toolbar-title>
-      <GoalSelect
-        v-model="store.filter.goal"
-        label="For Goal"
-        dense
-        borderless
-        class="col-6 col-sm-3 col-lg-2"
-      />
-      <q-btn flat round icon="filter_list">
-        <q-menu>
-          <q-list>
-            <q-item>
-              <q-item-section>
-                <q-item-label>Hide passed done</q-item-label>
-              </q-item-section>
-              <q-item-section side>
-                <q-toggle v-model="store.filter.done" />
-              </q-item-section>
-            </q-item>
-            <q-item>
-              <q-item-section>
-                <q-item-label>Hide passed recurring</q-item-label>
-              </q-item-section>
-              <q-item-section side>
-                <q-toggle v-model="store.filter.recurring" />
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-menu>
-      </q-btn>
+  <q-page>
+    <q-toolbar class="q-mt-md q-pl-lg">
+      <q-toolbar-title>Tasks</q-toolbar-title>
+      <q-btn flat round icon="filter_list" @click="store.filter.show = !store.filter.show" />
     </q-toolbar>
-    <q-timeline v-if="store.calendar" layout="dense" class="q-px-md">
+    <q-slide-transition>
+      <div v-show="store.filter.show" class="row q-pl-lg q-pr-sm">
+        <GoalSelect
+          v-model="store.filter.goal"
+          label="Filter by goal"
+          :borderless="$q.screen.gt.xs"
+          dense
+          class="col-xs-12 col-sm-4 q-pb-md q-pr-md"
+        />
+        <q-toggle
+          v-model="store.filter.done"
+          label="Show passed done"
+          dense
+          class="col-xs-12 col-sm-auto q-pb-md q-pr-md"
+        />
+        <q-toggle
+          v-model="store.filter.recurring"
+          label="Show passed recurring"
+          dense
+          class="col-xs-12 col-sm-auto q-pb-md q-pr-md"
+        />
+      </div>
+    </q-slide-transition>
+    <q-timeline v-if="store.calendar" class="q-pl-lg">
       <WeekTimelineEntry
         v-for="(tasks, key) in store.calendar"
         :key="key"

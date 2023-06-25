@@ -3,10 +3,7 @@ import { computed } from 'vue'
 import GoalListItemSections from './GoalListItemSections.vue'
 
 const props = defineProps({
-  goal: {
-    type: Object,
-    required: true
-  }
+  goal: { type: Object, required: true }
 })
 const route = { name: 'goal', params: { id: props.goal.id } }
 const hasChildren = computed(() => props.goal.children && props.goal.children.length)
@@ -29,7 +26,13 @@ const hasChildren = computed(() => props.goal.children && props.goal.children.le
       <GoalListItem v-for="child in goal.children" :key="child.id" :goal="child" />
     </q-list>
   </q-expansion-item>
-  <q-item v-else :to="route">
+  <q-item v-else :to="route" class="pr-56">
     <GoalListItemSections :goal="goal" />
   </q-item>
 </template>
+
+<style scoped>
+.pr-56 {
+  padding-right: 56px;
+}
+</style>

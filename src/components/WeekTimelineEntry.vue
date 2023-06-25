@@ -6,14 +6,8 @@ import TaskListItem from './TaskListItem.vue'
 import 'drag-drop-touch'
 
 const props = defineProps({
-  tasks: {
-    type: Array,
-    required: true
-  },
-  monday: {
-    type: String,
-    required: true
-  }
+  tasks: { type: Array, required: true },
+  monday: { type: String, required: true }
 })
 const store = useTaskStore()
 const sorted = computed(() => {
@@ -61,10 +55,15 @@ function onDrop(e) {
     @dragenter.prevent
     @drop.prevent="onDrop($event)"
   >
-    <q-list v-if="sorted">
-      <q-intersection v-for="task in sorted" :key="task.id" style="min-height: 51.19px">
+    <div v-if="sorted">
+      <q-intersection v-for="task in sorted" :key="task.id" class="task-list-item" once>
         <TaskListItem :task="task" @ondragstart="onDragStart" />
       </q-intersection>
-    </q-list>
+    </div>
   </q-timeline-entry>
 </template>
+<style scoped>
+.task-list-item {
+  min-height: 58px;
+}
+</style>

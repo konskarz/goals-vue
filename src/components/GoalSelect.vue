@@ -3,14 +3,8 @@ import { computed } from 'vue'
 import { useGoalStore } from '../stores/GoalStore'
 
 const props = defineProps({
-  modelValue: {
-    type: Number,
-    default: null
-  },
-  exceptId: {
-    type: Number,
-    default: null
-  }
+  modelValue: { type: Number, default: null },
+  exceptId: { type: Number, default: null }
 })
 const emit = defineEmits(['update:modelValue'])
 const model = computed({
@@ -23,7 +17,7 @@ const model = computed({
 })
 const store = useGoalStore()
 const selected = computed(() => (props.modelValue ? store.getItem(props.modelValue).name : null))
-function except(node) {
+function filterTreeNodes(node) {
   return node.id !== props.exceptId
 }
 </script>
@@ -44,7 +38,7 @@ function except(node) {
           v-model:selected="model"
           :nodes="store.tree"
           :filter="String(exceptId)"
-          :filter-method="except"
+          :filter-method="filterTreeNodes"
           node-key="id"
           label-key="name"
           icon="keyboard_arrow_right"

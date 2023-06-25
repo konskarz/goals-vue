@@ -1,20 +1,24 @@
 <script setup>
 import { computed } from 'vue'
-import { useRoute } from 'vue-router'
 import { useGoalStore } from '../stores/GoalStore'
 import { usePersistent } from '../stores/persistent'
 import GoalSelect from '../components/GoalSelect.vue'
 import DateInput from '../components/DateInput.vue'
 
-const route = useRoute()
-const store = useGoalStore()
-const itemId = parseInt(route.params.id)
-const { item, original, persist, changed, remove, save, back } = usePersistent(itemId, store, {
-  name: '',
-  parent: null,
-  planned: null,
-  description: ''
+const props = defineProps({
+  id: { type: String, required: true }
 })
+const itemId = parseInt(props.id)
+const { item, original, persist, changed, remove, save, back } = usePersistent(
+  itemId,
+  useGoalStore(),
+  {
+    name: '',
+    parent: null,
+    planned: null,
+    description: ''
+  }
+)
 const disable = computed(
   () =>
     !item.value.name || persist.value || Boolean(itemId && !changed(original, { ...item.value }))
@@ -22,9 +26,9 @@ const disable = computed(
 </script>
 
 <template>
-  <q-page padding>
+  <q-page>
     <q-form @submit.prevent="save">
-      <q-toolbar>
+      <q-toolbar class="q-mt-md q-pl-lg">
         <q-toolbar-title>Goal</q-toolbar-title>
         <q-btn
           v-if="itemId"
@@ -38,7 +42,7 @@ const disable = computed(
         <q-btn type="submit" flat round icon="save" :disable="disable" />
         <q-btn type="button" flat round icon="clear" @click="back" />
       </q-toolbar>
-      <div class="q-pa-md">
+      <div class="q-py-sm q-px-lg">
         <q-input
           v-model="item.name"
           label="Name"

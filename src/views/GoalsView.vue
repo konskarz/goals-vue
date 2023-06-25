@@ -6,12 +6,12 @@ const store = useGoalStore()
 </script>
 
 <template>
-  <q-page padding>
-    <q-toolbar>
+  <q-page>
+    <q-toolbar class="q-mt-md q-pl-lg">
       <q-toolbar-title>Goals</q-toolbar-title>
     </q-toolbar>
-    <q-list v-if="store.tree">
-      <GoalListItem v-for="goal in store.tree" :key="goal.id" :goal="goal" />
+    <q-list v-if="store.tree" class="q-py-sm q-pl-sm">
+      <GoalListItem v-for="goal in store.tree" :key="goal.id" :goal="goal" class="q-pb-lg" />
     </q-list>
   </q-page>
 </template>

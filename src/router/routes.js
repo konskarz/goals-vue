@@ -6,7 +6,7 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'plan',
+        name: 'tasks',
         component: () => import('../views/HomeView.vue')
       },
       {
@@ -15,19 +15,21 @@ const routes = [
         component: () => import('../views/GoalsView.vue')
       },
       {
-        path: '/tasks',
-        name: 'tasks',
-        component: () => import('../views/TasksView.vue')
+        path: '/reports',
+        name: 'reports',
+        component: () => import('../views/ReportsView.vue')
       },
       {
         path: '/tasks/:id',
         name: 'task',
-        component: () => import('../views/TaskView.vue')
+        component: () => import('../views/TaskView.vue'),
+        props: true
       },
       {
         path: '/goals/:id',
         name: 'goal',
-        component: () => import('../views/GoalView.vue')
+        component: () => import('../views/GoalView.vue'),
+        props: true
       }
     ]
   },

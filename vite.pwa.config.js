@@ -18,7 +18,8 @@ export default {
     description:
       'An advanced task manager with main focus on the goal, goal achievement and its current progress',
     theme_color: '#027be3',
-    orientation: 'portrait',
+    // orientation: 'portrait',
+    display: 'standalone',
     background_color: '#ffffff',
     icons: [
       {

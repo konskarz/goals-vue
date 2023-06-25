@@ -8,27 +8,12 @@ const router = useRouter()
 const route = useRoute()
 const pinia = getActivePinia()
 const store = useUserStore()
-const menuList = [
-  {
-    to: '/',
-    icon: 'pending_actions',
-    label: 'Plan'
-  },
-  {
-    to: '/goals',
-    icon: 'task_alt',
-    label: 'Goals'
-  },
-  {
-    to: '/tasks',
-    icon: 'done',
-    label: 'Tasks'
-  }
+const views = [
+  { to: '/', icon: 'task_alt', label: 'Tasks' },
+  { to: '/goals', icon: 'outlined_flag', label: 'Goals' },
+  { to: '/reports', icon: 'bar_chart', label: 'Reports' }
 ]
-const leftDrawerOpen = ref(false)
-function toggleLeftDrawer() {
-  leftDrawerOpen.value = !leftDrawerOpen.value
-}
+const drawer = ref(false)
 function logout() {
   store.logout()
   router.push({ name: 'login', query: { next: route.fullPath } })
@@ -41,53 +26,34 @@ function logout() {
 </script>
 
 <template>
-  <q-layout view="hHh LpR fff">
-    <q-header>
+  <q-layout view="hHh LpR fFf">
+    <q-header reveal :reveal-offset="0">
       <q-toolbar>
-        <q-btn flat round icon="menu" @click="toggleLeftDrawer" />
+        <q-btn flat round icon="menu" class="lt-md" @click="drawer = !drawer" />
         <q-toolbar-title>LifeTrackerBuddy</q-toolbar-title>
-        <q-btn flat round icon="add">
-          <q-menu auto-close>
-            <q-list>
-              <q-item :to="{ name: 'goal', params: { id: 'new' } }">
-                <q-item-section>
-                  <q-item-label>New goal</q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item :to="{ name: 'task', params: { id: 'new' } }">
-                <q-item-section>
-                  <q-item-label>New task</q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </q-menu>
-        </q-btn>
-        <q-btn flat round icon="person_outline">
-          <q-menu>
-            <q-list>
-              <q-item v-close-popup clickable @click="logout">
-                <q-item-section>
-                  <q-item-label>Logout</q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </q-menu>
-        </q-btn>
+        <q-btn flat round icon="logout" @click="logout" />
       </q-toolbar>
     </q-header>
-    <q-drawer v-model="leftDrawerOpen" show-if-above>
-      <q-scroll-area class="fit q-pa-sm">
-        <q-list padding>
-          <template v-for="(menuItem, index) in menuList" :key="index">
-            <q-item :to="menuItem.to" exact>
-              <q-item-section avatar>
-                <q-icon :name="menuItem.icon" />
-              </q-item-section>
-              <q-item-section>
-                {{ menuItem.label }}
-              </q-item-section>
-            </q-item>
-          </template>
+    <q-drawer v-model="drawer" show-if-above>
+      <q-scroll-area class="fit">
+        <q-toolbar class="lt-md bg-primary text-white">
+          <q-btn flat round icon="menu_open" @click="drawer = false" />
+        </q-toolbar>
+        <q-list class="q-mt-md">
+          <q-item v-for="(view, index) in views" :key="index" :to="view.to" exact>
+            <q-item-section avatar><q-icon :name="view.icon" /></q-item-section>
+            <q-item-section>{{ view.label }}</q-item-section>
+          </q-item>
+        </q-list>
+        <q-list class="q-mt-lg">
+          <q-item :to="{ name: 'task', params: { id: 'new' } }">
+            <q-item-section avatar><q-icon name="add_task" /></q-item-section>
+            <q-item-section no-wrap><q-item-label>New task</q-item-label></q-item-section>
+          </q-item>
+          <q-item :to="{ name: 'goal', params: { id: 'new' } }">
+            <q-item-section avatar><q-icon name="control_point" /></q-item-section>
+            <q-item-section no-wrap><q-item-label>New goal</q-item-label></q-item-section>
+          </q-item>
         </q-list>
       </q-scroll-area>
     </q-drawer>

@@ -26,8 +26,9 @@ export function useApiClient() {
   function handleError(error) {
     Notify.create({
       color: 'negative',
-      message: error.response.data.detail || error.message
+      message: error.response ? error.response.data.detail : error.message
     })
+    return Promise.reject(error)
   }
   function auth(data) {
     API.defaults.headers.common['Authorization'] = data

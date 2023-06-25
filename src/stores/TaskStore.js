@@ -7,17 +7,17 @@ import { useGoalStore } from './GoalStore'
 export const useTaskStore = defineStore('TaskStore', () => {
   const { data, refetch, getItem, createItem, updateItem, deleteItem } = useCollection('/tasks/')
   const relatedStore = useGoalStore()
-  const relative = computed(() =>
-    data.value && relatedStore.data
-      ? data.value.map((item) => ({
-          ...item,
-          goalName: item.goal ? relatedStore.getItem(item.goal).name : null
-        }))
-      : null
-  )
+  const relative = computed(() => {
+    if (!data.value || relatedStore.data) return null
+    return data.value.map((item) => ({
+      ...item,
+      goalName: item.goal ? relatedStore.getItem(item.goal).name : null
+    }))
+  })
   const filter = ref({
-    done: true,
-    recurring: true,
+    show: false,
+    done: false,
+    recurring: false,
     goal: null
   })
   const branch = computed(() =>
@@ -40,23 +40,22 @@ export const useTaskStore = defineStore('TaskStore', () => {
   const currentDate = date.startOfDate(new Date(), 'day')
   const currentMonday = getMonday(currentDate)
   const currentWeek = getDay(currentMonday)
-  const filtered = computed(() =>
-    data.value
-      ? data.value
-          .filter((task) => {
-            if (!task.planned) return false
-            if (new Date(task.planned.slice(0, 10)) < currentMonday) {
-              if (filter.value.done && task.done) return false
-              if (filter.value.recurring && task.group_id) return false
-            }
-            if (branch.value && !branch.value.includes(task.goal)) {
-              return false
-            }
-            return true
-          })
-          .sort((a, b) => Date.parse(a.planned) - Date.parse(b.planned))
-      : null
-  )
+  const filtered = computed(() => {
+    if (!data.value) return null
+    return data.value
+      .filter((task) => {
+        if (!task.planned) return false
+        if (new Date(task.planned.slice(0, 10)) < currentMonday) {
+          if (!filter.value.done && task.done) return false
+          if (!filter.value.recurring && task.group_id) return false
+        }
+        if (branch.value && !branch.value.includes(task.goal)) {
+          return false
+        }
+        return true
+      })
+      .sort((a, b) => Date.parse(a.planned) - Date.parse(b.planned))
+  })
   const calendar = computed(() => {
     const build = (weeks, startMonday, endMonday) => {
       while (startMonday <= endMonday) {
@@ -79,6 +78,39 @@ export const useTaskStore = defineStore('TaskStore', () => {
     }
     return build({}, currentMonday, date.addToDate(currentMonday, { days: 14 }))
   })
+  const recurring = computed(() => {
+    if (!data.value) return null
+    const startDate = date.subtractFromDate(currentDate, { months: 6 })
+    const rtasks = data.value
+      .filter((task) => {
+        if (!task.group_id || !task.planned) return false
+        const planned = new Date(task.planned.slice(0, 10))
+        if (planned > currentDate || planned < startDate) return false
+        return true
+      })
+      .sort((a, b) => Date.parse(a.planned) - Date.parse(b.planned))
+    if (!rtasks.length) return null
+    const build = (weeks, startMonday, endMonday) => {
+      while (startMonday <= endMonday) {
+        weeks.push({ x: getDay(startMonday), y: null })
+        startMonday = date.addToDate(startMonday, { days: 7 })
+      }
+      return weeks
+    }
+    const getData = (task) => {
+      if (task.done) return 100
+      else if (task.target > 1) return Math.round((task.performance / task.target) * 100)
+      else return 0
+    }
+    const start = getMonday(rtasks[0].planned.slice(0, 10))
+    const end = getMonday(rtasks[rtasks.length - 1].planned.slice(0, 10))
+    return rtasks.reduce((groups, task) => {
+      if (!groups[task.name]) groups[task.name] = build([], start, end)
+      const key = getDay(getMonday(task.planned.slice(0, 10)))
+      groups[task.name].find((item) => item.x === key).y = getData(task)
+      return groups
+    }, {})
+  })
 
   return {
     data,
@@ -90,6 +122,8 @@ export const useTaskStore = defineStore('TaskStore', () => {
     relative,
     filter,
     currentWeek,
-    calendar
+    filtered,
+    calendar,
+    recurring
   }
 })

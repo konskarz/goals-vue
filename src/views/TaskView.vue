@@ -1,20 +1,19 @@
 <script setup>
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
-import { useQuasar, date } from 'quasar'
+import { computed, ref, watch } from 'vue'
+import { date } from 'quasar'
 import { useTaskStore } from '../stores/TaskStore'
 import { usePersistent } from '../stores/persistent'
 import GoalSelect from '../components/GoalSelect.vue'
 import DateInput from '../components/DateInput.vue'
 import NumberInput from '../components/NumberInput.vue'
 
-const route = useRoute()
-const $q = useQuasar()
-const store = useTaskStore()
-const itemId = parseInt(route.params.id)
+const props = defineProps({
+  id: { type: String, required: true }
+})
+const itemId = parseInt(props.id)
 const { item, original, path, persist, changed, remove, save, back } = usePersistent(
   itemId,
-  store,
+  useTaskStore(),
   {
     name: '',
     goal: null,
@@ -27,6 +26,7 @@ const { item, original, path, persist, changed, remove, save, back } = usePersis
     performance_history: []
   }
 )
+const allTasks = ref(false)
 const disable = computed(
   () =>
     !item.value.name || persist.value || Boolean(itemId && !changed(original, { ...item.value }))
@@ -40,55 +40,23 @@ const performanceHistory = computed(() => {
   for (let i = 1; i < ph.length; i++) txt += ', ' + getTxt(ph[i])
   return txt
 })
-const options = {
-  type: 'radio',
-  model: 'this',
-  items: [
-    { label: 'This task', value: 'this' },
-    { label: 'All tasks', value: 'all' }
-  ]
-}
-function setGroupPath() {
-  path.value = 'recurring/' + item.value.group_id + '/'
-}
-function removeOptions() {
-  if (item.value.group_id) {
-    $q.dialog({
-      title: 'Delete recurring task',
-      cancel: true,
-      ok: 'Delete',
-      options: options
-    }).onOk((data) => {
-      if (data === 'all') setGroupPath()
-      remove()
-    })
-  } else {
-    remove()
-  }
-}
-function saveOptions() {
-  if (item.value.group_id) {
-    $q.dialog({
-      title: 'Save recurring task',
-      cancel: true,
-      ok: 'Save',
-      options: options
-    }).onOk((data) => {
-      if (data === 'all') setGroupPath()
-      save()
-    })
-  } else {
-    save()
-  }
-}
+watch(allTasks, (newValue) => {
+  path.value = newValue ? 'recurring/' + item.value.group_id + '/' : itemId + '/'
+})
 </script>
 
 <template>
-  <q-page padding>
-    <q-form @submit.prevent="saveOptions">
-      <q-toolbar>
-        <q-avatar v-if="item.group_id" icon="event_repeat" />
-        <q-toolbar-title>Task</q-toolbar-title>
+  <q-page>
+    <q-form @submit.prevent="save">
+      <q-toolbar class="q-mt-md q-pl-lg">
+        <q-toolbar-title v-if="!allTasks">Task</q-toolbar-title>
+        <q-toolbar-title v-else>Group</q-toolbar-title>
+        <q-toggle
+          v-if="item.group_id"
+          v-model="allTasks"
+          checked-icon="done_all"
+          unchecked-icon="done"
+        />
         <q-btn
           v-if="itemId"
           type="button"
@@ -96,12 +64,12 @@ function saveOptions() {
           round
           icon="delete"
           :disable="persist"
-          @click="removeOptions"
+          @click="remove"
         />
         <q-btn type="submit" flat round icon="save" :disable="disable" />
         <q-btn type="button" flat round icon="clear" @click="back" />
       </q-toolbar>
-      <div class="q-pa-md">
+      <div class="q-py-sm q-px-lg">
         <div class="row q-col-gutter-lg">
           <q-input
             v-model="item.name"
@@ -113,16 +81,26 @@ function saveOptions() {
             @keyup.esc="back"
           />
           <GoalSelect v-model="item.goal" label="Goal" stack-label class="col-12 col-sm-6" />
-          <DateInput v-model="item.planned" label="Planned" class="col-12 col-sm-6" />
           <DateInput
-            v-if="!itemId"
+            v-if="!allTasks"
+            v-model="item.planned"
+            label="Planned"
+            class="col-12 col-sm-6"
+          />
+          <DateInput v-if="itemId" v-model="item.done" label="Done" class="col-12 col-sm-6" />
+          <DateInput
+            v-else
             v-model="item.recurring_until"
             label="Recurring until"
             class="col-12 col-sm-6"
           />
           <NumberInput v-model="item.target" label="Target" class="col-12 col-sm-6" />
-          <NumberInput v-model="item.performance" label="Performance" class="col-12 col-sm-6" />
-          <DateInput v-if="itemId" v-model="item.done" label="Done" class="col-12 col-sm-6" />
+          <NumberInput
+            v-if="!allTasks"
+            v-model="item.performance"
+            label="Performance"
+            class="col-12 col-sm-6"
+          />
         </div>
         <q-input
           v-model="item.description"
@@ -132,7 +110,7 @@ function saveOptions() {
           class="q-pt-md"
         />
         <q-input
-          v-if="performanceHistory"
+          v-if="performanceHistory && !allTasks"
           v-model="performanceHistory"
           type="textarea"
           label="Performance updates"
