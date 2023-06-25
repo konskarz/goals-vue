@@ -22,7 +22,10 @@ const rprogress = computed(() =>
     <q-item-label v-if="showProgress">
       <q-linear-progress :value="progress" color="positive" />
     </q-item-label>
-    z
+    <q-item-label v-if="showRProgress" caption>
+      <q-icon name="event_repeat" class="vertical-top" />
+      {{ Math.round(rprogress * 100) }}% for {{ props.goal.rtarget }}
+    </q-item-label>
     <q-item-label v-if="showRProgress">
       <q-linear-progress :value="rprogress" color="primary" />
     </q-item-label>
