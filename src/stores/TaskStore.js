@@ -111,6 +111,27 @@ export const useTaskStore = defineStore('TaskStore', () => {
       return groups
     }, {})
   })
+  function sumPerformance(tasks) {
+    if (!tasks.length) return null
+    return tasks.reduce((sum, task) => {
+      if (task.done) return sum + 1
+      return task.target > 1 ? sum + task.performance / task.target : sum
+    }, 0)
+  }
+  function getProgress(goals) {
+    const tasks = data.value.filter((task) => goals.includes(task.goal))
+    const regular = tasks.filter((task) => !task.group_id)
+    const done = regular.filter((task) => task.done)
+    const recurring = tasks.filter(
+      (task) => task.group_id && task.planned && new Date(task.planned.slice(0, 10)) <= currentDate
+    )
+    return {
+      target: regular.length,
+      performance: done.length,
+      rtarget: recurring.length,
+      rperformance: sumPerformance(recurring)
+    }
+  }
 
   return {
     data,
@@ -124,6 +145,7 @@ export const useTaskStore = defineStore('TaskStore', () => {
     currentWeek,
     filtered,
     calendar,
-    recurring
+    recurring,
+    getProgress
   }
 })

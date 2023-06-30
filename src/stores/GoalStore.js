@@ -1,5 +1,4 @@
 import { computed } from 'vue'
-import { date } from 'quasar'
 import { defineStore } from 'pinia'
 import { useCollection } from './collection'
 import { useTaskStore } from './TaskStore'
@@ -13,37 +12,16 @@ const arrayToTree = (array, parent = null) =>
 export const useGoalStore = defineStore('GoalStore', () => {
   const { data, refetch, getItem, createItem, updateItem, deleteItem } = useCollection('/goals/')
   const relatedStore = useTaskStore()
-  const currentDate = date.startOfDate(new Date(), 'day')
   const relative = computed(() => {
     if (!data.value || !relatedStore.data) return null
-    return data.value.map((item) => {
-      const branch = getBranch(item.id)
-      const tasks = relatedStore.data.filter((task) => branch.includes(task.goal))
-      const regular = tasks.filter((task) => !task.group_id)
-      const recurring = tasks.filter(
-        (task) =>
-          task.group_id && task.planned && new Date(task.planned.slice(0, 10)) <= currentDate
-      )
-      const done = regular.filter((task) => task.done)
-      return {
-        ...item,
-        target: regular.length,
-        performance: done.length,
-        rtarget: recurring.length,
-        rperformance: sumPerformance(recurring)
-      }
-    })
+    return data.value.map((item) => ({
+      ...item,
+      ...relatedStore.getProgress(getBranch(item.id))
+    }))
   })
   const tree = computed(() => {
     return relative.value ? arrayToTree(relative.value) : null
   })
-  function sumPerformance(tasks) {
-    if (!tasks.length) return null
-    return tasks.reduce((sum, task) => {
-      if (task.done) return sum + 1
-      return task.target > 1 ? sum + task.performance / task.target : sum
-    }, 0)
-  }
   function getBranch(itemId) {
     const branch = [itemId]
     const getChildren = (parent) =>
