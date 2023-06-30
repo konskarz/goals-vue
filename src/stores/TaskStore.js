@@ -8,7 +8,7 @@ export const useTaskStore = defineStore('TaskStore', () => {
   const { data, refetch, getItem, createItem, updateItem, deleteItem } = useCollection('/tasks/')
   const relatedStore = useGoalStore()
   const relative = computed(() => {
-    if (!data.value || relatedStore.data) return null
+    if (!data.value || !relatedStore.data) return null
     return data.value.map((item) => ({
       ...item,
       goalName: item.goal ? relatedStore.getItem(item.goal).name : null
