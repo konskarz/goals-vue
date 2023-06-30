@@ -19,10 +19,7 @@ const heatmapOptions = {
       hideOverlappingLabels: true,
       // format: 'dd.MM',
       formatter: (value, timestamp) => date.formatDate(timestamp, 'DD.MM'),
-      style: {
-        colors: 'rgba(0, 0, 0, 0.54)',
-        fontSize: '.75rem'
-      },
+      style: { colors: 'rgba(0, 0, 0, 0.54)' },
       offsetY: -4,
       offsetX: 5
     },
