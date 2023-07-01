@@ -18,7 +18,7 @@ const { item, original, path, persist, changed, remove, save, back } = usePersis
   {
     name: '',
     goal: null,
-    planned: null,
+    planned: new Date().toISOString(),
     recurring_until: null,
     target: 1,
     performance: 0,
@@ -30,7 +30,10 @@ const { item, original, path, persist, changed, remove, save, back } = usePersis
 const allTasks = ref(false)
 const disable = computed(
   () =>
-    !item.value.name || persist.value || Boolean(itemId && !changed(original, { ...item.value }))
+    !item.value.name ||
+    !item.value.planned ||
+    persist.value ||
+    Boolean(itemId && !changed(original, { ...item.value }))
 )
 const performanceHistory = computed(() => {
   const ph = item.value.performance_history
@@ -79,6 +82,7 @@ watch(allTasks, (newValue) => {
             v-model="item.planned"
             label="Planned"
             class="col-12 col-sm-6"
+            :rules="[(val) => !!val || 'Field is required']"
           />
           <DateInput v-if="itemId" v-model="item.done" label="Done" class="col-12 col-sm-6" />
           <DateInput
