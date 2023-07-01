@@ -3,6 +3,7 @@ import { computed, ref, watch } from 'vue'
 import { date } from 'quasar'
 import { useTaskStore } from '../stores/TaskStore'
 import { usePersistent } from '../stores/persistent'
+import MainPage from '../components/MainPage.vue'
 import GoalSelect from '../components/GoalSelect.vue'
 import DateInput from '../components/DateInput.vue'
 import NumberInput from '../components/NumberInput.vue'
@@ -46,30 +47,22 @@ watch(allTasks, (newValue) => {
 </script>
 
 <template>
-  <q-page>
-    <q-form @submit.prevent="save">
-      <q-toolbar class="q-mt-md q-pl-lg">
-        <q-toolbar-title v-if="!allTasks">Task</q-toolbar-title>
-        <q-toolbar-title v-else>Group</q-toolbar-title>
-        <q-toggle
-          v-if="item.group_id"
-          v-model="allTasks"
-          checked-icon="done_all"
-          unchecked-icon="done"
-        />
-        <q-btn
-          v-if="itemId"
-          type="button"
-          flat
-          round
-          icon="delete"
-          :disable="persist"
-          @click="remove"
-        />
-        <q-btn type="submit" flat round icon="save" :disable="disable" />
-        <q-btn type="button" flat round icon="clear" @click="back" />
-      </q-toolbar>
-      <div class="q-py-sm q-px-lg">
+  <MainPage>
+    <template #toolbar>
+      <q-toolbar-title v-if="!allTasks">Task</q-toolbar-title>
+      <q-toolbar-title v-else>Group</q-toolbar-title>
+      <q-toggle
+        v-if="item.group_id"
+        v-model="allTasks"
+        checked-icon="done_all"
+        unchecked-icon="done"
+      />
+      <q-btn v-if="itemId" flat round icon="delete" :disable="persist" @click="remove" />
+      <q-btn flat round icon="save" :disable="disable" @click="save" />
+      <q-btn flat round icon="clear" @click="back" />
+    </template>
+    <template #default>
+      <q-form class="q-pt-sm q-px-lg" @submit.prevent="save">
         <div class="row q-col-gutter-lg">
           <q-input
             v-model="item.name"
@@ -118,7 +111,7 @@ watch(allTasks, (newValue) => {
           readonly
           class="q-pt-md"
         />
-      </div>
-    </q-form>
-  </q-page>
+      </q-form>
+    </template>
+  </MainPage>
 </template>

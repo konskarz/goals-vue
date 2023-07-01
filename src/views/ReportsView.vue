@@ -1,6 +1,7 @@
 <script setup>
 import { date, getCssVar } from 'quasar'
 import { useTaskStore } from '../stores/TaskStore'
+import MainPage from '../components/MainPage.vue'
 
 const store = useTaskStore()
 const heatmapOptions = {
@@ -21,7 +22,7 @@ const heatmapOptions = {
       formatter: (value, timestamp) => date.formatDate(timestamp, 'DD.MM'),
       style: { colors: 'rgba(0, 0, 0, 0.54)' },
       offsetY: -4,
-      offsetX: 5
+      offsetX: 6
     },
     tooltip: { enabled: false },
     axisBorder: { show: false },
@@ -42,24 +43,24 @@ const heatmapOptions = {
 </script>
 
 <template>
-  <q-page>
-    <q-toolbar class="q-mt-md q-pl-lg">
-      <q-toolbar-title>Reports</q-toolbar-title>
-    </q-toolbar>
-    <q-list v-if="store.recurring" class="q-py-sm q-pl-sm">
-      <q-item v-for="(data, name) in store.recurring" :key="name">
-        <q-item-section>
-          <q-item-label>{{ name }}</q-item-label>
-          <q-item-label caption>
-            <apexchart
-              type="heatmap"
-              :series="[{ name, data }]"
-              :options="heatmapOptions"
-              :height="32 + 14"
-            />
-          </q-item-label>
-        </q-item-section>
-      </q-item>
-    </q-list>
-  </q-page>
+  <MainPage>
+    <template #toolbar><q-toolbar-title>Reports</q-toolbar-title></template>
+    <template #default>
+      <q-list v-if="store.recurring" class="q-pt-sm q-pl-sm">
+        <q-item v-for="(data, name) in store.recurring" :key="name">
+          <q-item-section>
+            <q-item-label>{{ name }}</q-item-label>
+            <q-item-label caption>
+              <apexchart
+                type="heatmap"
+                :series="[{ name, data }]"
+                :options="heatmapOptions"
+                :height="32 + 14"
+              />
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+      </q-list>
+    </template>
+  </MainPage>
 </template>
