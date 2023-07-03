@@ -38,11 +38,9 @@ const disable = computed(
 const performanceHistory = computed(() => {
   const ph = item.value.performance_history
   if (!ph || !ph.length) return null
-  const getTxt = (log) => date.formatDate(log.updated, 'DD.MM.YYYY HH:mm') + ' to ' + log.value
-  let txt = getTxt(ph[0])
-  if (ph.length === 1) return txt
-  for (let i = 1; i < ph.length; i++) txt += ', ' + getTxt(ph[i])
-  return txt
+  return ph
+    .map((log) => date.formatDate(log.updated, 'DD.MM.YYYY HH:mm') + ' to ' + log.value)
+    .join(', ')
 })
 watch(allTasks, (newValue) => {
   path.value = newValue ? 'recurring/' + item.value.group_id + '/' : itemId + '/'
