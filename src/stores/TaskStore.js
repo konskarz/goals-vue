@@ -20,73 +20,63 @@ export const useTaskStore = defineStore('TaskStore', () => {
     recurring: false,
     goal: null
   })
-  const branch = computed(() =>
+  const filterBranch = computed(() =>
     filter.value.goal ? relatedStore.getBranch(filter.value.goal) : null
   )
   relatedStore.$onAction(({ name, args }) => {
-    if (name === 'deleteItem' && filter.value.goal === args[0]) {
-      filter.value.goal = null
-    }
+    if (name === 'deleteItem' && filter.value.goal === args[0]) filter.value.goal = null
   })
+  const getDayStart = (srcDate) => date.startOfDate(srcDate, 'day')
   const getMonday = (srcDate) =>
-    date.subtractFromDate(srcDate, {
-      days: date.getDayOfWeek(srcDate) - 1
-    })
-  /*
-  https://quasar.dev/quasar-utils/date-utils#format-for-display
-  console.log(date.formatDate("2024-12-30", "YYYY-w")); // output: 2024-1
-  */
-  const getDay = (srcDate) => date.formatDate(srcDate, 'YYYY-MM-DD')
-  const getMonth = (srcDate) => date.formatDate(srcDate, 'MMMM')
-  const currentDate = date.startOfDate(new Date(), 'day')
+    date.subtractFromDate(srcDate, { days: date.getDayOfWeek(srcDate) - 1 })
+  const nextWeek = (srcDate) => date.addToDate(srcDate, { days: 7 })
+  const getFormatedDay = (srcDate) => date.formatDate(srcDate, 'YYYY-MM-DD')
+  const getFormatedMonth = (srcDate) => date.formatDate(srcDate, 'MMMM')
+  const currentDate = getDayStart(new Date())
   const currentMonday = getMonday(currentDate)
-  const currentWeek = getDay(currentMonday)
   const filtered = computed(() => {
     if (!data.value) return null
     return data.value
       .filter((task) => {
         if (!task.planned) return false
-        if (new Date(task.planned.slice(0, 10)) < currentMonday) {
+        if (getDayStart(task.planned) < currentMonday) {
           if (!filter.value.done && task.done) return false
           if (!filter.value.recurring && task.group_id) return false
         }
-        if (branch.value && !branch.value.includes(task.goal)) {
-          return false
-        }
+        if (filterBranch.value && !filterBranch.value.includes(task.goal)) return false
         return true
       })
       .sort((a, b) => Date.parse(a.planned) - Date.parse(b.planned))
   })
   const calendar = computed(() => {
     const build = (weeks, startMonday, endMonday) => {
-      let formated,
-        currentSunday,
+      let currentSunday,
         currentMonth,
         previousSunday = date.subtractFromDate(startMonday, { days: 1 })
       while (startMonday <= endMonday) {
-        formated = date.formatDate(startMonday, 'w-Q-YYYY-MMM D').split('-')
-        currentSunday = date.addToDate(startMonday, { days: 6 })
-        currentMonth = getMonth(startMonday)
-        weeks[getDay(startMonday)] = {
-          title: ['Week ' + formated[0], 'Q' + formated[1], formated[2], formated[3]].join(' · '),
+        currentSunday = nextWeek(previousSunday)
+        currentMonth = getFormatedMonth(startMonday)
+        weeks[getFormatedDay(startMonday)] = {
+          title: date.formatDate(startMonday, '[Week ]w · [Q]Q · YYYY · MMM D'),
+          current: date.isSameDate(startMonday, currentMonday),
           start:
-            currentMonth !== getMonth(previousSunday) || currentMonth !== getMonth(currentSunday),
+            currentMonth !== getFormatedMonth(previousSunday) ||
+            currentMonth !== getFormatedMonth(currentSunday),
           tasks: []
         }
-        startMonday = date.addToDate(startMonday, { days: 7 })
+        startMonday = nextWeek(startMonday)
         previousSunday = currentSunday
       }
       return weeks
     }
     if (filtered.value && filtered.value.length) {
-      const start = getMonday(filtered.value[0].planned.slice(0, 10))
-      const end = date.addToDate(
-        getMonday(filtered.value[filtered.value.length - 1].planned.slice(0, 10)),
-        { days: 7 }
+      const start = getMonday(getDayStart(filtered.value[0].planned))
+      const end = nextWeek(
+        getMonday(getDayStart(filtered.value[filtered.value.length - 1].planned))
       )
       const weeks = build({}, start, end)
       filtered.value.forEach((task) => {
-        weeks[getDay(getMonday(task.planned.slice(0, 10)))].tasks.push(task)
+        weeks[getFormatedDay(getMonday(task.planned))].tasks.push(task)
       })
       return weeks
     }
@@ -98,7 +88,7 @@ export const useTaskStore = defineStore('TaskStore', () => {
     const rtasks = data.value
       .filter((task) => {
         if (!task.group_id || !task.planned) return false
-        const planned = new Date(task.planned.slice(0, 10))
+        const planned = getDayStart(task.planned)
         if (planned > currentDate || planned < startDate) return false
         return true
       })
@@ -106,21 +96,21 @@ export const useTaskStore = defineStore('TaskStore', () => {
     if (!rtasks.length) return null
     const build = (weeks, startMonday, endMonday) => {
       while (startMonday <= endMonday) {
-        weeks.push({ x: getDay(startMonday), y: null })
-        startMonday = date.addToDate(startMonday, { days: 7 })
+        weeks.push({ x: getFormatedDay(startMonday), y: null })
+        startMonday = nextWeek(startMonday)
       }
       return weeks
     }
     const getData = (task) => {
       if (task.done) return 100
-      else if (task.target > 1) return Math.round((task.performance / task.target) * 100)
-      else return 0
+      if (task.target > 1) return Math.round((task.performance / task.target) * 100)
+      return 0
     }
-    const start = getMonday(rtasks[0].planned.slice(0, 10))
-    const end = getMonday(rtasks[rtasks.length - 1].planned.slice(0, 10))
+    const start = getMonday(getDayStart(rtasks[0].planned))
+    const end = getMonday(getDayStart(rtasks[rtasks.length - 1].planned))
     return rtasks.reduce((groups, task) => {
       if (!groups[task.name]) groups[task.name] = build([], start, end)
-      const key = getDay(getMonday(task.planned.slice(0, 10)))
+      const key = getFormatedDay(getMonday(task.planned))
       groups[task.name].find((item) => item.x === key).y = getData(task)
       return groups
     }, {})
@@ -137,7 +127,7 @@ export const useTaskStore = defineStore('TaskStore', () => {
     const regular = tasks.filter((task) => !task.group_id)
     const done = regular.filter((task) => task.done)
     const recurring = tasks.filter(
-      (task) => task.group_id && task.planned && new Date(task.planned.slice(0, 10)) <= currentDate
+      (task) => task.group_id && task.planned && getDayStart(task.planned) <= currentDate
     )
     return {
       target: regular.length,
@@ -161,7 +151,6 @@ export const useTaskStore = defineStore('TaskStore', () => {
     deleteItem,
     relative,
     filter,
-    currentWeek,
     filtered,
     calendar,
     recurring,

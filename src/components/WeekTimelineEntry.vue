@@ -30,9 +30,9 @@ function onDrop(e) {
 
 <template>
   <q-timeline-entry
-    :color="monday === store.currentWeek ? 'orange' : 'primary'"
-    :subtitle="props.week.title"
-    :icon="props.week.start ? 'calendar_month' : undefined"
+    :subtitle="week.title"
+    :color="week.current ? 'orange' : 'primary'"
+    :icon="week.start ? 'calendar_month' : undefined"
     @dragover.prevent
     @dragenter.prevent
     @drop.prevent="onDrop($event)"

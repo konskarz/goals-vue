@@ -10,7 +10,7 @@ const props = defineProps({
 })
 const emit = defineEmits(['ondragstart'])
 const router = useRouter()
-const taskStore = useTaskStore()
+const store = useTaskStore()
 const showProgress = computed(() => props.task.target > 1 && !props.task.done)
 const progress = computed(() =>
   showProgress.value ? props.task.performance / props.task.target : 0
@@ -20,26 +20,27 @@ const hint = computed(() => {
   const ph = props.task.performance_history
   return ph && ph.length ? date.formatDate(ph[0].updated, 'DD.MM.YYYY HH:mm') : null
 })
+
+function onDragStart(event) {
+  emit('ondragstart', event, props.task)
+}
 function go() {
   router.push({ name: 'task', params: { id: props.task.id } })
 }
 function undone() {
   const changed = { done: null }
   if (props.task.performance >= props.task.target) changed.performance = props.task.target - 1
-  taskStore.updateItem(props.task.id + '/', changed).then(() => taskStore.refetch())
+  store.updateItem(props.task.id + '/', changed).then(() => store.refetch())
 }
 function increase() {
   const changed = { performance: props.task.performance + 1 }
   if (changed.performance >= props.task.target) fireworks()
-  taskStore.updateItem(props.task.id + '/', changed).then(() => taskStore.refetch())
+  store.updateItem(props.task.id + '/', changed).then(() => store.refetch())
 }
 function done() {
   const changed = { done: new Date().toISOString() }
   fireworks()
-  taskStore.updateItem(props.task.id + '/', changed).then(() => taskStore.refetch())
-}
-function onDragStart(event) {
-  emit('ondragstart', event, props.task)
+  store.updateItem(props.task.id + '/', changed).then(() => store.refetch())
 }
 </script>
 
