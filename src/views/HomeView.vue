@@ -39,9 +39,9 @@ const store = useTaskStore()
       </q-slide-transition>
       <q-timeline v-if="store.calendar" class="q-pl-lg">
         <WeekTimelineEntry
-          v-for="(tasks, key) in store.calendar"
+          v-for="(week, key) in store.calendar"
           :key="key"
-          :tasks="tasks"
+          :week="week"
           :monday="key"
         />
       </q-timeline>

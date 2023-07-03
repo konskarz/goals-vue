@@ -37,6 +37,7 @@ export const useTaskStore = defineStore('TaskStore', () => {
   console.log(date.formatDate("2024-12-30", "YYYY-w")); // output: 2024-1
   */
   const getDay = (srcDate) => date.formatDate(srcDate, 'YYYY-MM-DD')
+  const getMonth = (srcDate) => date.formatDate(srcDate, 'MMMM')
   const currentDate = date.startOfDate(new Date(), 'day')
   const currentMonday = getMonday(currentDate)
   const currentWeek = getDay(currentMonday)
@@ -58,9 +59,22 @@ export const useTaskStore = defineStore('TaskStore', () => {
   })
   const calendar = computed(() => {
     const build = (weeks, startMonday, endMonday) => {
+      let formated,
+        currentSunday,
+        currentMonth,
+        previousSunday = date.subtractFromDate(startMonday, { days: 1 })
       while (startMonday <= endMonday) {
-        weeks[getDay(startMonday)] = []
+        formated = date.formatDate(startMonday, 'w-Q-YYYY-MMM D').split('-')
+        currentSunday = date.addToDate(startMonday, { days: 6 })
+        currentMonth = getMonth(startMonday)
+        weeks[getDay(startMonday)] = {
+          title: ['Week ' + formated[0], 'Q' + formated[1], formated[2], formated[3]].join(' · '),
+          start:
+            currentMonth !== getMonth(previousSunday) || currentMonth !== getMonth(currentSunday),
+          tasks: []
+        }
         startMonday = date.addToDate(startMonday, { days: 7 })
+        previousSunday = currentSunday
       }
       return weeks
     }
@@ -72,7 +86,7 @@ export const useTaskStore = defineStore('TaskStore', () => {
       )
       const weeks = build({}, start, end)
       filtered.value.forEach((task) => {
-        weeks[getDay(getMonday(task.planned.slice(0, 10)))].push(task)
+        weeks[getDay(getMonday(task.planned.slice(0, 10)))].tasks.push(task)
       })
       return weeks
     }
@@ -132,6 +146,11 @@ export const useTaskStore = defineStore('TaskStore', () => {
       rperformance: sumPerformance(recurring)
     }
   }
+  function moveItem(item, monday) {
+    const days = date.getDayOfWeek(item.planned) - 1
+    const changed = { planned: date.addToDate(monday, { days }).toISOString() }
+    updateItem(item.id + '/', changed).then(() => refetch())
+  }
 
   return {
     data,
@@ -146,6 +165,7 @@ export const useTaskStore = defineStore('TaskStore', () => {
     filtered,
     calendar,
     recurring,
-    getProgress
+    getProgress,
+    moveItem
   }
 })
