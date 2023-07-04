@@ -49,6 +49,7 @@ export const useTaskStore = defineStore('TaskStore', () => {
       .sort((a, b) => Date.parse(a.planned) - Date.parse(b.planned))
   })
   const calendar = computed(() => {
+    if (!filtered.value || !filtered.value.length) return null
     const build = (weeks, startMonday, endMonday) => {
       let currentSunday,
         currentMonth,
@@ -69,18 +70,13 @@ export const useTaskStore = defineStore('TaskStore', () => {
       }
       return weeks
     }
-    if (filtered.value && filtered.value.length) {
-      const start = getMonday(getDayStart(filtered.value[0].planned))
-      const end = nextWeek(
-        getMonday(getDayStart(filtered.value[filtered.value.length - 1].planned))
-      )
-      const weeks = build({}, start, end)
-      filtered.value.forEach((task) => {
-        weeks[getFormatedDay(getMonday(task.planned))].tasks.push(task)
-      })
-      return weeks
-    }
-    return build({}, currentMonday, date.addToDate(currentMonday, { days: 14 }))
+    const start = getMonday(getDayStart(filtered.value[0].planned))
+    const end = nextWeek(getMonday(getDayStart(filtered.value[filtered.value.length - 1].planned)))
+    const weeks = build({}, start, end)
+    filtered.value.forEach((task) => {
+      weeks[getFormatedDay(getMonday(task.planned))].tasks.push(task)
+    })
+    return weeks
   })
   const recurring = computed(() => {
     if (!data.value) return null
