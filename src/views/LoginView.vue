@@ -16,14 +16,17 @@ const disabled = ref(false)
 function login() {
   if (!user.value.username || !user.value.password) return
   disabled.value = true
-  store.login(user.value).then((data) => {
-    if (data && data.token) {
-      store.setToken(data.token)
-      router.push(route.query.next)
-    } else {
-      disabled.value = false
-    }
-  })
+  store
+    .login(user.value)
+    .then((data) => {
+      if (data && data.token) {
+        store.setToken(data.token)
+        router.push(route.query.next)
+      } else {
+        disabled.value = false
+      }
+    })
+    .catch(() => (disabled.value = false))
 }
 function required(val) {
   return !!val || 'Field is required'

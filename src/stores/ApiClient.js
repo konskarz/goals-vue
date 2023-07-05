@@ -18,7 +18,9 @@ export function useApiClient() {
   function handleError(error) {
     Notify.create({
       color: 'negative',
-      message: error.response ? error.response.data.detail : error.message
+      message: error.response
+        ? error.response.data.detail || error.response.data.non_field_errors
+        : error.message
     })
     return Promise.reject(error)
   }
