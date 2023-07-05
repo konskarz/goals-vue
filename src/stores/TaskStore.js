@@ -48,7 +48,7 @@ export const useTaskStore = defineStore('TaskStore', () => {
       })
       .sort((a, b) => Date.parse(a.planned) - Date.parse(b.planned))
   })
-  const calendar = computed(() => {
+  const timeline = computed(() => {
     if (!filtered.value || !filtered.value.length) return null
     const build = (weeks, startMonday, endMonday) => {
       let currentSunday,
@@ -78,7 +78,7 @@ export const useTaskStore = defineStore('TaskStore', () => {
     })
     return weeks
   })
-  const recurring = computed(() => {
+  const heatmap = computed(() => {
     if (!data.value) return null
     const startDate = date.subtractFromDate(currentDate, { months: 6 })
     const rtasks = data.value
@@ -148,8 +148,8 @@ export const useTaskStore = defineStore('TaskStore', () => {
     relative,
     filter,
     filtered,
-    calendar,
-    recurring,
+    timeline,
+    heatmap,
     getProgress,
     moveItem
   }

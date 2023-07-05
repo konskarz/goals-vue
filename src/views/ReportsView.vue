@@ -46,8 +46,8 @@ const heatmapOptions = {
   <MainPage>
     <template #toolbar><q-toolbar-title>Reports</q-toolbar-title></template>
     <template #default>
-      <q-list v-if="store.recurring" class="q-pt-sm q-pl-sm">
-        <q-item v-for="(data, name) in store.recurring" :key="name">
+      <q-list v-if="store.heatmap" class="q-pt-sm q-pl-sm">
+        <q-item v-for="(data, name) in store.heatmap" :key="name">
           <q-item-section>
             <q-item-label>{{ name }}</q-item-label>
             <q-item-label caption>
