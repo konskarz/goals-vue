@@ -5,8 +5,10 @@ import { useApiClient } from './ApiClient'
 export const useUserStore = defineStore('UserStore', () => {
   const url = '/auth/'
   const { auth, request } = useApiClient()
+
   const authToken = ref(localStorage.getItem(url))
   const loggedIn = computed(() => Boolean(authToken.value))
+
   function login(data) {
     return request({ method: 'post', url, data })
   }

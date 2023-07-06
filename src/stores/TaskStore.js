@@ -9,6 +9,7 @@ export const useTaskStore = defineStore('TaskStore', () => {
   const { filteredRange, heatmapRange, progressRange, buildTimeline, buildHeatmap, changeWeek } =
     useCalendar()
   const relatedStore = useGoalStore()
+
   const relative = computed(() => {
     if (!data.value || !relatedStore.data) return null
     return data.value.map((item) => ({
@@ -22,12 +23,12 @@ export const useTaskStore = defineStore('TaskStore', () => {
     recurring: false,
     goal: null
   })
-  const filterBranch = computed(() =>
-    filter.value.goal ? relatedStore.getBranch(filter.value.goal) : null
-  )
   relatedStore.$onAction(({ name, args }) => {
     if (name === 'deleteItem' && filter.value.goal === args[0]) filter.value.goal = null
   })
+  const filterBranch = computed(() =>
+    filter.value.goal && relatedStore.data ? relatedStore.getBranch(filter.value.goal) : null
+  )
   const filtered = computed(() => {
     if (!data.value) return null
     return data.value
@@ -42,10 +43,9 @@ export const useTaskStore = defineStore('TaskStore', () => {
       })
       .sort((a, b) => Date.parse(a.planned) - Date.parse(b.planned))
   })
-  const timeline = computed(() => {
-    if (!filtered.value || !filtered.value.length) return null
-    return buildTimeline(filtered.value)
-  })
+  const timeline = computed(() =>
+    filtered.value && filtered.value.length ? buildTimeline(filtered.value) : null
+  )
   const heatmap = computed(() => {
     if (!data.value) return null
     const rtasks = data.value
@@ -54,6 +54,7 @@ export const useTaskStore = defineStore('TaskStore', () => {
     if (!rtasks.length) return null
     return buildHeatmap(rtasks)
   })
+
   function getProgress(goals) {
     const tasks = data.value.filter((task) => goals.includes(task.goal))
     const regular = tasks.filter((task) => !task.group_id)

@@ -12,6 +12,7 @@ const arrayToTree = (array, parent = null) =>
 export const useGoalStore = defineStore('GoalStore', () => {
   const { data, refetch, getItem, createItem, updateItem, deleteItem } = useCollection('/goals/')
   const relatedStore = useTaskStore()
+
   const relative = computed(() => {
     if (!data.value || !relatedStore.data) return null
     return data.value.map((item) => ({
@@ -19,9 +20,8 @@ export const useGoalStore = defineStore('GoalStore', () => {
       ...relatedStore.getProgress(getBranch(item.id))
     }))
   })
-  const tree = computed(() => {
-    return relative.value ? arrayToTree(relative.value) : null
-  })
+  const tree = computed(() => (relative.value ? arrayToTree(relative.value) : null))
+
   function getBranch(itemId) {
     const branch = [itemId]
     const getChildren = (parent) =>

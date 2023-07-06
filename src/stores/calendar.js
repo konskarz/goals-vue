@@ -51,8 +51,7 @@ export function useCalendar() {
     }
     const getData = (task) => {
       if (task.done) return 100
-      if (task.target > 1) return Math.round((task.performance / task.target) * 100)
-      return 0
+      return task.target > 1 ? Math.round((task.performance / task.target) * 100) : 0
     }
     const start = getMonday(getDayStart(tasks[0].planned))
     const end = getMonday(getDayStart(tasks[tasks.length - 1].planned))
