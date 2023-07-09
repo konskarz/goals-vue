@@ -6,6 +6,7 @@
   "author": "Konstantin Karzanov <k.karzanov@gmail.com>",
   "private": true,
   "scripts": {
+    "db": "json-server --watch db.json",
     "dev": "vite --host",
     "build": "vite build",
     "preview": "vite preview",
@@ -31,6 +32,7 @@
     "@vue/eslint-config-prettier": "^7.1.0",
     "eslint": "^8.43.0",
     "eslint-plugin-vue": "^9.15.1",
+    "json-server": "^0.17.3",
     "prettier": "^2.8.8",
     "vite": "^4.3.9",
     "vite-plugin-pwa": "^0.14.7"
