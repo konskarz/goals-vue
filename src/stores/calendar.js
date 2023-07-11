@@ -53,8 +53,8 @@ export function useCalendar() {
       if (task.done) return 100
       return task.target > 1 ? Math.round((task.performance / task.target) * 100) : 0
     }
-    const start = getMonday(getDayStart(tasks[0].planned))
-    const end = getMonday(getDayStart(tasks[tasks.length - 1].planned))
+    const start = getMonday(heatmapStart)
+    const end = getMonday(currentDate)
     return tasks.reduce((groups, task) => {
       if (!groups[task.name]) groups[task.name] = getWeeks([], start, end)
       const key = getFormatedDay(getMonday(task.planned))
