@@ -6,7 +6,7 @@ import { useGoalStore } from './GoalStore'
 
 export const useTaskStore = defineStore('TaskStore', () => {
   const { data, refetch, getItem, createItem, updateItem, deleteItem } = useCollection('/tasks/')
-  const { filteredRange, heatmapRange, progressRange, buildTimeline, buildHeatmap, changeWeek } =
+  const { beforeThisWeek, heatmapRange, beforeThisDay, buildTimeline, buildHeatmap, changeWeek } =
     useCalendar()
   const relatedStore = useGoalStore()
 
@@ -34,7 +34,7 @@ export const useTaskStore = defineStore('TaskStore', () => {
     return data.value
       .filter((task) => {
         if (!task.planned) return false
-        if (filteredRange(task.planned)) {
+        if (beforeThisWeek(task.planned)) {
           if (!filter.value.done && task.done) return false
           if (!filter.value.recurring && task.group_id) return false
         }
@@ -60,7 +60,7 @@ export const useTaskStore = defineStore('TaskStore', () => {
     const regular = tasks.filter((task) => !task.group_id)
     const done = regular.filter((task) => task.done)
     const recurring = tasks.filter(
-      (task) => task.group_id && task.planned && progressRange(task.planned)
+      (task) => task.group_id && task.planned && beforeThisDay(task.planned)
     )
     const perfsum = (tasks) =>
       tasks.reduce((sum, task) => {

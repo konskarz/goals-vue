@@ -4,37 +4,47 @@ export function useCalendar() {
   const getDayStart = (srcDate) => date.startOfDate(srcDate, 'day')
   const getMonday = (srcDate) =>
     date.subtractFromDate(srcDate, { days: date.getDayOfWeek(srcDate) - 1 })
+  const previousWeek = (srcDate) => date.subtractFromDate(srcDate, { days: 7 })
   const nextWeek = (srcDate) => date.addToDate(srcDate, { days: 7 })
-  const getFormatedMonth = (srcDate) => date.formatDate(srcDate, 'MMMM')
   const getFormatedDay = (srcDate) => date.formatDate(srcDate, 'YYYY-MM-DD')
   const currentDate = getDayStart(new Date())
   const currentMonday = getMonday(currentDate)
   const heatmapStart = date.subtractFromDate(currentDate, { months: 6 })
-  const filteredRange = (srcDate) => getDayStart(srcDate) < currentMonday
+  const beforeThisWeek = (srcDate) => getDayStart(srcDate) < currentMonday
   const heatmapRange = (srcDate) =>
     date.isBetweenDates(getDayStart(srcDate), heatmapStart, currentDate)
-  const progressRange = (srcDate) => getDayStart(srcDate) <= currentDate
+  const beforeThisDay = (srcDate) => getDayStart(srcDate) <= currentDate
+  const buildWeekTitle = (start, end) => {
+    const title = []
+    if (!date.isSameDate(start, end, 'year')) {
+      title.push(date.formatDate(start, 'D MMM YYYY – '))
+      title.push(date.formatDate(end, 'D MMM YYYY'))
+    } else {
+      title.push(date.formatDate(start, date.isSameDate(start, end, 'month') ? 'D–' : 'D MMM – '))
+      title.push(date.formatDate(end, 'D MMM'))
+    }
+    return title.join('')
+  }
+  const buildWeek = (monday, sunday) => ({
+    // title: date.formatDate(monday, '[Week ]w · [Q]Q · YYYY · MMM D'),
+    title: buildWeekTitle(monday, sunday),
+    current: date.isSameDate(monday, currentMonday, 'day'),
+    start: !date.isSameDate(monday, previousWeek(monday), 'month'),
+    month: date.formatDate(monday, 'MMMM YYYY'),
+    tasks: []
+  })
 
   function buildTimeline(tasks) {
     const weeks = {},
       endMonday = nextWeek(getMonday(getDayStart(tasks[tasks.length - 1].planned)))
-    let currentSunday,
-      currentMonth,
-      startMonday = getMonday(getDayStart(tasks[0].planned)),
-      previousSunday = date.subtractFromDate(startMonday, { days: 1 })
-    while (startMonday <= endMonday) {
-      currentSunday = nextWeek(previousSunday)
-      currentMonth = getFormatedMonth(startMonday)
-      weeks[getFormatedDay(startMonday)] = {
-        title: date.formatDate(startMonday, '[Week ]w · [Q]Q · YYYY · MMM D'),
-        current: date.isSameDate(startMonday, currentMonday),
-        start:
-          currentMonth !== getFormatedMonth(previousSunday) ||
-          currentMonth !== getFormatedMonth(currentSunday),
-        tasks: []
-      }
-      startMonday = nextWeek(startMonday)
-      previousSunday = currentSunday
+    let nextSunday,
+      nextMonday = getMonday(getDayStart(tasks[0].planned)),
+      previousSunday = date.subtractFromDate(nextMonday, { days: 1 })
+    while (nextMonday <= endMonday) {
+      nextSunday = nextWeek(previousSunday)
+      weeks[getFormatedDay(nextMonday)] = buildWeek(nextMonday, nextSunday)
+      nextMonday = nextWeek(nextMonday)
+      previousSunday = nextSunday
     }
     tasks.forEach((task) => {
       weeks[getFormatedDay(getMonday(task.planned))].tasks.push(task)
@@ -42,10 +52,10 @@ export function useCalendar() {
     return weeks
   }
   function buildHeatmap(tasks) {
-    const getWeeks = (weeks, startMonday, endMonday) => {
-      while (startMonday <= endMonday) {
-        weeks.push({ x: getFormatedDay(startMonday), y: null })
-        startMonday = nextWeek(startMonday)
+    const getWeeks = (weeks, nextMonday, endMonday) => {
+      while (nextMonday <= endMonday) {
+        weeks.push({ x: getFormatedDay(nextMonday), y: null })
+        nextMonday = nextWeek(nextMonday)
       }
       return weeks
     }
@@ -68,9 +78,9 @@ export function useCalendar() {
   }
 
   return {
-    filteredRange,
+    beforeThisWeek,
     heatmapRange,
-    progressRange,
+    beforeThisDay,
     buildTimeline,
     buildHeatmap,
     changeWeek
