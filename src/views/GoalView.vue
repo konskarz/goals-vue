@@ -34,34 +34,32 @@ const disable = computed(
       <q-btn flat round icon="save" :disable="disable" @click="save" />
       <q-btn flat round icon="clear" @click="back" />
     </template>
-    <template #default>
-      <q-form class="q-pt-sm q-px-lg" @submit.prevent="save">
-        <q-input
-          v-model="item.name"
-          label="Name"
+    <q-form class="q-pt-sm q-px-lg" @submit.prevent="save">
+      <q-input
+        v-model="item.name"
+        label="Name"
+        stack-label
+        :autofocus="!itemId"
+        :rules="[(val) => !!val || 'Field is required']"
+        @keyup.esc="back"
+      />
+      <div class="row q-col-gutter-lg">
+        <GoalSelect
+          v-model="item.parent"
+          label="Parent"
           stack-label
-          :autofocus="!itemId"
-          :rules="[(val) => !!val || 'Field is required']"
-          @keyup.esc="back"
+          :except-id="itemId"
+          class="col-12 col-sm-6"
         />
-        <div class="row q-col-gutter-lg">
-          <GoalSelect
-            v-model="item.parent"
-            label="Parent"
-            stack-label
-            :except-id="itemId"
-            class="col-12 col-sm-6"
-          />
-          <DateInput v-model="item.planned" label="Planned" class="col-12 col-sm-6" />
-        </div>
-        <q-input
-          v-model="item.description"
-          type="textarea"
-          label="Description"
-          stack-label
-          class="q-pt-md"
-        />
-      </q-form>
-    </template>
+        <DateInput v-model="item.planned" label="Planned" class="col-12 col-sm-6" />
+      </div>
+      <q-input
+        v-model="item.description"
+        type="textarea"
+        label="Description"
+        stack-label
+        class="q-pt-md"
+      />
+    </q-form>
   </MainPage>
 </template>

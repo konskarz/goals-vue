@@ -45,22 +45,20 @@ const options = {
 <template>
   <MainPage>
     <template #toolbar><q-toolbar-title>Reports</q-toolbar-title></template>
-    <template #default>
-      <q-list v-if="store.heatmap" class="q-pt-sm q-px-sm">
-        <q-item v-for="(data, name) in store.heatmap" :key="name">
-          <q-item-section>
-            <q-item-label>{{ name }}</q-item-label>
-            <q-item-label caption class="q-pb-md">
-              <apexchart
-                type="heatmap"
-                :series="[{ name, data }]"
-                :options="options"
-                :height="18 + 12"
-              />
-            </q-item-label>
-          </q-item-section>
-        </q-item>
-      </q-list>
-    </template>
+    <q-list v-if="store.heatmap" class="q-pt-sm q-px-sm">
+      <q-item v-for="(data, name) in store.heatmap" :key="name">
+        <q-item-section>
+          <q-item-label>{{ name }}</q-item-label>
+          <q-item-label caption class="q-pb-md">
+            <apexchart
+              type="heatmap"
+              :series="[{ name, data }]"
+              :options="options"
+              :height="18 + 12"
+            />
+          </q-item-label>
+        </q-item-section>
+      </q-item>
+    </q-list>
   </MainPage>
 </template>

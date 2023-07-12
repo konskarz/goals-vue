@@ -23,13 +23,14 @@ export const useGoalStore = defineStore('GoalStore', () => {
   const tree = computed(() => (relative.value ? arrayToTree(relative.value) : null))
 
   function getBranch(itemId) {
+    if (!itemId) return data.value.map((item) => item.id)
     const branch = [itemId]
     const getChildren = (parent) =>
       data.value
         .filter((item) => item.parent === parent)
-        .forEach((child) => {
-          branch.push(child.id)
-          getChildren(child.id)
+        .forEach((item) => {
+          branch.push(item.id)
+          getChildren(item.id)
         })
     getChildren(itemId)
     return branch

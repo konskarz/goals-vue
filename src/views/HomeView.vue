@@ -13,38 +13,36 @@ const store = useTaskStore()
       <q-toolbar-title>Tasks</q-toolbar-title>
       <q-btn flat round icon="filter_list" @click="store.filter.show = !store.filter.show" />
     </template>
-    <template #default>
-      <q-slide-transition>
-        <div v-show="store.filter.show" class="row q-pl-lg q-pr-sm">
-          <GoalSelect
-            v-model="store.filter.goal"
-            label="Filter by goal"
-            :borderless="$q.screen.gt.xs"
-            dense
-            class="col-xs-12 col-sm-4 q-pb-md q-pr-md"
-          />
-          <q-toggle
-            v-model="store.filter.done"
-            label="Show passed done"
-            dense
-            class="col-xs-12 col-sm-auto q-pb-md q-pr-md"
-          />
-          <q-toggle
-            v-model="store.filter.recurring"
-            label="Show passed recurring"
-            dense
-            class="col-xs-12 col-sm-auto q-pb-md q-pr-md"
-          />
-        </div>
-      </q-slide-transition>
-      <q-timeline v-if="store.timeline" class="q-pl-lg">
-        <WeekTimelineEntry
-          v-for="(week, key) in store.timeline"
-          :key="key"
-          :week="week"
-          :monday="key"
+    <q-slide-transition>
+      <div v-show="store.filter.show" class="row q-pl-lg q-pr-sm">
+        <GoalSelect
+          v-model="store.filter.goal"
+          label="Filter by goal"
+          :borderless="$q.screen.gt.xs"
+          dense
+          class="col-xs-12 col-sm-4 q-pb-md q-pr-md"
         />
-      </q-timeline>
-    </template>
+        <q-toggle
+          v-model="store.filter.done"
+          label="Show passed done"
+          dense
+          class="col-xs-12 col-sm-auto q-pb-md q-pr-md"
+        />
+        <q-toggle
+          v-model="store.filter.recurring"
+          label="Show passed recurring"
+          dense
+          class="col-xs-12 col-sm-auto q-pb-md q-pr-md"
+        />
+      </div>
+    </q-slide-transition>
+    <q-timeline v-if="store.timeline" class="q-pl-lg">
+      <WeekTimelineEntry
+        v-for="(week, key) in store.timeline"
+        :key="key"
+        :week="week"
+        :monday="key"
+      />
+    </q-timeline>
   </MainPage>
 </template>

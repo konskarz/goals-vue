@@ -30,9 +30,9 @@ function copyData() {
 function logout() {
   store.logout()
   router.push({ name: 'login', query: { next: route.fullPath } })
-  pinia._s.forEach((store) => {
-    store.$dispose()
-    delete pinia.state.value[store.$id]
+  pinia._s.forEach((s) => {
+    s.$dispose()
+    delete pinia.state.value[s.$id]
   })
   localStorage.clear()
 }
