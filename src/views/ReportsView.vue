@@ -4,7 +4,7 @@ import { useTaskStore } from '../stores/TaskStore'
 import MainPage from '../components/MainPage.vue'
 
 const store = useTaskStore()
-const heatmapOptions = {
+const options = {
   chart: {
     toolbar: { show: false },
     parentHeightOffset: 0
@@ -31,9 +31,9 @@ const heatmapOptions = {
   grid: {
     padding: {
       top: -30,
-      // bottom: -15,
+      bottom: -14,
       left: -10,
-      right: 10 // 0
+      right: 0
     }
   },
   tooltip: { enabled: false },
@@ -46,16 +46,16 @@ const heatmapOptions = {
   <MainPage>
     <template #toolbar><q-toolbar-title>Reports</q-toolbar-title></template>
     <template #default>
-      <q-list v-if="store.heatmap" class="q-pt-sm q-pl-sm">
+      <q-list v-if="store.heatmap" class="q-pt-sm q-px-sm">
         <q-item v-for="(data, name) in store.heatmap" :key="name">
           <q-item-section>
             <q-item-label>{{ name }}</q-item-label>
-            <q-item-label caption>
+            <q-item-label caption class="q-pb-md">
               <apexchart
                 type="heatmap"
                 :series="[{ name, data }]"
-                :options="heatmapOptions"
-                :height="32 + 14"
+                :options="options"
+                :height="18 + 12"
               />
             </q-item-label>
           </q-item-section>

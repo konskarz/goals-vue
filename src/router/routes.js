@@ -6,7 +6,7 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'tasks',
+        name: 'home',
         component: () => import('../views/HomeView.vue')
       },
       {
