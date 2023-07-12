@@ -39,7 +39,7 @@ function onDrop(e) {
   >
     <div v-if="tasks">
       <q-intersection v-for="task in tasks" :key="task.id" class="min-h-58" once>
-        <TaskListItem :task="task" @ondragstart="onDragStart" />
+        <TaskListItem :item="task" @ondragstart="onDragStart" />
       </q-intersection>
     </div>
   </q-timeline-entry>

@@ -11,7 +11,7 @@ const store = useGoalStore()
     <template #toolbar><q-toolbar-title>Goals</q-toolbar-title></template>
     <template #default>
       <q-list v-if="store.tree" class="q-pt-sm q-pl-sm">
-        <GoalListItem v-for="goal in store.tree" :key="goal.id" :goal="goal" class="q-pb-lg" />
+        <GoalListItem v-for="goal in store.tree" :key="goal.id" :item="goal" class="q-pb-lg" />
       </q-list>
     </template>
   </MainPage>
