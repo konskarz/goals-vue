@@ -3,13 +3,12 @@ import { date, getCssVar } from 'quasar'
 
 defineProps({
   series: { type: Object, required: true },
-  height: { type: Number, default: 18 + 12 }
+  height: { type: Number, default: 16 + 10 }
 })
 /* 
-height: 18 + 12
-xaxis: { position: 'bottom', labels: { offsetY: -4 } },
-grid: { padding: { top: -30, bottom: -14 } }
-height: 17 + 12
+xaxis: { position: 'bottom', labels: { offsetY: -5 } },
+grid: { padding: { top: -30, bottom: -15 } }
+
 xaxis: { position: 'top', labels: { offsetY: 0 } },
 grid: { padding: { top: -20, bottom: -25 } }
  */
@@ -18,9 +17,7 @@ const options = {
     toolbar: { show: false },
     parentHeightOffset: 0
   },
-  yaxis: {
-    labels: { show: false }
-  },
+  yaxis: { labels: { show: false } },
   xaxis: {
     type: 'datetime',
     position: 'bottom',
@@ -31,21 +28,14 @@ const options = {
       // format: 'dd.MM',
       formatter: (value, timestamp) => date.formatDate(timestamp, 'DD.MM'),
       style: { colors: 'rgba(0, 0, 0, 0.54)' },
-      offsetY: -4,
+      offsetY: -5,
       offsetX: 6
     },
     tooltip: { enabled: false },
     axisBorder: { show: false },
     axisTicks: { show: false }
   },
-  grid: {
-    padding: {
-      top: -30,
-      bottom: -14,
-      left: -10,
-      right: 0
-    }
-  },
+  grid: { padding: { top: -30, bottom: -15, left: -10, right: 0 } },
   tooltip: { enabled: false },
   dataLabels: { enabled: false },
   colors: [getCssVar('primary')]
