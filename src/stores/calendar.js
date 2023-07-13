@@ -9,10 +9,10 @@ export function useCalendar() {
   const getFormatedDay = (srcDate) => date.formatDate(srcDate, 'YYYY-MM-DD')
   const currentDate = getDayStart(new Date())
   const currentMonday = getMonday(currentDate)
-  const heatmapStart = date.subtractFromDate(currentDate, { months: 6 })
+  const seriesStart = date.subtractFromDate(currentDate, { months: 6 })
   const beforeThisWeek = (srcDate) => getDayStart(srcDate) < currentMonday
-  const heatmapRange = (srcDate) =>
-    date.isBetweenDates(getDayStart(srcDate), heatmapStart, currentDate)
+  const seriesRange = (srcDate) =>
+    date.isBetweenDates(getDayStart(srcDate), seriesStart, currentDate)
   const beforeThisDay = (srcDate) => getDayStart(srcDate) <= currentDate
   const buildWeekTitle = (start, end) => {
     const title = []
@@ -34,7 +34,7 @@ export function useCalendar() {
     tasks: []
   })
 
-  function buildTimeline(tasks) {
+  function buildCalendar(tasks) {
     const weeks = {},
       endMonday = nextWeek(getMonday(getDayStart(tasks[tasks.length - 1].planned)))
     let nextSunday,
@@ -51,7 +51,7 @@ export function useCalendar() {
     })
     return weeks
   }
-  function buildHeatmap(tasks) {
+  function buildSeries(tasks) {
     const getWeeks = (weeks, nextMonday, endMonday) => {
       while (nextMonday <= endMonday) {
         weeks.push({ x: getFormatedDay(nextMonday), y: null })
@@ -63,7 +63,7 @@ export function useCalendar() {
       if (task.done) return 100
       return task.target > 1 ? Math.round((task.performance / task.target) * 100) : 0
     }
-    const start = getMonday(heatmapStart)
+    const start = getMonday(seriesStart)
     const end = getMonday(currentDate)
     return tasks.reduce((groups, task) => {
       if (!groups[task.name]) groups[task.name] = getWeeks([], start, end)
@@ -79,10 +79,10 @@ export function useCalendar() {
 
   return {
     beforeThisWeek,
-    heatmapRange,
+    seriesRange,
     beforeThisDay,
-    buildTimeline,
-    buildHeatmap,
+    buildCalendar,
+    buildSeries,
     changeWeek
   }
 }

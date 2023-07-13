@@ -23,22 +23,22 @@ const store = useTaskStore()
           class="col-xs-12 col-sm-4 q-pb-md q-pr-md"
         />
         <q-toggle
-          v-model="store.filter.done"
-          label="Show passed done"
+          v-model="store.filter.pastDone"
+          label="Show past done"
           dense
           class="col-xs-12 col-sm-auto q-pb-md q-pr-md"
         />
         <q-toggle
-          v-model="store.filter.recurring"
-          label="Show passed recurring"
+          v-model="store.filter.pastRecurring"
+          label="Show past recurring"
           dense
           class="col-xs-12 col-sm-auto q-pb-md q-pr-md"
         />
       </div>
     </q-slide-transition>
-    <q-timeline v-if="store.timeline" class="q-pl-lg">
+    <q-timeline v-if="store.calendar" class="q-pl-lg">
       <WeekTimelineEntry
-        v-for="(week, key) in store.timeline"
+        v-for="(week, key) in store.calendar"
         :key="key"
         :week="week"
         :monday="key"

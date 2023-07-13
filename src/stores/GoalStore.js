@@ -20,7 +20,8 @@ export const useGoalStore = defineStore('GoalStore', () => {
       ...relatedStore.getProgress(getBranch(item.id))
     }))
   })
-  const tree = computed(() => (relative.value ? arrayToTree(relative.value) : null))
+  const tree = computed(() => (data.value ? arrayToTree(data.value) : null))
+  const treeProgress = computed(() => (relative.value ? arrayToTree(relative.value) : null))
 
   function getBranch(itemId) {
     if (!itemId) return data.value.map((item) => item.id)
@@ -43,8 +44,8 @@ export const useGoalStore = defineStore('GoalStore', () => {
     createItem,
     updateItem,
     deleteItem,
-    relative,
     tree,
+    treeProgress,
     getBranch
   }
 })
