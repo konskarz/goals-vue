@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { date } from 'quasar'
 import { useTaskStore } from '../stores/TaskStore'
 import { fireworks } from '../lib/fireworks'
+import ProgressLabel from './ProgressLabel.vue'
 
 const props = defineProps({
   item: { type: Object, required: true }
@@ -55,17 +56,16 @@ function done() {
     </q-item-section>
     <q-item-section @click="go($router, item.id)">
       <q-item-label>{{ item.name }}</q-item-label>
-      <q-item-label v-if="showProgress" caption>
-        <q-icon name="track_changes" />
-        {{ item.performance + ' of ' + item.target }}
-      </q-item-label>
-      <q-item-label v-if="showProgress">
-        <q-linear-progress :value="item.performance / item.target" color="positive" />
-      </q-item-label>
-      <q-item-label v-if="showProgress && progressHint" caption>
-        <q-icon name="update" class="vertical-top" />
-        {{ progressHint }}
-      </q-item-label>
+      <ProgressLabel
+        v-if="showProgress"
+        :value="item.performance / item.target"
+        :label="item.performance + ' of ' + item.target"
+        :hint="progressHint"
+        color="positive"
+        label-icon="track_changes"
+        hint-icon="update"
+        caption
+      />
     </q-item-section>
     <q-item-section avatar>
       <q-btn v-if="item.done" flat round icon="check_box" @click="undone" />

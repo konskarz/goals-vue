@@ -1,12 +1,11 @@
 <script setup>
 import { computed } from 'vue'
+import ProgressLabel from './ProgressLabel.vue'
 
 const props = defineProps({
   item: { type: Object, required: true }
 })
 const hasChildren = computed(() => props.item.children && props.item.children.length)
-const showProgress = computed(() => props.item.target > 0)
-const showRProgress = computed(() => props.item.rperformance !== null)
 </script>
 
 <template>
@@ -22,20 +21,22 @@ const showRProgress = computed(() => props.item.rperformance !== null)
     <template #header>
       <q-item-section :class="hasChildren ? '' : 'pr-40'">
         <q-item-label>{{ item.name }}</q-item-label>
-        <q-item-label v-if="showProgress" caption>
-          <q-icon name="event" />
-          {{ item.performance + ' of ' + item.target }}
-        </q-item-label>
-        <q-item-label v-if="showProgress">
-          <q-linear-progress :value="item.performance / item.target" color="positive" />
-        </q-item-label>
-        <q-item-label v-if="showRProgress" caption>
-          <q-icon name="event_repeat" />
-          {{ ((item.rperformance / item.rtarget) * 100).toFixed(2) + '% for ' + item.rtarget }}
-        </q-item-label>
-        <q-item-label v-if="showRProgress">
-          <q-linear-progress :value="item.rperformance / item.rtarget" color="primary" />
-        </q-item-label>
+        <ProgressLabel
+          v-if="item.target > 0"
+          :value="item.performance / item.target"
+          :label="item.performance + ' of ' + item.target"
+          color="positive"
+          label-icon="event"
+          caption
+        />
+        <ProgressLabel
+          v-if="item.rperformance !== null"
+          :value="item.rperformance / item.rtarget"
+          :label="((item.rperformance / item.rtarget) * 100).toFixed(2) + '% for ' + item.rtarget"
+          color="primary"
+          label-icon="event_repeat"
+          caption
+        />
       </q-item-section>
     </template>
     <q-list v-if="hasChildren">
