@@ -63,39 +63,25 @@ watch(allTasks, (newValue) => {
       <q-btn flat round icon="clear" @click="back" />
     </template>
     <q-form class="q-pt-sm q-px-lg" @submit.prevent="save">
-      <div class="row q-col-gutter-lg">
-        <q-input
-          v-model="item.name"
-          label="Name"
-          stack-label
-          :autofocus="!itemId"
-          :rules="[(val) => !!val || 'Field is required']"
-          class="col-12 col-sm-6"
-          @keyup.esc="back"
-        />
-        <GoalSelect v-model="item.goal" label="Goal" stack-label class="col-12 col-sm-6" />
-        <DateInput
-          v-if="!allTasks"
-          v-model="item.planned"
-          label="Planned"
-          class="col-12 col-sm-6"
-          :rules="[(val) => !!val || 'Field is required']"
-        />
-        <DateInput v-if="itemId" v-model="item.done" label="Done" class="col-12 col-sm-6" />
-        <DateInput
-          v-else
-          v-model="item.recurring_until"
-          label="Recurring until"
-          class="col-12 col-sm-6"
-        />
-        <NumberInput v-model="item.target" label="Target" class="col-12 col-sm-6" />
-        <NumberInput
-          v-if="!allTasks"
-          v-model="item.performance"
-          label="Performance"
-          class="col-12 col-sm-6"
-        />
-      </div>
+      <q-input
+        v-model="item.name"
+        label="Name"
+        stack-label
+        :autofocus="!itemId"
+        :rules="[(val) => !!val || 'Field is required']"
+        @keyup.esc="back"
+      />
+      <GoalSelect v-model="item.goal" label="Goal" stack-label />
+      <DateInput
+        v-if="!allTasks"
+        v-model="item.planned"
+        label="Planned"
+        :rules="[(val) => !!val || 'Field is required']"
+      />
+      <DateInput v-if="itemId" v-model="item.done" label="Done" />
+      <DateInput v-else v-model="item.recurring_until" label="Recurring until" />
+      <NumberInput v-model="item.target" label="Target" />
+      <NumberInput v-if="!allTasks" v-model="item.performance" label="Performance" />
       <q-input
         v-model="item.description"
         type="textarea"
