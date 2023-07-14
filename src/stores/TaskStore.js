@@ -47,6 +47,11 @@ export const useTaskStore = defineStore('TaskStore', () => {
     filtered.value && filtered.value.length ? buildCalendar(filtered.value) : null
   )
   const series = computed(() => (data.value ? getSeries() : null))
+  const progress = computed(() => {
+    if (!filtered.value) return null
+    const progress = buildProgress(filtered.value)
+    return progress.target > 0 || progress.rperformance !== null ? progress : null
+  })
 
   function buildProgress(tasks) {
     const regular = tasks.filter((task) => !task.group_id)
@@ -98,6 +103,7 @@ export const useTaskStore = defineStore('TaskStore', () => {
     filtered,
     calendar,
     series,
+    progress,
     getSeries,
     getProgress,
     moveItem

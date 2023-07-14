@@ -10,7 +10,7 @@
 </template>
 <style scoped>
 .container {
-  max-width: 600px;
+  max-width: 582px;
 }
 @media (max-width: 1023.98px) {
   .container {
