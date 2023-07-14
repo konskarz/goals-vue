@@ -19,6 +19,11 @@ const entities = [
 ]
 const dev = import.meta.env.DEV
 const drawer = ref(false)
+
+function width(screen) {
+  const margin = (screen.width - 582) / 2 // see MainPage max-width
+  return margin > 300 ? margin : 300
+}
 function copyData() {
   navigator.clipboard.writeText(
     JSON.stringify({
@@ -47,8 +52,8 @@ function logout() {
         <q-btn flat round icon="logout" @click="logout" />
       </q-toolbar>
     </q-header>
-    <q-drawer v-model="drawer" show-if-above>
-      <q-scroll-area class="fit">
+    <q-drawer v-model="drawer" show-if-above :width="width($q.screen)">
+      <q-scroll-area class="drawer fit">
         <q-toolbar class="lt-md bg-primary text-white">
           <q-btn flat round icon="menu_open" @click="drawer = false" />
         </q-toolbar>
@@ -75,3 +80,10 @@ function logout() {
     </q-page-container>
   </q-layout>
 </template>
+<style scoped>
+@media (min-width: 1024px) {
+  .drawer {
+    max-width: 300px;
+  }
+}
+</style>

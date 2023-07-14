@@ -1,6 +1,7 @@
+<script setup />
 <template>
   <q-page>
-    <div class="q-mt-md container">
+    <div class="page" :class="$q.platform.is.desktop ? 'q-mt-md' : 'q-pt-md'">
       <q-toolbar class="q-pl-lg">
         <slot name="toolbar" />
       </q-toolbar>
@@ -9,11 +10,11 @@
   </q-page>
 </template>
 <style scoped>
-.container {
+.page {
   max-width: 582px;
 }
 @media (max-width: 1023.98px) {
-  .container {
+  .page {
     margin-left: auto;
     margin-right: auto;
   }
