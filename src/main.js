@@ -1,13 +1,16 @@
+import '@quasar/extras/material-icons/material-icons.css'
+import 'quasar/dist/quasar.css'
+
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { Quasar, Notify } from 'quasar'
 import VueApexCharts from 'vue3-apexcharts'
-
-import '@quasar/extras/material-icons/material-icons.css'
-import 'quasar/dist/quasar.css'
+import { registerSW } from 'virtual:pwa-register'
 
 import App from './App.vue'
 import router from './router'
+
+registerSW({ immediate: true })
 
 const app = createApp(App)
 
