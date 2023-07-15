@@ -5,6 +5,7 @@ import ProgressItem from './ProgressItem.vue'
 
 const store = useTaskStore()
 </script>
+
 <template>
   <div>
     <div class="row q-pl-lg q-pr-sm">

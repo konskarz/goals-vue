@@ -5,10 +5,11 @@ import { useTaskStore } from '../stores/TaskStore'
 import { fireworks } from '../lib/fireworks'
 import ProgressLabel from './ProgressLabel.vue'
 
+defineEmits(['ondragstart'])
 const props = defineProps({
   item: { type: Object, required: true }
 })
-const emit = defineEmits(['ondragstart'])
+
 const store = useTaskStore()
 const showProgress = computed(() => props.item.target > 1 && !props.item.done)
 const progressHint = computed(() => {
@@ -16,9 +17,6 @@ const progressHint = computed(() => {
   return date.formatDate(props.item.performance_history[0].updated, 'DD.MM.YYYY HH:mm')
 })
 
-function onDragStart(event) {
-  emit('ondragstart', event, props.item)
-}
 function go(router, id) {
   router.push({ name: 'task', params: { id } })
 }
@@ -49,7 +47,7 @@ function done() {
       thumbnail
       style="cursor: grab"
       draggable="true"
-      @dragstart="onDragStart"
+      @dragstart="(e) => $emit('ondragstart', e, item)"
       @touchmove:native="(e) => {}"
     >
       <q-icon name="drag_indicator" />

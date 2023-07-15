@@ -8,6 +8,7 @@ const props = defineProps({
   week: { type: Object, required: true },
   monday: { type: String, required: true }
 })
+
 const store = useTaskStore()
 const tasks = computed(() =>
   props.week.tasks.length ? [...props.week.tasks].sort((a, b) => b.target - a.target) : null

@@ -5,6 +5,7 @@ import ProgressLabel from './ProgressLabel.vue'
 const props = defineProps({
   item: { type: Object, required: true }
 })
+
 const hasChildren = computed(() => props.item.children && props.item.children.length)
 </script>
 

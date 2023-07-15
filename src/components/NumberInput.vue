@@ -1,10 +1,11 @@
 <script setup>
 import { computed } from 'vue'
 
+const emit = defineEmits(['update:modelValue'])
 const props = defineProps({
   modelValue: { type: Number, default: null }
 })
-const emit = defineEmits(['update:modelValue'])
+
 const model = computed({
   get() {
     return props.modelValue
