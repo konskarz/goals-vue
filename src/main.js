@@ -10,6 +10,7 @@ import { registerSW } from 'virtual:pwa-register'
 import App from './App.vue'
 import router from './router'
 
+// https://vite-pwa-org.netlify.app/guide/auto-update.html#automatic-reload
 registerSW({ immediate: true })
 
 const app = createApp(App)

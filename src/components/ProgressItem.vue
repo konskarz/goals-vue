@@ -21,7 +21,7 @@ defineProps({
         v-if="item.rperformance !== null"
         :value="item.rperformance / item.rtarget"
         :label="((item.rperformance / item.rtarget) * 100).toFixed(2) + '% for ' + item.rtarget"
-        color="accent"
+        color="primary"
         label-icon="event_repeat"
         caption
       />
