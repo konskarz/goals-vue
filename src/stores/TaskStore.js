@@ -20,15 +20,8 @@ export const useTaskStore = defineStore('TaskStore', () => {
   const filter = ref({
     show: false,
     pastDone: false,
-    pastRecurring: false,
-    goal: null
+    pastRecurring: false
   })
-  relatedStore.$onAction(({ name, args }) => {
-    if (name === 'deleteItem' && filter.value.goal === args[0]) filter.value.goal = null
-  })
-  const filterBranch = computed(() =>
-    filter.value.goal && relatedStore.data ? relatedStore.getBranch(filter.value.goal) : null
-  )
   const filtered = computed(() => {
     if (!data.value) return null
     return data.value
@@ -38,7 +31,8 @@ export const useTaskStore = defineStore('TaskStore', () => {
           if (!filter.value.pastDone && task.done) return false
           if (!filter.value.pastRecurring && task.group_id) return false
         }
-        if (filterBranch.value && !filterBranch.value.includes(task.goal)) return false
+        if (relatedStore.treeTicked.length && !relatedStore.treeTicked.includes(task.goal))
+          return false
         return true
       })
       .sort((a, b) => Date.parse(a.planned) - Date.parse(b.planned))

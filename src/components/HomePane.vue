@@ -1,35 +1,36 @@
 <script setup>
 import { useTaskStore } from '../stores/TaskStore'
-import GoalSelect from './GoalSelect.vue'
+import { useGoalStore } from '../stores/GoalStore'
+import HomePaneItem from './HomePaneItem.vue'
+import GoalTree from './GoalTree.vue'
 import ProgressItem from './ProgressItem.vue'
 
-const store = useTaskStore()
+const tasks = useTaskStore()
+const goals = useGoalStore()
+const filters = [
+  { label: 'Past done', icon: 'event_available', target: 'pastDone' },
+  { label: 'Past recurring', icon: 'free_cancellation', target: 'pastRecurring' }
+]
 </script>
 
 <template>
   <div>
-    <div class="row q-pl-lg q-pr-sm">
-      <GoalSelect
-        v-model="store.filter.goal"
-        label="Filter by goal"
-        :borderless="$q.screen.gt.xs"
-        dense
-        hide-bottom-space
-        class="col-12 col-sm q-pb-md q-pr-md"
-      />
-      <q-toggle
-        v-model="store.filter.pastDone"
-        label="Show past done"
-        dense
-        class="q-pb-md q-pr-md"
-      />
-      <q-toggle
-        v-model="store.filter.pastRecurring"
-        label="Show past recurring"
-        dense
-        class="q-pb-md q-pr-lg"
-      />
-    </div>
-    <ProgressItem v-if="store.progress" :item="store.progress" class="q-pb-lg q-px-lg" />
+    <HomePaneItem label="Show">
+      <div class="q-pt-sm q-pb-lg q-px-lg q-gutter-md">
+        <q-checkbox
+          v-for="(item, index) in filters"
+          :key="index"
+          v-model="tasks.filter[item.target]"
+          :label="item.label"
+          dense
+        />
+      </div>
+    </HomePaneItem>
+    <template v-if="goals.tree">
+      <HomePaneItem label="Filter by goal">
+        <GoalTree class="q-pb-lg" />
+      </HomePaneItem>
+    </template>
+    <ProgressItem v-if="tasks.progress" :item="tasks.progress" class="q-pb-lg q-px-lg" />
   </div>
 </template>

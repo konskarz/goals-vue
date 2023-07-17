@@ -1,4 +1,4 @@
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { useCollection } from './collection'
 import { useTaskStore } from './TaskStore'
@@ -13,6 +13,20 @@ export const useGoalStore = defineStore('GoalStore', () => {
   const { data, refetch, getItem, createItem, updateItem, deleteItem } = useCollection('/goals/')
   const relatedStore = useTaskStore()
 
+  const treeExpanded = ref([])
+  const treeTicked = ref([])
+  watch(data, () => {
+    if (treeTicked.value.length) {
+      const ids = treeTicked.value
+      const ii = ids.length
+      for (let i = 0; i < ii; i++) {
+        if (!getItem(ids[i])) {
+          ids.splice(i, 1)
+          break
+        }
+      }
+    }
+  })
   const relative = computed(() => {
     if (!data.value || !relatedStore.data) return null
     return data.value.map((item) => ({
@@ -44,6 +58,8 @@ export const useGoalStore = defineStore('GoalStore', () => {
     createItem,
     updateItem,
     deleteItem,
+    treeTicked,
+    treeExpanded,
     tree,
     treeProgress,
     getBranch
