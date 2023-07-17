@@ -39,20 +39,20 @@ function done() {
 
 <template>
   <q-item clickable :active="Boolean(item.done)" active-class="text-positive">
-    <q-item-section v-if="item.group_id" thumbnail>
-      <q-icon name="event_repeat" />
+    <q-item-section v-if="item.group_id" side>
+      <q-icon size="xs" name="event_repeat" />
     </q-item-section>
     <q-item-section
       v-else
-      thumbnail
+      side
       style="cursor: grab"
       draggable="true"
       @dragstart="(e) => $emit('ondragstart', e, item)"
       @touchmove:native="(e) => {}"
     >
-      <q-icon name="drag_indicator" />
+      <q-icon size="xs" name="drag_indicator" />
     </q-item-section>
-    <q-item-section @click="go($router, item.id)">
+    <q-item-section class="q-pl-sm" @click="go($router, item.id)">
       <q-item-label>{{ item.name }}</q-item-label>
       <ProgressLabel
         v-if="showProgress"
@@ -65,10 +65,10 @@ function done() {
         caption
       />
     </q-item-section>
-    <q-item-section avatar>
-      <q-btn v-if="item.done" flat round icon="check_box" @click="undone" />
-      <q-btn v-else-if="showProgress" flat round icon="plus_one" @click="increase" />
-      <q-btn v-else flat round icon="check_box_outline_blank" @click="done" />
+    <q-item-section side>
+      <q-btn v-if="item.done" flat round dense icon="check_box" color="positive" @click="undone" />
+      <q-btn v-else-if="showProgress" flat round dense icon="plus_one" @click="increase" />
+      <q-btn v-else flat round dense icon="check_box_outline_blank" @click="done" />
     </q-item-section>
   </q-item>
 </template>

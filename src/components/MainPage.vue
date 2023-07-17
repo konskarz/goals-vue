@@ -11,7 +11,7 @@
 </template>
 <style scoped>
 .page {
-  max-width: 582px;
+  max-width: 583px;
 }
 @media (max-width: 1023.98px) {
   .page {

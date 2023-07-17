@@ -21,7 +21,7 @@ const dev = import.meta.env.DEV
 const drawer = ref(false)
 
 function width(screen) {
-  const margin = (screen.width - 582) / 2 // see MainPage max-width
+  const margin = (screen.width - 583) / 2 // MainPage max-width
   return margin > 300 ? margin : 300
 }
 function copyData() {

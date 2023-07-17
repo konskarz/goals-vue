@@ -11,7 +11,7 @@ const store = useTaskStore()
   <MainPage>
     <template #toolbar>
       <q-toolbar-title>Tasks</q-toolbar-title>
-      <q-btn flat round icon="more_vert" @click="store.filter.show = !store.filter.show" />
+      <q-btn flat round icon="filter_list" @click="store.filter.show = !store.filter.show" />
     </template>
     <q-slide-transition>
       <HomePane v-show="store.filter.show" />
