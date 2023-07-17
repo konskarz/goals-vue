@@ -39,18 +39,16 @@ function done() {
 
 <template>
   <q-item clickable :active="Boolean(item.done)" active-class="text-positive">
-    <q-item-section v-if="item.group_id" side>
-      <q-icon size="xs" name="event_repeat" />
-    </q-item-section>
-    <q-item-section
-      v-else
-      side
-      style="cursor: grab"
-      draggable="true"
-      @dragstart="(e) => $emit('ondragstart', e, item)"
-      @touchmove:native="(e) => {}"
-    >
-      <q-icon size="xs" name="drag_indicator" />
+    <q-item-section side>
+      <q-icon v-if="item.group_id" name="event_repeat" />
+      <q-icon
+        v-else
+        name="drag_indicator"
+        style="cursor: grab"
+        draggable="true"
+        @dragstart="(e) => $emit('ondragstart', e, item)"
+        @touchmove:native="(e) => {}"
+      />
     </q-item-section>
     <q-item-section class="q-pl-sm" @click="go($router, item.id)">
       <q-item-label>{{ item.name }}</q-item-label>
