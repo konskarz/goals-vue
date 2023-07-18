@@ -5,6 +5,7 @@ export function useCalendar() {
   const getMonday = (srcDate) =>
     date.subtractFromDate(srcDate, { days: date.getDayOfWeek(srcDate) - 1 })
   const previousWeek = (srcDate) => date.subtractFromDate(srcDate, { days: 7 })
+  const previousDay = (srcDate) => date.subtractFromDate(srcDate, { days: 1 })
   const nextWeek = (srcDate) => date.addToDate(srcDate, { days: 7 })
   const getFormatedDay = (srcDate) => date.formatDate(srcDate, 'YYYY-MM-DD')
   const currentDate = getDayStart(new Date())
@@ -39,15 +40,15 @@ export function useCalendar() {
       endMonday = nextWeek(getMonday(getDayStart(tasks[tasks.length - 1].planned)))
     let nextSunday,
       nextMonday = getMonday(getDayStart(tasks[0].planned)),
-      previousSunday = date.subtractFromDate(nextMonday, { days: 1 })
+      previousSunday = previousDay(nextMonday)
     while (nextMonday <= endMonday) {
       nextSunday = nextWeek(previousSunday)
       weeks[getFormatedDay(nextMonday)] = buildWeek(nextMonday, nextSunday)
       nextMonday = nextWeek(nextMonday)
       previousSunday = nextSunday
     }
-    tasks.forEach((task) => {
-      weeks[getFormatedDay(getMonday(task.planned))].tasks.push(task)
+    tasks.forEach((item) => {
+      weeks[getFormatedDay(getMonday(item.planned))].tasks.push(item)
     })
     return weeks
   }
@@ -65,10 +66,10 @@ export function useCalendar() {
     }
     const start = getMonday(seriesStart)
     const end = getMonday(currentDate)
-    return tasks.reduce((groups, task) => {
-      if (!groups[task.name]) groups[task.name] = getWeeks([], start, end)
-      const key = getFormatedDay(getMonday(task.planned))
-      groups[task.name].find((item) => item.x === key).y = getData(task)
+    return tasks.reduce((groups, item) => {
+      if (!groups[item.name]) groups[item.name] = getWeeks([], start, end)
+      const key = getFormatedDay(getMonday(item.planned))
+      groups[item.name].find((item) => item.x === key).y = getData(item)
       return groups
     }, {})
   }

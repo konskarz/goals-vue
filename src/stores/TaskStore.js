@@ -25,13 +25,13 @@ export const useTaskStore = defineStore('TaskStore', () => {
   const filtered = computed(() => {
     if (!data.value) return null
     return data.value
-      .filter((task) => {
-        if (!task.planned) return false
-        if (beforeThisWeek(task.planned)) {
-          if (!filter.value.pastDone && task.done) return false
-          if (!filter.value.pastRecurring && task.group_id) return false
+      .filter((item) => {
+        if (!item.planned) return false
+        if (beforeThisWeek(item.planned)) {
+          if (!filter.value.pastDone && item.done) return false
+          if (!filter.value.pastRecurring && item.group_id) return false
         }
-        if (relatedStore.treeTicked.length && !relatedStore.treeTicked.includes(task.goal))
+        if (relatedStore.treeTicked.length && !relatedStore.treeTicked.includes(item.goal))
           return false
         return true
       })
@@ -48,15 +48,15 @@ export const useTaskStore = defineStore('TaskStore', () => {
   })
 
   function buildProgress(tasks) {
-    const regular = tasks.filter((task) => !task.group_id)
-    const done = regular.filter((task) => task.done)
+    const regular = tasks.filter((item) => !item.group_id)
+    const done = regular.filter((item) => item.done)
     const recurring = tasks.filter(
-      (task) => task.group_id && task.planned && beforeThisDay(task.planned)
+      (item) => item.group_id && item.planned && beforeThisDay(item.planned)
     )
     const perfsum = (tasks) =>
-      tasks.reduce((sum, task) => {
-        if (task.done) return sum + 1
-        return task.target > 1 ? sum + task.performance / task.target : sum
+      tasks.reduce((sum, item) => {
+        if (item.done) return sum + 1
+        return item.target > 1 ? sum + item.performance / item.target : sum
       }, 0)
     return {
       target: regular.length,
@@ -65,20 +65,18 @@ export const useTaskStore = defineStore('TaskStore', () => {
       rperformance: recurring.length ? perfsum(recurring) : null
     }
   }
-  function getSeries(group_id) {
+  function getSeries(group_ids) {
     const rtasks = data.value
-      .filter((task) => {
-        if (!task.group_id || !task.planned) return false
-        if (group_id && task.group_id !== group_id) return false
-        return seriesRange(task.planned)
+      .filter((item) => {
+        if (!item.group_id || !item.planned) return false
+        if (group_ids && group_ids.length && !group_ids.includes(item.group_id)) return false
+        return seriesRange(item.planned)
       })
       .sort((a, b) => Date.parse(a.planned) - Date.parse(b.planned))
-    if (!rtasks.length) return null
-    return buildSeries(rtasks)
+    return rtasks.length ? buildSeries(rtasks) : null
   }
   function getProgress(goals) {
-    const tasks = data.value.filter((task) => goals.includes(task.goal))
-    return buildProgress(tasks)
+    return buildProgress(data.value.filter((item) => goals.includes(item.goal)))
   }
   function moveItem(item, monday) {
     const changed = { planned: changeWeek(item.planned, monday).toISOString() }
