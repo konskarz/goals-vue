@@ -37,6 +37,7 @@ const hasChildren = computed(() => props.item.children && props.item.children.le
           color="primary"
           label-icon="event_repeat"
           caption
+          class="q-mb-xs"
         />
       </q-item-section>
     </template>

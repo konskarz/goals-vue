@@ -61,6 +61,7 @@ function done() {
         label-icon="track_changes"
         hint-icon="update"
         caption
+        class="q-mb-xs"
       />
     </q-item-section>
     <q-item-section side>
