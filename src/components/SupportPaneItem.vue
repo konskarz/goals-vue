@@ -3,6 +3,7 @@ defineProps({
   label: { type: String, required: true }
 })
 </script>
+
 <template>
   <q-expansion-item default-opened hide-expand-icon>
     <template #header>

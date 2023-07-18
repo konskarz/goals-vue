@@ -38,17 +38,17 @@ function onDrop(e) {
     @drop.prevent="onDrop($event)"
   >
     <div v-if="tasks">
-      <q-intersection v-for="task in tasks" :key="task.id" class="min-h-48 ltb-n-ml-md" once>
+      <q-intersection v-for="task in tasks" :key="task.id" class="min-h n-ml" once>
         <TaskListItem :item="task" @ondragstart="onDragStart" />
       </q-intersection>
     </div>
   </q-timeline-entry>
 </template>
 <style scoped>
-.ltb-n-ml-md {
-  margin-left: -16px;
+.min-h {
+  min-height: 49.59px;
 }
-.min-h-48 {
-  min-height: 48px;
+.n-ml {
+  margin-left: -16px;
 }
 </style>

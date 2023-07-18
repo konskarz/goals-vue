@@ -41,13 +41,13 @@ export const useTaskStore = defineStore('TaskStore', () => {
     filtered.value && filtered.value.length ? buildCalendar(filtered.value) : null
   )
   const series = computed(() => (data.value ? getSeries() : null))
-  const progress = computed(() => {
+  const report = computed(() => {
     if (!filtered.value) return null
-    const progress = buildProgress(filtered.value)
-    return progress.target > 0 || progress.rperformance !== null ? progress : null
+    const report = buildReport(filtered.value)
+    return report.target > 0 || report.rperformance !== null ? report : null
   })
 
-  function buildProgress(tasks) {
+  function buildReport(tasks) {
     const regular = tasks.filter((item) => !item.group_id)
     const done = regular.filter((item) => item.done)
     const recurring = tasks.filter(
@@ -75,8 +75,8 @@ export const useTaskStore = defineStore('TaskStore', () => {
       .sort((a, b) => Date.parse(a.planned) - Date.parse(b.planned))
     return rtasks.length ? buildSeries(rtasks) : null
   }
-  function getProgress(goals) {
-    return buildProgress(data.value.filter((item) => goals.includes(item.goal)))
+  function getReport(goals) {
+    return buildReport(data.value.filter((item) => goals.includes(item.goal)))
   }
   function moveItem(item, monday) {
     const changed = { planned: changeWeek(item.planned, monday).toISOString() }
@@ -95,9 +95,9 @@ export const useTaskStore = defineStore('TaskStore', () => {
     filtered,
     calendar,
     series,
-    progress,
+    report,
     getSeries,
-    getProgress,
+    getReport,
     moveItem
   }
 })

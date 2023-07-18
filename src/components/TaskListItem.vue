@@ -9,8 +9,8 @@ defineEmits(['ondragstart'])
 const props = defineProps({
   item: { type: Object, required: true }
 })
-
 const store = useTaskStore()
+
 const showProgress = computed(() => props.item.target > 1 && !props.item.done)
 const progressHint = computed(() => {
   if (!props.item.performance_history || !props.item.performance_history.length) return null
