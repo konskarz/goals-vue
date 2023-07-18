@@ -15,7 +15,7 @@ const filters = [
 <template>
   <div>
     <SupportPaneItem v-if="tasks.calendar" label="Show">
-      <div class="q-pt-sm q-pb-lg q-px-lg q-gutter-md">
+      <div class="q-pt-sm q-pb-md q-px-lg q-gutter-md">
         <q-checkbox
           v-for="(item, index) in filters"
           :key="index"
@@ -25,9 +25,9 @@ const filters = [
         />
       </div>
     </SupportPaneItem>
-    <SupportPaneItem v-if="goals.tree" label="Filter by goal">
+    <SupportPaneItem v-if="goals.tree" label="Filter by goal" class="q-pt-xs">
       <GoalTree class="q-pb-lg" />
     </SupportPaneItem>
-    <ReportPane v-if="tasks.report" :item="tasks.report" class="q-pb-lg q-px-lg" />
+    <ReportPane v-if="tasks.report" :item="tasks.report" class="q-pt-sm q-pb-xl q-px-lg" />
   </div>
 </template>
