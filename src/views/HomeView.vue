@@ -16,7 +16,7 @@ const store = useTaskStore()
     <q-slide-transition>
       <SupportPane v-show="store.filter.show" />
     </q-slide-transition>
-    <q-timeline v-if="store.calendar" class="q-mt-sm q-pl-lg">
+    <q-timeline v-if="store.calendar" class="q-mt-md q-pl-lg">
       <WeekTimelineEntry
         v-for="(week, key) in store.calendar"
         :key="key"

@@ -1,8 +1,7 @@
 <script setup>
+import { ref } from 'vue'
 import { useTaskStore } from '../stores/TaskStore'
 import { useGoalStore } from '../stores/GoalStore'
-import SupportPaneItem from './SupportPaneItem.vue'
-import GoalTree from './GoalTree.vue'
 import ReportPane from './ReportPane.vue'
 
 const tasks = useTaskStore()
@@ -11,23 +10,43 @@ const filters = [
   { label: 'Past done', icon: 'event_available', target: 'pastDone' },
   { label: 'Past recurring', icon: 'free_cancellation', target: 'pastRecurring' }
 ]
+const selected = ref(null)
 </script>
 <template>
   <div>
-    <SupportPaneItem v-if="tasks.calendar" label="Show">
-      <div class="q-pt-sm q-pb-md q-px-lg q-gutter-md">
+    <template v-if="tasks.calendar">
+      <q-item-label overline class="q-py-sm q-px-lg text-uppercase">Show</q-item-label>
+      <div class="q-pt-sm q-pb-md q-px-lg q-gutter-sm">
         <q-checkbox
           v-for="(item, index) in filters"
           :key="index"
           v-model="tasks.filter[item.target]"
           :label="item.label"
           dense
+          class="q-mb-xs q-mr-xs"
         />
       </div>
-    </SupportPaneItem>
-    <SupportPaneItem v-if="goals.tree" label="Filter by goal" class="q-pt-xs">
-      <GoalTree class="q-pb-lg" />
-    </SupportPaneItem>
-    <ReportPane v-if="tasks.report" :item="tasks.report" class="q-pt-sm q-pb-xl q-px-lg" />
+    </template>
+    <template v-if="goals.tree">
+      <q-item-label overline class="q-py-sm q-px-lg text-uppercase">Filter by goal</q-item-label>
+      <q-tree
+        v-model:selected="selected"
+        v-model:ticked="goals.treeTicked"
+        v-model:expanded="goals.treeExpanded"
+        tick-strategy="strict"
+        :nodes="goals.tree"
+        node-key="id"
+        label-key="name"
+        icon="keyboard_arrow_right"
+        selected-color="primary"
+        class="q-pb-lg"
+        @update:selected="(target) => go($router, target)"
+      >
+        <template #default-header="prop">
+          <div class="q-pl-xs q-pr-lg">{{ prop.node.name }}</div>
+        </template>
+      </q-tree>
+    </template>
+    <ReportPane v-if="tasks.report" :item="tasks.report" class="q-pb-lg q-px-lg" />
   </div>
 </template>
