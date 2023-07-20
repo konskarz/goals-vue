@@ -27,7 +27,7 @@ export const useGoalStore = defineStore('GoalStore', () => {
       }
     }
   })
-  const relative = computed(() => {
+  const relReport = computed(() => {
     if (!data.value || !relatedStore.data) return null
     return data.value.map((item) => ({
       ...item,
@@ -35,7 +35,7 @@ export const useGoalStore = defineStore('GoalStore', () => {
     }))
   })
   const tree = computed(() => (data.value ? arrayToTree(data.value) : null))
-  const treeReport = computed(() => (relative.value ? arrayToTree(relative.value) : null))
+  const treeReport = computed(() => (relReport.value ? arrayToTree(relReport.value) : null))
 
   function getBranch(itemId) {
     if (!itemId) return data.value.map((item) => item.id)

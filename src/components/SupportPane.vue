@@ -19,19 +19,17 @@ function go(router, id) {
 </script>
 <template>
   <div>
-    <template v-if="tasks.calendar">
-      <q-item-label overline class="q-py-sm q-px-lg text-uppercase">Show</q-item-label>
-      <div class="q-pt-sm q-pb-md q-px-lg q-gutter-sm">
-        <q-checkbox
-          v-for="(item, index) in filters"
-          :key="index"
-          v-model="tasks.filter[item.target]"
-          :label="item.label"
-          dense
-          class="q-mb-xs q-mr-xs"
-        />
-      </div>
-    </template>
+    <q-item-label overline class="q-py-sm q-px-lg text-uppercase">Show</q-item-label>
+    <div class="q-pt-sm q-pb-md q-px-lg q-gutter-sm">
+      <q-checkbox
+        v-for="(item, index) in filters"
+        :key="index"
+        v-model="tasks.filter[item.target]"
+        :label="item.label"
+        dense
+        class="q-mb-xs q-mr-xs"
+      />
+    </div>
     <template v-if="goals.tree">
       <q-item-label overline class="q-py-sm q-px-lg text-uppercase">Filter by goal</q-item-label>
       <q-tree
