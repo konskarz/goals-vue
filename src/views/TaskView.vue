@@ -71,23 +71,28 @@ watch(allTasks, (newValue) => {
         :rules="[(val) => !!val || 'Field is required']"
         @keyup.esc="back"
       />
-      <GoalSelect v-model="item.goal" label="Goal" stack-label />
+      <GoalSelect v-model="item.goal" label="Goal" stack-label class="q-pb-lg" />
       <DateInput
         v-if="!allTasks"
         v-model="item.planned"
         label="Planned"
         :rules="[(val) => !!val || 'Field is required']"
       />
-      <DateInput v-if="itemId" v-model="item.done" label="Done" />
-      <DateInput v-else v-model="item.recurring_until" label="Recurring until" />
-      <NumberInput v-model="item.target" label="Target" />
-      <NumberInput v-if="!allTasks" v-model="item.performance" label="Performance" />
+      <DateInput v-if="itemId" v-model="item.done" label="Done" class="q-pb-lg" />
+      <DateInput v-else v-model="item.recurring_until" label="Recurring until" class="q-pb-lg" />
+      <NumberInput v-model="item.target" label="Target" class="q-pb-lg" />
+      <NumberInput
+        v-if="!allTasks"
+        v-model="item.performance"
+        label="Performance"
+        class="q-pb-lg"
+      />
       <q-input
         v-model="item.description"
         type="textarea"
         label="Description"
         stack-label
-        class="q-pt-md"
+        class="q-pb-lg"
       />
       <q-input
         v-if="performanceHistory && !allTasks"
@@ -96,7 +101,6 @@ watch(allTasks, (newValue) => {
         label="Performance updates"
         stack-label
         readonly
-        class="q-pt-md"
       />
     </q-form>
   </MainPage>

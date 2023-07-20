@@ -43,15 +43,15 @@ const disable = computed(
         :rules="[(val) => !!val || 'Field is required']"
         @keyup.esc="back"
       />
-      <GoalSelect v-model="item.parent" label="Parent" stack-label :except-id="itemId" />
-      <DateInput v-model="item.planned" label="Planned" />
-      <q-input
-        v-model="item.description"
-        type="textarea"
-        label="Description"
+      <GoalSelect
+        v-model="item.parent"
+        label="Parent"
         stack-label
-        class="q-pt-md"
+        :except-id="itemId"
+        class="q-pb-lg"
       />
+      <DateInput v-model="item.planned" label="Planned" class="q-pb-lg" />
+      <q-input v-model="item.description" type="textarea" label="Description" stack-label />
     </q-form>
   </MainPage>
 </template>
