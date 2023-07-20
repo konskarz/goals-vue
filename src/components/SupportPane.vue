@@ -10,7 +10,12 @@ const filters = [
   { label: 'Past done', icon: 'event_available', target: 'pastDone' },
   { label: 'Past recurring', icon: 'free_cancellation', target: 'pastRecurring' }
 ]
+
 const selected = ref(null)
+
+function go(router, id) {
+  router.push({ name: 'goal', params: { id } })
+}
 </script>
 <template>
   <div>
