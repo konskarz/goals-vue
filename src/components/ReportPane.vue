@@ -1,8 +1,10 @@
 <script setup>
 import ProgressLabel from './ProgressLabel.vue'
+import HeatmapLabel from './HeatmapLabel.vue'
 
 defineProps({
-  item: { type: Object, required: true }
+  item: { type: Object, required: true },
+  showSeries: { type: Boolean, default: false }
 })
 </script>
 
@@ -24,5 +26,16 @@ defineProps({
       label-icon="event_repeat"
       caption
     />
+    <template v-if="showSeries && item.series">
+      <HeatmapLabel
+        v-for="(data, name) in item.series"
+        :key="name"
+        :series="[{ name, data }]"
+        :height="26"
+        :label="name"
+        caption
+        class="q-pt-sm"
+      />
+    </template>
   </div>
 </template>

@@ -78,7 +78,10 @@ export const useTaskStore = defineStore('TaskStore', () => {
       target: regular.length,
       performance: done.length,
       rtarget: recurring.length,
-      rperformance: recurring.length ? perfsum(recurring) : null
+      rperformance: recurring.length ? perfsum(recurring) : null,
+      series: recurring.length
+        ? getSeries([...new Set(recurring.map((item) => item.group_id))])
+        : null
     }
   }
   function getSeries(group_ids) {
