@@ -12,11 +12,7 @@
 <style scoped>
 .page {
   max-width: 583px;
-}
-@media (max-width: 1023.98px) {
-  .page {
-    margin-left: auto;
-    margin-right: auto;
-  }
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
