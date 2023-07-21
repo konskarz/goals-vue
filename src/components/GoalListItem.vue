@@ -1,38 +1,54 @@
 <script setup>
 import { computed } from 'vue'
-import GoalListItemSections from './GoalListItemSections.vue'
+import ProgressLabel from './ProgressLabel.vue'
 
 const props = defineProps({
-  goal: { type: Object, required: true }
+  item: { type: Object, required: true }
 })
-const route = { name: 'goal', params: { id: props.goal.id } }
-const hasChildren = computed(() => props.goal.children && props.goal.children.length)
+
+const hasChildren = computed(() => props.item.children && props.item.children.length)
 </script>
 
 <template>
   <q-expansion-item
-    v-if="hasChildren"
-    :to="route"
+    :to="{ name: 'goal', params: { id: item.id } }"
     :content-inset-level="0.5"
     default-opened
     expand-icon-toggle
     expand-icon="keyboard_arrow_right"
     expanded-icon="keyboard_arrow_down"
+    :hide-expand-icon="hasChildren ? false : true"
   >
     <template #header>
-      <GoalListItemSections :goal="goal" />
+      <q-item-section :class="hasChildren ? '' : 'pr-40'">
+        <q-item-label>{{ item.name }}</q-item-label>
+        <ProgressLabel
+          v-if="item.target > 0"
+          :value="item.performance / item.target"
+          :label="item.performance + ' of ' + item.target"
+          color="positive"
+          label-icon="event"
+          caption
+        />
+        <ProgressLabel
+          v-if="item.rperformance !== null"
+          :value="item.rperformance / item.rtarget"
+          :label="((item.rperformance / item.rtarget) * 100).toFixed(2) + '% for ' + item.rtarget"
+          color="primary"
+          label-icon="event_repeat"
+          caption
+          class="q-mb-xs"
+        />
+      </q-item-section>
     </template>
-    <q-list>
-      <GoalListItem v-for="child in goal.children" :key="child.id" :goal="child" />
+    <q-list v-if="hasChildren">
+      <GoalListItem v-for="child in item.children" :key="child.id" :item="child" />
     </q-list>
   </q-expansion-item>
-  <q-item v-else :to="route" class="pr-56">
-    <GoalListItemSections :goal="goal" />
-  </q-item>
 </template>
 
 <style scoped>
-.pr-56 {
-  padding-right: 56px;
+.pr-40 {
+  padding-right: 40px;
 }
 </style>

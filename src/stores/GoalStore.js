@@ -1,5 +1,4 @@
-import { computed } from 'vue'
-import { date } from 'quasar'
+import { computed, ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { useCollection } from './collection'
 import { useTaskStore } from './TaskStore'
@@ -13,45 +12,40 @@ const arrayToTree = (array, parent = null) =>
 export const useGoalStore = defineStore('GoalStore', () => {
   const { data, refetch, getItem, createItem, updateItem, deleteItem } = useCollection('/goals/')
   const relatedStore = useTaskStore()
-  const currentDate = date.startOfDate(new Date(), 'day')
-  const relative = computed(() => {
-    if (!data.value || !relatedStore.data) return null
-    return data.value.map((item) => {
-      const branch = getBranch(item.id)
-      const tasks = relatedStore.data.filter((task) => branch.includes(task.goal))
-      const regular = tasks.filter((task) => !task.group_id)
-      const recurring = tasks.filter(
-        (task) =>
-          task.group_id && task.planned && new Date(task.planned.slice(0, 10)) <= currentDate
-      )
-      const done = regular.filter((task) => task.done)
-      return {
-        ...item,
-        target: regular.length,
-        performance: done.length,
-        rtarget: recurring.length,
-        rperformance: sumPerformance(recurring)
+
+  const treeExpanded = ref([])
+  const treeTicked = ref([])
+  watch(data, () => {
+    if (treeTicked.value.length) {
+      const ids = treeTicked.value
+      const ii = ids.length
+      for (let i = 0; i < ii; i++) {
+        if (!getItem(ids[i])) {
+          ids.splice(i, 1)
+          break
+        }
       }
-    })
+    }
   })
-  const tree = computed(() => {
-    return relative.value ? arrayToTree(relative.value) : null
+  const relReport = computed(() => {
+    if (!data.value || !relatedStore.data) return null
+    return data.value.map((item) => ({
+      ...item,
+      ...relatedStore.getReport(getBranch(item.id))
+    }))
   })
-  function sumPerformance(tasks) {
-    if (!tasks.length) return null
-    return tasks.reduce((sum, task) => {
-      if (task.done) return sum + 1
-      return task.target > 1 ? sum + task.performance / task.target : sum
-    }, 0)
-  }
+  const tree = computed(() => (data.value ? arrayToTree(data.value) : null))
+  const treeReport = computed(() => (relReport.value ? arrayToTree(relReport.value) : null))
+
   function getBranch(itemId) {
+    if (!itemId) return data.value.map((item) => item.id)
     const branch = [itemId]
     const getChildren = (parent) =>
       data.value
         .filter((item) => item.parent === parent)
-        .forEach((child) => {
-          branch.push(child.id)
-          getChildren(child.id)
+        .forEach((item) => {
+          branch.push(item.id)
+          getChildren(item.id)
         })
     getChildren(itemId)
     return branch
@@ -64,8 +58,10 @@ export const useGoalStore = defineStore('GoalStore', () => {
     createItem,
     updateItem,
     deleteItem,
-    relative,
+    treeTicked,
+    treeExpanded,
     tree,
+    treeReport,
     getBranch
   }
 })

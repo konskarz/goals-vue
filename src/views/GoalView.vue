@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useGoalStore } from '../stores/GoalStore'
 import { usePersistent } from '../stores/persistent'
+import MainPage from '../components/MainPage.vue'
 import GoalSelect from '../components/GoalSelect.vue'
 import DateInput from '../components/DateInput.vue'
 
@@ -26,49 +27,31 @@ const disable = computed(
 </script>
 
 <template>
-  <q-page>
-    <q-form @submit.prevent="save">
-      <q-toolbar class="q-mt-md q-pl-lg">
-        <q-toolbar-title>Goal</q-toolbar-title>
-        <q-btn
-          v-if="itemId"
-          type="button"
-          flat
-          round
-          icon="delete"
-          :disable="persist"
-          @click="remove"
-        />
-        <q-btn type="submit" flat round icon="save" :disable="disable" />
-        <q-btn type="button" flat round icon="clear" @click="back" />
-      </q-toolbar>
-      <div class="q-py-sm q-px-lg">
-        <q-input
-          v-model="item.name"
-          label="Name"
-          stack-label
-          :autofocus="!itemId"
-          :rules="[(val) => !!val || 'Field is required']"
-          @keyup.esc="back"
-        />
-        <div class="row q-col-gutter-lg">
-          <GoalSelect
-            v-model="item.parent"
-            label="Parent"
-            stack-label
-            :except-id="itemId"
-            class="col-12 col-sm-6"
-          />
-          <DateInput v-model="item.planned" label="Planned" class="col-12 col-sm-6" />
-        </div>
-        <q-input
-          v-model="item.description"
-          type="textarea"
-          label="Description"
-          stack-label
-          class="q-pt-md"
-        />
-      </div>
+  <MainPage>
+    <template #toolbar>
+      <q-toolbar-title>Goal</q-toolbar-title>
+      <q-btn v-if="itemId" flat round icon="delete" :disable="persist" @click="remove" />
+      <q-btn flat round icon="save" :disable="disable" @click="save" />
+      <q-btn flat round icon="clear" @click="back" />
+    </template>
+    <q-form class="q-pt-sm q-px-lg" @submit.prevent="save">
+      <q-input
+        v-model="item.name"
+        label="Name"
+        stack-label
+        :autofocus="!itemId"
+        :rules="[(val) => !!val || 'Field is required']"
+        @keyup.esc="back"
+      />
+      <GoalSelect
+        v-model="item.parent"
+        label="Parent"
+        stack-label
+        :except-id="itemId"
+        class="q-pb-lg"
+      />
+      <DateInput v-model="item.planned" label="Planned" class="q-pb-lg" />
+      <q-input v-model="item.description" type="textarea" label="Description" stack-label />
     </q-form>
-  </q-page>
+  </MainPage>
 </template>

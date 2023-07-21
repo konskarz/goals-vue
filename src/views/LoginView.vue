@@ -16,14 +16,17 @@ const disabled = ref(false)
 function login() {
   if (!user.value.username || !user.value.password) return
   disabled.value = true
-  store.login(user.value).then((data) => {
-    if (data && data.token) {
-      store.setToken(data.token)
-      router.push(route.query.next)
-    } else {
-      disabled.value = false
-    }
-  })
+  store
+    .login(user.value)
+    .then((data) => {
+      if (data && data.token) {
+        store.setToken(data.token)
+        router.push(route.query.next)
+      } else {
+        disabled.value = false
+      }
+    })
+    .catch(() => (disabled.value = false))
 }
 function required(val) {
   return !!val || 'Field is required'
@@ -39,10 +42,7 @@ function required(val) {
   <div class="fullscreen bg-blue flex flex-center">
     <q-spinner v-if="disabled" color="primary" size="3em" />
     <q-card v-else style="width: 20rem">
-      <q-toolbar class="bg-primary text-white">
-        <q-avatar size="xs" square>
-          <img src="icons/favicon.ico" />
-        </q-avatar>
+      <q-toolbar class="bg-primary text-white q-px-md">
         <q-toolbar-title>LifeTrackerBuddy</q-toolbar-title>
       </q-toolbar>
       <q-form @submit.prevent="login">
