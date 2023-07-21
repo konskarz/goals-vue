@@ -6,8 +6,16 @@ import { useGoalStore } from './GoalStore'
 
 export const useTaskStore = defineStore('TaskStore', () => {
   const { data, refetch, getItem, createItem, updateItem, deleteItem } = useCollection('/tasks/')
-  const { beforeThisWeek, seriesRange, beforeThisDay, buildCalendar, buildSeries, changeWeek } =
-    useCalendar()
+  const {
+    beforeThisWeek,
+    afterThisWeek,
+    seriesRange,
+    beforeThisDay,
+    buildCalendar,
+    buildAgenda,
+    buildSeries,
+    changeWeek
+  } = useCalendar()
   const relatedStore = useGoalStore()
 
   const relative = computed(() => {
@@ -20,7 +28,9 @@ export const useTaskStore = defineStore('TaskStore', () => {
   const filter = ref({
     show: false,
     pastDone: false,
-    pastRecurring: false
+    pastRecurring: false,
+    futureRecurring: false,
+    emptyWeeks: false
   })
   const filtered = computed(() => {
     if (!data.value) return null
@@ -31,6 +41,8 @@ export const useTaskStore = defineStore('TaskStore', () => {
           if (!filter.value.pastDone && item.done) return false
           if (!filter.value.pastRecurring && item.group_id) return false
         }
+        if (afterThisWeek(item.planned) && !filter.value.futureRecurring && item.group_id)
+          return false
         if (relatedStore.treeTicked.length && !relatedStore.treeTicked.includes(item.goal))
           return false
         return true
@@ -38,7 +50,11 @@ export const useTaskStore = defineStore('TaskStore', () => {
       .sort((a, b) => Date.parse(a.planned) - Date.parse(b.planned))
   })
   const calendar = computed(() =>
-    filtered.value && filtered.value.length ? buildCalendar(filtered.value) : null
+    filtered.value && filtered.value.length
+      ? filter.value.emptyWeeks
+        ? buildCalendar(filtered.value)
+        : buildAgenda(filtered.value)
+      : null
   )
   const series = computed(() => (data.value ? getSeries() : null))
   const report = computed(() => {

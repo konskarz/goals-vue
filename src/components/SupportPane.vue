@@ -8,7 +8,9 @@ const tasks = useTaskStore()
 const goals = useGoalStore()
 const filters = [
   { label: 'Past done', icon: 'event_available', target: 'pastDone' },
-  { label: 'Past recurring', icon: 'free_cancellation', target: 'pastRecurring' }
+  { label: 'Past recurring', icon: 'free_cancellation', target: 'pastRecurring' },
+  { label: 'Future recurring', icon: 'date_range', target: 'futureRecurring' },
+  { label: 'Empty weeks', icon: 'calendar_today', target: 'emptyWeeks' }
 ]
 
 const selected = ref(null)
