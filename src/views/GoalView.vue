@@ -2,7 +2,6 @@
 import { computed } from 'vue'
 import { useGoalStore } from '../stores/GoalStore'
 import { usePersistent } from '../stores/persistent'
-import MainPage from '../components/MainPage.vue'
 import GoalSelect from '../components/GoalSelect.vue'
 import DateInput from '../components/DateInput.vue'
 
@@ -27,20 +26,21 @@ const disable = computed(
 </script>
 
 <template>
-  <MainPage>
-    <template #toolbar>
-      <q-toolbar-title>Goal</q-toolbar-title>
-      <q-btn v-if="itemId" flat round icon="delete" :disable="persist" @click="remove" />
-      <q-btn flat round icon="save" :disable="disable" @click="save" />
-      <q-btn flat round icon="clear" @click="back" />
-    </template>
-    <q-form class="q-pt-sm q-px-lg" @submit.prevent="save">
+  <q-toolbar class="q-pl-lg">
+    <q-toolbar-title>Goal</q-toolbar-title>
+    <q-btn v-if="itemId" flat round icon="delete" :disable="persist" @click="remove" />
+    <q-btn flat round icon="save" :disable="disable" @click="save" />
+    <q-btn flat round icon="clear" @click="back" />
+  </q-toolbar>
+  <q-form class="q-pt-sm q-px-lg" @submit.prevent="save">
+    <div class="row q-col-gutter-lg">
       <q-input
         v-model="item.name"
         label="Name"
         stack-label
         :autofocus="!itemId"
         :rules="[(val) => !!val || 'Field is required']"
+        class="col-12"
         @keyup.esc="back"
       />
       <GoalSelect
@@ -48,10 +48,16 @@ const disable = computed(
         label="Parent"
         stack-label
         :except-id="itemId"
-        class="q-pb-lg"
+        class="col-12 col-md-6"
       />
-      <DateInput v-model="item.planned" label="Planned" class="q-pb-lg" />
-      <q-input v-model="item.description" type="textarea" label="Description" stack-label />
-    </q-form>
-  </MainPage>
+      <DateInput v-model="item.planned" label="Planned" class="col-12 col-md-6" />
+      <q-input
+        v-model="item.description"
+        type="textarea"
+        label="Description"
+        stack-label
+        class="col-12"
+      />
+    </div>
+  </q-form>
 </template>

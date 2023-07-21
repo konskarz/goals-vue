@@ -3,7 +3,6 @@ import { computed, ref, watch } from 'vue'
 import { date } from 'quasar'
 import { useTaskStore } from '../stores/TaskStore'
 import { usePersistent } from '../stores/persistent'
-import MainPage from '../components/MainPage.vue'
 import GoalSelect from '../components/GoalSelect.vue'
 import DateInput from '../components/DateInput.vue'
 import NumberInput from '../components/NumberInput.vue'
@@ -48,51 +47,58 @@ watch(allTasks, (newValue) => {
 </script>
 
 <template>
-  <MainPage>
-    <template #toolbar>
-      <q-toolbar-title v-if="!allTasks">Task</q-toolbar-title>
-      <q-toolbar-title v-else>Group</q-toolbar-title>
-      <q-toggle
-        v-if="item.group_id"
-        v-model="allTasks"
-        checked-icon="done_all"
-        unchecked-icon="done"
-      />
-      <q-btn v-if="itemId" flat round icon="delete" :disable="persist" @click="remove" />
-      <q-btn flat round icon="save" :disable="disable" @click="save" />
-      <q-btn flat round icon="clear" @click="back" />
-    </template>
-    <q-form class="q-pt-sm q-px-lg" @submit.prevent="save">
+  <q-toolbar class="q-pl-lg">
+    <q-toolbar-title v-if="!allTasks">Task</q-toolbar-title>
+    <q-toolbar-title v-else>Group</q-toolbar-title>
+    <q-toggle
+      v-if="item.group_id"
+      v-model="allTasks"
+      checked-icon="done_all"
+      unchecked-icon="done"
+    />
+    <q-btn v-if="itemId" flat round icon="delete" :disable="persist" @click="remove" />
+    <q-btn flat round icon="save" :disable="disable" @click="save" />
+    <q-btn flat round icon="clear" @click="back" />
+  </q-toolbar>
+  <q-form class="q-pt-sm q-px-lg" @submit.prevent="save">
+    <div class="row q-col-gutter-lg">
       <q-input
         v-model="item.name"
         label="Name"
         stack-label
         :autofocus="!itemId"
         :rules="[(val) => !!val || 'Field is required']"
+        class="col-12 col-md-6"
         @keyup.esc="back"
       />
-      <GoalSelect v-model="item.goal" label="Goal" stack-label class="q-pb-lg" />
+      <GoalSelect v-model="item.goal" label="Goal" stack-label class="col-12 col-md-6" />
       <DateInput
         v-if="!allTasks"
         v-model="item.planned"
         label="Planned"
+        class="col-12 col-md-6"
         :rules="[(val) => !!val || 'Field is required']"
       />
-      <DateInput v-if="itemId" v-model="item.done" label="Done" class="q-pb-lg" />
-      <DateInput v-else v-model="item.recurring_until" label="Recurring until" class="q-pb-lg" />
-      <NumberInput v-model="item.target" label="Target" class="q-pb-lg" />
+      <DateInput v-if="itemId" v-model="item.done" label="Done" class="col-12 col-md-6" />
+      <DateInput
+        v-else
+        v-model="item.recurring_until"
+        label="Recurring until"
+        class="col-12 col-md-6"
+      />
+      <NumberInput v-model="item.target" label="Target" class="col-12 col-md-6" />
       <NumberInput
         v-if="!allTasks"
         v-model="item.performance"
         label="Performance"
-        class="q-pb-lg"
+        class="col-12 col-md-6"
       />
       <q-input
         v-model="item.description"
         type="textarea"
         label="Description"
         stack-label
-        class="q-pb-lg"
+        class="col-12"
       />
       <q-input
         v-if="performanceHistory && !allTasks"
@@ -101,7 +107,8 @@ watch(allTasks, (newValue) => {
         label="Performance updates"
         stack-label
         readonly
+        class="col-12"
       />
-    </q-form>
-  </MainPage>
+    </div>
+  </q-form>
 </template>
