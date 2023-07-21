@@ -29,26 +29,20 @@ function onDrop(e) {
 </script>
 
 <template>
-  <q-timeline-entry
-    :subtitle="week.title"
-    :color="week.current ? 'orange' : 'primary'"
-    :icon="week.start ? 'calendar_month' : undefined"
-    @dragover.prevent
-    @dragenter.prevent
-    @drop.prevent="onDrop($event)"
-  >
-    <div v-if="tasks">
-      <q-intersection v-for="task in tasks" :key="task.id" class="min-h n-ml" once>
-        <TaskListItem :item="task" @ondragstart="onDragStart" />
-      </q-intersection>
-    </div>
-  </q-timeline-entry>
+  <div @dragover.prevent @dragenter.prevent @drop.prevent="onDrop($event)">
+    <q-item-label v-if="week.start" overline class="q-px-lg q-py-sm text-uppercase">
+      {{ week.month }}
+    </q-item-label>
+    <q-item-label header class="q-px-lg q-py-sm" :class="week.current ? 'text-weight-medium' : ''">
+      {{ week.title }}
+    </q-item-label>
+    <q-intersection v-for="task in tasks" :key="task.id" class="min-h" once>
+      <TaskListItem :item="task" class="q-pl-lg" @ondragstart="onDragStart" />
+    </q-intersection>
+  </div>
 </template>
 <style scoped>
 .min-h {
   min-height: 49.59px;
-}
-.n-ml {
-  margin-left: -16px;
 }
 </style>

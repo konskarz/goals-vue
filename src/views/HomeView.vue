@@ -3,7 +3,7 @@ import { useTaskStore } from '../stores/TaskStore'
 import MainPage from '../components/MainPage.vue'
 import SupportPane from '../components/SupportPane.vue'
 import ReportPane from '../components/ReportPane.vue'
-import WeekTimelineEntry from '../components/WeekTimelineEntry.vue'
+import WeekPane from '../components/WeekPane.vue'
 
 const store = useTaskStore()
 </script>
@@ -23,13 +23,14 @@ const store = useTaskStore()
       :show-series="store.filter.pastRecurring"
       class="q-pb-lg q-px-lg"
     />
-    <q-timeline v-if="store.calendar" class="q-mt-md q-pl-lg">
-      <WeekTimelineEntry
+    <template v-if="store.calendar">
+      <WeekPane
         v-for="(week, key) in store.calendar"
         :key="key"
         :week="week"
         :monday="key"
+        class="q-pb-lg"
       />
-    </q-timeline>
+    </template>
   </MainPage>
 </template>
