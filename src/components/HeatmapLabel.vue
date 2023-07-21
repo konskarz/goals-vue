@@ -1,9 +1,12 @@
 <script setup>
 import { date, getCssVar } from 'quasar'
+import VueApexCharts from 'vue3-apexcharts'
 
 defineProps({
   series: { type: Object, required: true },
-  height: { type: Number, default: 16 + 10 }
+  height: { type: Number, default: 16 + 10 },
+  label: { type: String, default: null },
+  labelIcon: { type: String, default: null }
 })
 /* 
 xaxis: { position: 'bottom', labels: { offsetY: -5 } },
@@ -44,6 +47,10 @@ const options = {
 
 <template>
   <q-item-label>
-    <apexchart type="heatmap" :series="series" :options="options" :height="height" />
+    <div v-if="label" class="row items-center q-mb-xs">
+      <q-icon v-if="labelIcon" :name="labelIcon" class="q-mr-sm" />
+      {{ label }}
+    </div>
+    <VueApexCharts type="heatmap" :series="series" :options="options" :height="height" />
   </q-item-label>
 </template>

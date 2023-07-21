@@ -13,7 +13,7 @@ const store = useTaskStore()
       <q-item v-for="(data, name) in store.series" :key="name">
         <q-item-section>
           <q-item-label>{{ name }}</q-item-label>
-          <HeatmapLabel caption class="q-pb-md" :series="[{ name, data }]" :height="29" />
+          <HeatmapLabel caption :series="[{ name, data }]" :height="29" class="q-mb-xs" />
         </q-item-section>
       </q-item>
     </q-list>
