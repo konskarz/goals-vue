@@ -34,9 +34,9 @@ function logout() {
 
 <template>
   <q-list>
-    <q-item v-for="(entity, index) in entities" :key="index" class="q-pr-lg" :to="entity.to">
-      <q-item-section side><q-icon :name="entity.icon" /></q-item-section>
-      <q-item-section>{{ entity.label }}</q-item-section>
+    <q-item v-for="(item, index) in entities" :key="index" class="q-pr-lg" :to="item.to">
+      <q-item-section side><q-icon :name="item.icon" /></q-item-section>
+      <q-item-section no-wrap>{{ item.label }}</q-item-section>
     </q-item>
     <q-item v-if="dev" clickable class="q-pr-lg" @click="copyData">
       <q-item-section side><q-icon name="copy_all" /></q-item-section>
