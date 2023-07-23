@@ -5,7 +5,7 @@ import { useCalendar } from './calendar'
 import { useGoalStore } from './GoalStore'
 
 export const useTaskStore = defineStore('TaskStore', () => {
-  const { data, refetch, getItem, createItem, updateItem, deleteItem } = useCollection('/tasks/')
+  const { data, refetch, getItem, createItem, updateItem, deleteItem } = useCollection('tasks')
   const {
     beforeThisWeek,
     afterThisWeek,
@@ -18,6 +18,10 @@ export const useTaskStore = defineStore('TaskStore', () => {
   } = useCalendar()
   const relatedStore = useGoalStore()
 
+  relatedStore.$onAction(({ name, store, args }) => {
+    if (name === 'deleteItem' && store.treeTicked.includes(args[0]))
+      store.treeTicked.splice(store.treeTicked.indexOf(args[0]), 1)
+  })
   const relative = computed(() => {
     if (!data.value || !relatedStore.data) return null
     return data.value.map((item) => ({

@@ -42,7 +42,7 @@ const performanceHistory = computed(() => {
     .join(', ')
 })
 watch(allTasks, (newValue) => {
-  path.value = newValue ? 'recurring/' + item.value.group_id + '/' : itemId + '/'
+  path.value = newValue ? 'recurring/' + item.value.group_id : itemId
 })
 </script>
 

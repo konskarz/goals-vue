@@ -3,23 +3,23 @@ import { defineStore } from 'pinia'
 import { useApiClient } from './ApiClient'
 
 export const useUserStore = defineStore('UserStore', () => {
-  const url = '/auth/'
+  const name = 'auth'
   const { auth, request } = useApiClient()
 
-  const authToken = ref(localStorage.getItem(url))
+  const authToken = ref(localStorage.getItem(name))
   const loggedIn = computed(() => Boolean(authToken.value))
 
   function login(data) {
-    return request({ method: 'post', url, data })
+    return request({ method: 'post', url: name + '/', data })
   }
   function setToken(token) {
     auth(`Token ${token}`)
-    localStorage.setItem(url, token)
+    localStorage.setItem(name, token)
     authToken.value = token
   }
   function logout() {
     auth('')
-    localStorage.removeItem(url)
+    localStorage.removeItem(name)
     authToken.value = null
   }
   if (loggedIn.value) auth(`Token ${authToken.value}`)
