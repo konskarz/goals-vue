@@ -3,7 +3,7 @@ import { useRouter } from 'vue-router'
 
 export function usePersistent(id, store, model) {
   const item = ref(id ? { ...store.getItem(id) } : model)
-  const path = ref(id + '/')
+  const path = ref(id)
   const persist = ref(false)
   const original = id ? { ...item.value } : null
   const router = useRouter()

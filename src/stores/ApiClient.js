@@ -1,11 +1,12 @@
 import axios from 'axios'
 import { Notify } from 'quasar'
 
-// const baseURL = 'http://localhost:3000'
+// const baseURL = 'http://localhost:3000/'
+// const baseURL = 'https://my-json-server.typicode.com/konskarz/goals-vue/'
 const baseURL = ((h) =>
   h === 'lifetrackerbuddy.com' || h === '127.0.0.1:8000' || h === 'localhost:8088'
-    ? '/api/v2'
-    : 'https://lifetrackerbuddy.com/api/v2')(window.location.host)
+    ? '/api/v2/'
+    : 'https://lifetrackerbuddy.com/api/v2/')(window.location.host)
 const API = axios.create({ baseURL, headers: { 'content-type': 'application/json' } })
 
 export function useApiClient() {

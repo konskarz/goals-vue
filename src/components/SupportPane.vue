@@ -2,13 +2,14 @@
 import { ref } from 'vue'
 import { useTaskStore } from '../stores/TaskStore'
 import { useGoalStore } from '../stores/GoalStore'
-import ReportPane from './ReportPane.vue'
 
 const tasks = useTaskStore()
 const goals = useGoalStore()
 const filters = [
   { label: 'Past done', icon: 'event_available', target: 'pastDone' },
-  { label: 'Past recurring', icon: 'free_cancellation', target: 'pastRecurring' }
+  { label: 'Past recurring', icon: 'free_cancellation', target: 'pastRecurring' },
+  { label: 'Future recurring', icon: 'date_range', target: 'futureRecurring' },
+  { label: 'Empty weeks', icon: 'calendar_today', target: 'emptyWeeks' }
 ]
 
 const selected = ref(null)
@@ -50,6 +51,5 @@ function go(router, id) {
         </template>
       </q-tree>
     </template>
-    <ReportPane v-if="tasks.report" :item="tasks.report" class="q-pb-lg q-px-lg" />
   </div>
 </template>

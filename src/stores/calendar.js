@@ -10,8 +10,10 @@ export function useCalendar() {
   const getFormatedDay = (srcDate) => date.formatDate(srcDate, 'YYYY-MM-DD')
   const currentDate = getDayStart(new Date())
   const currentMonday = getMonday(currentDate)
+  const currentSunday = date.addToDate(currentMonday, { days: 6 })
   const seriesStart = date.subtractFromDate(currentDate, { months: 6 })
   const beforeThisWeek = (srcDate) => getDayStart(srcDate) < currentMonday
+  const afterThisWeek = (srcDate) => getDayStart(srcDate) > currentSunday
   const seriesRange = (srcDate) =>
     date.isBetweenDates(getDayStart(srcDate), seriesStart, currentDate)
   const beforeThisDay = (srcDate) => getDayStart(srcDate) <= currentDate
@@ -52,6 +54,16 @@ export function useCalendar() {
     })
     return weeks
   }
+  function buildAgenda(tasks) {
+    return tasks.reduce((weeks, item) => {
+      const taskMonday = getMonday(getDayStart(item.planned))
+      const nextSunday = nextWeek(previousDay(taskMonday))
+      const key = getFormatedDay(taskMonday)
+      if (!weeks[key]) weeks[key] = buildWeek(taskMonday, nextSunday)
+      weeks[key].tasks.push(item)
+      return weeks
+    }, {})
+  }
   function buildSeries(tasks) {
     const getWeeks = (weeks, nextMonday, endMonday) => {
       while (nextMonday <= endMonday) {
@@ -80,9 +92,11 @@ export function useCalendar() {
 
   return {
     beforeThisWeek,
+    afterThisWeek,
     seriesRange,
     beforeThisDay,
     buildCalendar,
+    buildAgenda,
     buildSeries,
     changeWeek
   }

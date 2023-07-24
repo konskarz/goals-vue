@@ -40,10 +40,8 @@ function done() {
 <template>
   <q-item clickable :active="Boolean(item.done)" active-class="text-positive">
     <q-item-section side>
-      <q-icon v-if="item.group_id" name="event_repeat" />
       <q-icon
-        v-else
-        name="drag_indicator"
+        :name="item.group_id ? 'event_repeat' : 'event'"
         style="cursor: grab"
         draggable="true"
         @dragstart="(e) => $emit('ondragstart', e, item)"
