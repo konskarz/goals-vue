@@ -1,7 +1,8 @@
 import axios from 'axios'
 import { Notify } from 'quasar'
 
-// const baseURL = 'http://localhost:3000'
+// const baseURL = 'http://localhost:3000/'
+// const baseURL = 'https://my-json-server.typicode.com/konskarz/goals-vue/'
 const baseURL = ((h) =>
   h === 'lifetrackerbuddy.com' || h === '127.0.0.1:8000' || h === 'localhost:8088'
     ? '/api/v2/'
