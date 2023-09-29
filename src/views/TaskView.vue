@@ -60,55 +60,34 @@ watch(allTasks, (newValue) => {
     <q-btn flat round icon="save" :disable="disable" @click="save" />
     <q-btn flat round icon="clear" @click="back" />
   </q-toolbar>
-  <q-form class="q-pt-sm q-px-lg" @submit.prevent="save">
-    <div class="row q-col-gutter-lg">
-      <q-input
-        v-model="item.name"
-        label="Name"
-        stack-label
-        :autofocus="!itemId"
-        :rules="[(val) => !!val || 'Field is required']"
-        class="col-12 col-md-6"
-        @keyup.esc="back"
-      />
-      <GoalSelect v-model="item.goal" label="Goal" stack-label class="col-12 col-md-6" />
-      <DateInput
-        v-if="!allTasks"
-        v-model="item.planned"
-        label="Planned"
-        class="col-12 col-md-6"
-        :rules="[(val) => !!val || 'Field is required']"
-      />
-      <DateInput v-if="itemId" v-model="item.done" label="Done" class="col-12 col-md-6" />
-      <DateInput
-        v-else
-        v-model="item.recurring_until"
-        label="Recurring until"
-        class="col-12 col-md-6"
-      />
-      <NumberInput v-model="item.target" label="Target" class="col-12 col-md-6" />
-      <NumberInput
-        v-if="!allTasks"
-        v-model="item.performance"
-        label="Performance"
-        class="col-12 col-md-6"
-      />
-      <q-input
-        v-model="item.description"
-        type="textarea"
-        label="Description"
-        stack-label
-        class="col-12"
-      />
-      <q-input
-        v-if="performanceHistory && !allTasks"
-        v-model="performanceHistory"
-        type="textarea"
-        label="Performance updates"
-        stack-label
-        readonly
-        class="col-12"
-      />
-    </div>
+  <q-form class="q-pt-sm q-px-lg column q-gutter-lg" @submit.prevent="save">
+    <q-input
+      v-model="item.name"
+      label="Name"
+      stack-label
+      :autofocus="!itemId"
+      :rules="[(val) => !!val || 'Field is required']"
+      @keyup.esc="back"
+    />
+    <GoalSelect v-model="item.goal" label="Goal" stack-label />
+    <DateInput
+      v-if="!allTasks"
+      v-model="item.planned"
+      label="Planned"
+      :rules="[(val) => !!val || 'Field is required']"
+    />
+    <DateInput v-if="itemId" v-model="item.done" label="Done" />
+    <DateInput v-else v-model="item.recurring_until" label="Recurring until" />
+    <NumberInput v-model="item.target" label="Target" />
+    <NumberInput v-if="!allTasks" v-model="item.performance" label="Performance" />
+    <q-input v-model="item.description" type="textarea" label="Description" stack-label />
+    <q-input
+      v-if="performanceHistory && !allTasks"
+      v-model="performanceHistory"
+      type="textarea"
+      label="Performance updates"
+      stack-label
+      readonly
+    />
   </q-form>
 </template>
