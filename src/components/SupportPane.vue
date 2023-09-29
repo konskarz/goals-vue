@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useTaskStore } from '../stores/TaskStore'
 import { useGoalStore } from '../stores/GoalStore'
+import ReportPane from './ReportPane.vue'
 
 const tasks = useTaskStore()
 const goals = useGoalStore()
@@ -51,5 +52,11 @@ function go(router, id) {
         </template>
       </q-tree>
     </template>
+    <ReportPane
+      v-if="tasks.report"
+      :item="tasks.report"
+      :show-series="false"
+      class="q-pb-lg q-px-lg"
+    />
   </div>
 </template>
