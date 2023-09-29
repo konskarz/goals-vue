@@ -88,6 +88,28 @@ export const useTaskStore = defineStore('TaskStore', () => {
         : null
     }
   }
+  function getAll() {
+    let rtasks = data.value
+      .filter((item) => item.group_id && item.planned && beforeThisDay(item.planned))
+      .sort((a, b) => Date.parse(a.planned) - Date.parse(b.planned))
+    if (rtasks.length) {
+      rtasks = rtasks.reduce((groups, item) => {
+        if (!groups[item.name]) groups[item.name] = []
+        groups[item.name].push(item)
+        return groups
+      }, {})
+      rtasks = Object.values(rtasks).map((item) => item[item.length - 1])
+    }
+    const ntasks = data.value
+      .filter((item) => !item.group_id && item.planned)
+      .sort((a, b) => Date.parse(a.planned) - Date.parse(b.planned))
+    return rtasks.concat(ntasks).map((item) => ({
+      ...item,
+      parent: item.goal,
+      type: 'task',
+      icon: item.group_id ? 'event_repeat' : 'event'
+    }))
+  }
   function getSeries(group_ids) {
     const rtasks = data.value
       .filter((item) => {
@@ -119,6 +141,7 @@ export const useTaskStore = defineStore('TaskStore', () => {
     calendar,
     series,
     report,
+    getAll,
     getSeries,
     getReport,
     moveItem
