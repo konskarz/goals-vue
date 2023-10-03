@@ -32,7 +32,7 @@ const disable = computed(
     <q-btn flat round icon="save" :disable="disable" @click="save" />
     <q-btn flat round icon="clear" @click="back" />
   </q-toolbar>
-  <q-form class="q-pt-sm q-px-lg column q-gutter-lg" @submit.prevent="save">
+  <q-form class="q-px-lg" @submit.prevent="save">
     <q-input
       v-model="item.name"
       label="Name"
@@ -41,8 +41,20 @@ const disable = computed(
       :rules="[(val) => !!val || 'Field is required']"
       @keyup.esc="back"
     />
-    <GoalSelect v-model="item.parent" label="Parent" stack-label :except-id="itemId" />
-    <DateInput v-model="item.planned" label="Planned" />
-    <q-input v-model="item.description" type="textarea" label="Description" stack-label />
+    <GoalSelect
+      v-model="item.parent"
+      label="Parent"
+      stack-label
+      :except-id="itemId"
+      class="q-pb-lg"
+    />
+    <DateInput v-model="item.planned" label="Planned" class="q-pb-lg" />
+    <q-input
+      v-model="item.description"
+      type="textarea"
+      label="Description"
+      stack-label
+      class="q-pb-lg"
+    />
   </q-form>
 </template>

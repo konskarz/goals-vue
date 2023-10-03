@@ -26,6 +26,7 @@ function go(router, id) {
     default-expand-all
     icon="keyboard_arrow_right"
     selected-color="primary"
+    class="q-px-md"
     @update:selected="(target) => go($router, target)"
   />
 </template>
