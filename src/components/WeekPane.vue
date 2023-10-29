@@ -33,7 +33,7 @@ function onDrop(e) {
     <q-item-label v-if="week.start" overline class="q-px-lg q-py-sm text-uppercase">
       {{ week.month }}
     </q-item-label>
-    <q-item-label header class="q-px-lg q-py-sm" :class="week.current ? 'text-weight-medium' : ''">
+    <q-item-label header class="q-px-lg q-py-sm" :class="week.current ? 'bg-blue-1' : ''">
       {{ week.title }}
     </q-item-label>
     <q-intersection v-for="task in tasks" :key="task.id" class="min-h" once>

@@ -22,9 +22,20 @@ export const useGoalStore = defineStore('GoalStore', () => {
       ...relatedStore.getReport(getBranch(item.id))
     }))
   })
+  const relAll = computed(() => {
+    if (!data.value || !relatedStore.data) return null
+    return data.value
+      .map((item) => ({
+        ...item,
+        type: 'goal',
+        icon: 'outlined_flag'
+      }))
+      .concat(relatedStore.getAll())
+  })
   const tree = computed(() => (data.value ? arrayToTree(data.value) : null))
   const treeReport = computed(() => (relReport.value ? arrayToTree(relReport.value) : null))
-
+  const treeAll = computed(() => (relAll.value ? arrayToTree(relAll.value) : null))
+  
   function getBranch(itemId) {
     if (!itemId) return data.value.map((item) => item.id)
     const branch = [itemId]
@@ -50,6 +61,7 @@ export const useGoalStore = defineStore('GoalStore', () => {
     treeExpanded,
     tree,
     treeReport,
+    treeAll,
     getBranch
   }
 })

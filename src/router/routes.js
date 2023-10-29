@@ -10,6 +10,21 @@ const routes = [
         component: () => import('../views/HomeView.vue')
       },
       {
+        path: '/goals',
+        name: 'goals',
+        component: () => import('../views/GoalsView.vue')
+      },
+      {
+        path: '/tree',
+        name: 'tree',
+        component: () => import('../views/TreeView.vue')
+      },
+      {
+        path: '/reports',
+        name: 'reports',
+        component: () => import('../views/ReportsView.vue')
+      },
+      {
         path: '/tasks/:id',
         name: 'task',
         component: () => import('../views/TaskView.vue'),
