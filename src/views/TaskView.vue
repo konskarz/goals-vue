@@ -22,8 +22,7 @@ const { item, original, path, persist, changed, remove, save, back } = usePersis
     target: 1,
     performance: 0,
     done: null,
-    description: '',
-    performance_history: []
+    description: ''
   }
 )
 const allTasks = ref(false)
@@ -35,14 +34,14 @@ const disable = computed(
     Boolean(itemId && !changed(original, { ...item.value }))
 )
 const performanceHistory = computed(() => {
-  const ph = item.value.performance_history
+  const ph = item.value.performanceHistory
   if (!ph || !ph.length) return null
   return ph
     .map((log) => date.formatDate(log.updated, 'DD.MM.YYYY HH:mm') + ' to ' + log.value)
     .join(', ')
 })
 watch(allTasks, (newValue) => {
-  path.value = newValue ? 'recurring/' + item.value.group_id : itemId
+  path.value = newValue ? 'recurring/' + item.value.groupId : itemId
 })
 </script>
 
@@ -51,7 +50,7 @@ watch(allTasks, (newValue) => {
     <q-toolbar-title v-if="!allTasks">Task</q-toolbar-title>
     <q-toolbar-title v-else>Group</q-toolbar-title>
     <q-toggle
-      v-if="item.group_id"
+      v-if="item.groupId"
       v-model="allTasks"
       checked-icon="done_all"
       unchecked-icon="done"
