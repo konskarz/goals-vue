@@ -18,9 +18,13 @@ export const useTaskStore = defineStore('TaskStore', () => {
   } = useCalendar()
   const relatedStore = useGoalStore()
 
-  relatedStore.$onAction(({ name, store, args }) => {
-    if (name === 'deleteItem' && store.treeTicked.includes(args[0]))
-      store.treeTicked.splice(store.treeTicked.indexOf(args[0]), 1)
+  relatedStore.$onAction(({ name, store, args, after }) => {
+    if (name === 'deleteItem') {
+      if (store.treeTicked.includes(args[0])) {
+        store.treeTicked.splice(store.treeTicked.indexOf(args[0]), 1)
+      }
+      after(() => refetch())
+    }
   })
   const relative = computed(() => {
     if (!data.value || !relatedStore.data) return null
