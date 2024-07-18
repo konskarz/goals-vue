@@ -13,8 +13,8 @@ const store = useTaskStore()
 
 const showProgress = computed(() => props.item.target > 1 && !props.item.done)
 const progressHint = computed(() => {
-  if (!props.item.performance_history || !props.item.performance_history.length) return null
-  return date.formatDate(props.item.performance_history[0].updated, 'DD.MM.YYYY HH:mm')
+  if (!props.item.performanceHistory || !props.item.performanceHistory.length) return null
+  return date.formatDate(props.item.performanceHistory[0].updated, 'DD.MM.YYYY HH:mm')
 })
 
 function go(router, id) {
@@ -23,17 +23,17 @@ function go(router, id) {
 function undone() {
   const changed = { done: null }
   if (props.item.performance >= props.item.target) changed.performance = props.item.target - 1
-  store.updateItem(props.item.id + '/', changed).then(() => store.refetch())
+  store.updateItem(props.item.id, changed).then(() => store.refetch())
 }
 function increase() {
   const changed = { performance: props.item.performance + 1 }
   if (changed.performance >= props.item.target) fireworks()
-  store.updateItem(props.item.id + '/', changed).then(() => store.refetch())
+  store.updateItem(props.item.id, changed).then(() => store.refetch())
 }
 function done() {
   const changed = { done: new Date().toISOString() }
   fireworks()
-  store.updateItem(props.item.id + '/', changed).then(() => store.refetch())
+  store.updateItem(props.item.id, changed).then(() => store.refetch())
 }
 </script>
 
@@ -41,7 +41,7 @@ function done() {
   <q-item clickable :active="Boolean(item.done)" active-class="text-positive">
     <q-item-section side>
       <q-icon
-        :name="item.group_id ? 'event_repeat' : 'event'"
+        :name="item.groupId ? 'event_repeat' : 'event'"
         style="cursor: grab"
         draggable="true"
         @dragstart="(e) => $emit('ondragstart', e, item)"
