@@ -47,9 +47,9 @@ export const useTaskStore = defineStore('TaskStore', () => {
         if (!item.planned) return false
         if (beforeThisWeek(item.planned)) {
           if (!filter.value.pastDone && item.done) return false
-          if (!filter.value.pastRecurring && item.group_id) return false
+          if (!filter.value.pastRecurring && item.groupId) return false
         }
-        if (afterThisWeek(item.planned) && !filter.value.futureRecurring && item.group_id)
+        if (afterThisWeek(item.planned) && !filter.value.futureRecurring && item.groupId)
           return false
         if (relatedStore.treeTicked.length && !relatedStore.treeTicked.includes(item.goal))
           return false
@@ -72,10 +72,10 @@ export const useTaskStore = defineStore('TaskStore', () => {
   })
 
   function buildReport(tasks) {
-    const regular = tasks.filter((item) => !item.group_id)
+    const regular = tasks.filter((item) => !item.groupId)
     const done = regular.filter((item) => item.done)
     const recurring = tasks.filter(
-      (item) => item.group_id && item.planned && beforeThisDay(item.planned)
+      (item) => item.groupId && item.planned && beforeThisDay(item.planned)
     )
     const perfsum = (tasks) =>
       tasks.reduce((sum, item) => {
@@ -88,13 +88,13 @@ export const useTaskStore = defineStore('TaskStore', () => {
       rtarget: recurring.length,
       rperformance: recurring.length ? perfsum(recurring) : null,
       series: recurring.length
-        ? getSeries([...new Set(recurring.map((item) => item.group_id))])
+        ? getSeries([...new Set(recurring.map((item) => item.groupId))])
         : null
     }
   }
   function getAll() {
     let rtasks = data.value
-      .filter((item) => item.group_id && item.planned && beforeThisDay(item.planned))
+      .filter((item) => item.groupId && item.planned && beforeThisDay(item.planned))
       .sort((a, b) => Date.parse(a.planned) - Date.parse(b.planned))
     if (rtasks.length) {
       rtasks = rtasks.reduce((groups, item) => {
@@ -105,20 +105,20 @@ export const useTaskStore = defineStore('TaskStore', () => {
       rtasks = Object.values(rtasks).map((item) => item[item.length - 1])
     }
     const ntasks = data.value
-      .filter((item) => !item.group_id && item.planned)
+      .filter((item) => !item.groupId && item.planned)
       .sort((a, b) => Date.parse(a.planned) - Date.parse(b.planned))
     return rtasks.concat(ntasks).map((item) => ({
       ...item,
       parent: item.goal,
       type: 'task',
-      icon: item.group_id ? 'event_repeat' : 'event'
+      icon: item.groupId ? 'event_repeat' : 'event'
     }))
   }
-  function getSeries(group_ids) {
+  function getSeries(groupIds) {
     const rtasks = data.value
       .filter((item) => {
-        if (!item.group_id || !item.planned) return false
-        if (group_ids && group_ids.length && !group_ids.includes(item.group_id)) return false
+        if (!item.groupId || !item.planned) return false
+        if (groupIds && groupIds.length && !groupIds.includes(item.groupId)) return false
         return seriesRange(item.planned)
       })
       .sort((a, b) => Date.parse(a.planned) - Date.parse(b.planned))
