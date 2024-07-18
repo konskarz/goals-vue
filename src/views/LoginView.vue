@@ -59,7 +59,7 @@ function required(val) {
           </q-input>
         </q-card-section>
         <q-card-section class="q-pt-none">
-          <div class="text-caption text-grey text-center">demo/demofirst daily data refresh</div>
+          <div class="text-caption text-grey text-center">demo/demofirst data refresh</div>
         </q-card-section>
         <q-card-actions class="q-pa-md">
           <q-btn type="submit" class="bg-primary text-white full-width" label="Login" />

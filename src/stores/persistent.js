@@ -13,6 +13,9 @@ export function usePersistent(id, store, model) {
   function changed(src, trg) {
     return Object.keys(changes(src, trg)).length
   }
+  function values(src) {
+    return Object.fromEntries(Object.entries(src).filter(([key, value]) => !!value))
+  }
   function back() {
     router.back()
   }
@@ -31,7 +34,7 @@ export function usePersistent(id, store, model) {
         back()
       })
     } else {
-      store.createItem(item.value).then(() => {
+      store.createItem(values(item.value)).then(() => {
         store.refetch()
         back()
       })

@@ -10,10 +10,10 @@ export const useUserStore = defineStore('UserStore', () => {
   const loggedIn = computed(() => Boolean(authToken.value))
 
   function login(data) {
-    return request({ method: 'post', url: name + '/', data })
+    return request({ method: 'post', url: name, data })
   }
   function setToken(token) {
-    auth(`Token ${token}`)
+    auth(`Bearer ${token}`)
     localStorage.setItem(name, token)
     authToken.value = token
   }
@@ -22,7 +22,7 @@ export const useUserStore = defineStore('UserStore', () => {
     localStorage.removeItem(name)
     authToken.value = null
   }
-  if (loggedIn.value) auth(`Token ${authToken.value}`)
+  if (loggedIn.value) auth(`Bearer ${authToken.value}`)
 
   return {
     loggedIn,

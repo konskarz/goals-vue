@@ -18,10 +18,10 @@ export function useCollection(name) {
     return request({ method: 'post', url, data })
   }
   function updateItem(path, data) {
-    return request({ method: 'patch', url: url + path + '/', data })
+    return request({ method: 'patch', url: url + path, data })
   }
   function deleteItem(path) {
-    return request({ method: 'delete', url: url + path + '/' })
+    return request({ method: 'delete', url: url + path })
   }
   refetch()
 
