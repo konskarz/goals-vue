@@ -129,7 +129,7 @@ export const useTaskStore = defineStore('TaskStore', () => {
   }
   function moveItem(item, monday) {
     const changed = { planned: changeWeek(item.planned, monday).toISOString() }
-    updateItem(item.id + '/', changed).then(() => refetch())
+    updateItem(item.id, changed).then(() => refetch())
   }
 
   return {
